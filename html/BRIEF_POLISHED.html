@@ -8,9 +8,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -914,7 +914,7 @@ const PartV_ERRORS = () => (
     Why did Standard CE fail so specifically? Analyzing the confusion matrix and highest-confidence errors reveals the model's internal logic.
   </p>
   <ul className="list-disc pl-5 ui space-y-3 mt-4 text-[16px] text-stone-700">
-    <li><b>The 99% Confident Mistake:</b> The baseline model frequently predicted 'nv' (benign) for 'bkl' (keratosis) images with >98% confidence. It learned a visual heuristic: "dark, homogeneous blob = nv". Because 67% of the data matched this, the loss landscape rewarded this lazy heuristic.</li>
+    <li><b>The 99% Confident Mistake:</b> The baseline model frequently predicted 'nv' (benign) for 'bkl' (keratosis) images with &gt;98% confidence. It learned a visual heuristic: "dark, homogeneous blob = nv". Because 67% of the data matched this, the loss landscape rewarded this lazy heuristic.</li>
     <li><b>Feature Short-circuiting:</b> In early epochs, the model sometimes learned to detect ruler marks or surgical ink (which appear randomly in some classes) rather than lesion pathology. Heavy data augmentation (flipping) mitigated this by destroying spatial correlations of watermarks.</li>
   </ul>
 </div>);
