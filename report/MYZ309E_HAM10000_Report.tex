@@ -1,0 +1,480 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.4cm,top=2.8cm,headheight=18pt,bottom=2.8cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,amsfonts,mathtools}
+\usepackage{xcolor,enumitem,fancyhdr,titlesec,lmodern}
+\usepackage{pifont}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[breakable,skins,theorems]{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage[colorlinks=true,linkcolor=blue!70!black,citecolor=green!70!black,urlcolor=purple]{hyperref}
+\usepackage{bookmark}
+
+\setlength\parindent{0pt}
+\setlength\parskip{4pt}
+\linespread{1.02}\selectfont
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\small\bfseries Artificial Intelligence in Mathematical Engineering}
+\fancyhead[R]{\sffamily\small\bfseries Project Report}
+\fancyfoot[C]{\sffamily\thepage}
+\renewcommand{\headrulewidth}{0.7pt}
+
+% --- SECTION FORMATTING ---
+\titleformat{\section}
+  {\Large\bfseries\sffamily\color{blue!70!black}}
+  {\thesection.}{1em}{}
+\titleformat{\subsection}
+  {\large\bfseries\sffamily\color{green!60!black}}
+  {\thesubsection.}{1em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\sffamily\color{orange!80!black}}
+  {\thesubsubsection.}{1em}{}
+
+% --- THEOREM ENVIRONMENTS ---
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{examplethm}[definition]{Example}
+\newtheorem{remark}[definition]{Remark}
+
+% --- COLOURED BOXES ---
+\newtcolorbox{problembox}{enhanced,breakable,colback=blue!6!white,colframe=blue!80!black,
+  colbacktitle=blue!90!black,coltitle=white,fonttitle=\bfseries\sffamily,title=Problem Statement,
+  attach boxed title to top left={yshift=-3mm,xshift=5mm}}
+
+\newtcolorbox{theorybox}{enhanced,breakable,colback=green!6!white,colframe=green!75!black,
+  colbacktitle=green!85!black,coltitle=white,fonttitle=\bfseries\sffamily,title=Key Theory \& Formulas,
+  attach boxed title to top left={yshift=-3mm,xshift=5mm}}
+
+\newtcolorbox{insightbox}{enhanced,breakable,colback=purple!6!white,colframe=purple!80!black,
+  colbacktitle=purple!90!black,coltitle=white,fonttitle=\bfseries\sffamily,title=Intuition \& Geometric Insight,
+  attach boxed title to top left={yshift=-3mm,xshift=5mm}}
+
+\newtcolorbox{strategybox}{enhanced,breakable,colback=orange!6!white,colframe=orange!80!black,
+  colbacktitle=orange!90!black,coltitle=white,fonttitle=\bfseries\sffamily,title=Step-by-Step Derivation,
+  attach boxed title to top left={yshift=-3mm,xshift=5mm}}
+
+\newtcolorbox{tipbox}{enhanced,breakable,colback=yellow!12!white,colframe=yellow!90!black,
+  colbacktitle=yellow!70!white,coltitle=black,fonttitle=\bfseries\sffamily,title=Exam Tip \& Key Insight,
+  attach boxed title to top left={yshift=-3mm,xshift=5mm}}
+
+\newtcolorbox{warningbox}{enhanced,breakable,colback=red!8!white,colframe=red!80!black,
+  colbacktitle=red!90!black,coltitle=white,fonttitle=\bfseries\sffamily,title=Common Pitfall \& Warning,
+  attach boxed title to top left={yshift=-3mm,xshift=5mm}}
+
+\newtcolorbox{answerbox}{enhanced,breakable,colback=cyan!6!white,colframe=cyan!80!black,
+  colbacktitle=cyan!90!black,coltitle=white,fonttitle=\bfseries\sffamily,title=Final Result,
+  attach boxed title to top left={yshift=-3mm,xshift=5mm}}
+
+\newtcolorbox{methodbox}{enhanced,breakable,colback=teal!6!white,colframe=teal!80!black,
+  colbacktitle=teal!90!black,coltitle=white,fonttitle=\bfseries\sffamily,title=Alternative Method / Perspective,
+  attach boxed title to top left={yshift=-3mm,xshift=5mm}}
+
+\newtcolorbox{summarybox}{enhanced,breakable,colback=gray!8!white,colframe=gray!70!black,
+  colbacktitle=gray!85!black,coltitle=white,fonttitle=\bfseries\sffamily,title=Quick Reference Summary,
+  attach boxed title to top left={yshift=-3mm,xshift=5mm}}
+
+\newtcolorbox{prereqbox}{enhanced,breakable,colback=brown!6!white,colframe=brown!70!black,
+  colbacktitle=brown!85!black,coltitle=white,fonttitle=\bfseries\sffamily,title=Prerequisites \& Background Knowledge,
+  attach boxed title to top left={yshift=-3mm,xshift=5mm}}
+
+% --- MATH MACROS ---
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\norm}[1]{\left\| #1 \right\|}
+\newcommand{\vect}[1]{\mathbf{#1}}
+\newcommand{\mat}[1]{\mathbf{#1}}
+\newcommand{\inner}[2]{\langle #1,\, #2 \rangle}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\rank}{rank}
+
+\begin{document}
+
+\begin{center}
+{\Huge\bfseries\sffamily\color{blue!70!black} Artificial Intelligence in}\\[0.3em]
+{\Huge\bfseries\sffamily\color{blue!70!black} Mathematical Engineering}\\[0.6em]
+{\LARGE\bfseries\sffamily PROJECT REPORT}\\[0.2em]
+\rule{0.82\textwidth}{1.5pt}\\[0.6em]
+{\LARGE\bfseries\sffamily AI-Assisted Diagnosis on HAM10000}\\[0.4em]
+{\large\sffamily The Effect of Loss Functions and Sampling on}\\[0.2em]
+{\large\sffamily Imbalanced Skin-Cancer Classification}\\[0.6em]
+\rule{0.82\textwidth}{1.5pt}\\[0.6em]
+{\LARGE\bfseries\sffamily Author: Ömer Kahyaoğlu}\\[0.2em]
+{\Large\sffamily E-mail: kahyaoglu20@itu.edu.tr}\\[0.4em]
+{\Large\sffamily Date: \today}\\[0.4em]
+{\Large\sffamily Student Number: 090240741}\\[0.8em]
+{\large Mathematical Engineering Undergraduate Programme}\\[0.4em]
+{\normalsize Istanbul Technical University}\\[0.3em]
+\rule{0.82\textwidth}{1.5pt}\\[0.5em]
+{\small\sffamily\textbf{MYZ 309E}\quad CRN: 23577}\\
+{\small\sffamily Class Lecturer: Professor Muhammed Kurulay, PhD}\\
+\end{center}
+
+\vspace{0.4em}
+
+\begin{problembox}
+On the HAM10000 dermoscopic dataset (10\,015 images, 7 diagnostic classes), the
+majority class \textit{melanocytic nevi} (\texttt{nv}) accounts for $\sim$67\% of
+the data while the rarest class \textit{dermatofibroma} (\texttt{df}) accounts
+for only $\sim$1.1\%. A model trained naively with Cross-Entropy will optimise
+mean log-likelihood and trivially achieve high \emph{accuracy} by mostly
+predicting \texttt{nv} --- while missing the rare and clinically important
+classes. We compare \textbf{five} loss/sampling configurations under an
+identical CNN, optimiser and seed on the full real HAM10000 corpus, and report
+\emph{macro-F1} and \emph{per-class recall} (the metrics that an imbalanced
+clinical task actually needs). Headline result: \textbf{Focal loss
+($\gamma{=}2$) reaches macro F1 $\mathbf{=0.443}$ vs. $0.381$ for Standard
+CE}, and is the only loss-side fix that recovers non-zero recall on the
+rarest class \texttt{df}.
+\end{problembox}
+
+\section{Introduction}
+
+The HAM10000 collection \cite{tschandl2018ham} contains 10\,015 dermoscopic
+images of pigmented skin lesions, hand-labelled across seven diagnostic
+classes: melanocytic nevi (\texttt{nv}), melanoma (\texttt{mel}), benign
+keratosis-like lesions (\texttt{bkl}), basal cell carcinoma (\texttt{bcc}),
+actinic keratoses (\texttt{akiec}), vascular lesions (\texttt{vasc}) and
+dermatofibroma (\texttt{df}). Figure~\ref{fig:dist} shows that the dataset is
+\emph{severely imbalanced}: a constant predictor that always outputs
+\texttt{nv} would already attain $\approx$67\% accuracy --- which makes plain
+accuracy a misleading optimisation target.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{class_distribution.png}
+\caption{Class distribution of the HAM10000 training data. The \texttt{nv}
+class dominates ($\approx$67\%), while \texttt{df} accounts for only
+$\approx$1.1\% of the corpus.}
+\label{fig:dist}
+\end{figure}
+
+The objective of this project is therefore not just to \emph{classify} skin
+lesions, but to \emph{study how the choice of loss function and sampling
+strategy interact with class imbalance}: do techniques that explicitly
+re-weight rare classes recover their recall, and at what cost to majority-class
+performance?
+
+\section{Methodology}
+
+\subsection{Pipeline overview and CNN architecture}
+
+The full pipeline (Figure~\ref{fig:cnn}) is: (i) load all 10\,015 HAM10000
+JPGs from the official Harvard Dataverse zips; (ii) stratified $70/15/15$
+train/validation/test split (per-class proportions preserved); (iii)
+$64{\times}64$ resize, ImageNet-style mean/std normalisation and light
+training-time augmentation (horizontal/vertical flip); (iv) training of a
+from-scratch CNN ($\sim$106k parameters) for 8 epochs with Adam; (v) test-set
+evaluation with imbalance-aware metrics.
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.93\textwidth}{\sffamily\small\centering
+\textbf{Input} ($3{\times}64{\times}64$) $\;\rightarrow\;$
+\textbf{Conv $3{\to}16$} + BN + ReLU + MaxPool$_{2}$ \;($16{\times}32{\times}32$) $\;\rightarrow\;$
+\textbf{Conv $16{\to}32$} + BN + ReLU + MaxPool$_{2}$ \;($32{\times}16{\times}16$) $\;\rightarrow\;$
+\textbf{Conv $32{\to}64$} + BN + ReLU + MaxPool$_{2}$ \;($64{\times}8{\times}8$) $\;\rightarrow\;$
+\textbf{Conv $64{\to}128$} + BN + ReLU + MaxPool$_{2}$ \;($128{\times}4{\times}4$) $\;\rightarrow\;$
+\textbf{GlobalAvgPool} \;($128$) $\;\rightarrow\;$
+\textbf{Dropout$_{0.4}$} $\rightarrow$ \textbf{FC $128{\to}64$} + ReLU $\rightarrow$
+\textbf{Dropout$_{0.4}$} $\rightarrow$ \textbf{FC $64{\to}7$} (logits)
+}}
+\caption{CNN architecture. Four Conv\,/\,BatchNorm\,/\,ReLU\,/\,MaxPool blocks
+followed by a Global Average Pooling head and a small FC head. Total:
+$\mathbf{106\,391}$ trainable parameters.}
+\label{fig:cnn}
+\end{figure}
+
+\subsection{Why this loss family, this optimiser, these hyperparameters?}
+
+\begin{theorybox}
+With class counts $\{n_c\}_{c=1}^{C}$ and per-sample softmax probability
+$p_t(x_i)=\hat{p}(y_i\mid x_i)$, the four imbalance-handling losses studied
+here are
+\begin{align}
+\mathcal{L}_{\text{CE}}(x,y)        &= -\log p_t,
+\qquad\quad
+\mathcal{L}_{\text{wCE}}(x,y)        = -\frac{1/n_y}{\sum_c 1/n_c}\,C\,\log p_t,\\[2pt]
+\mathcal{L}_{\text{focal}}(x,y)      &= -\alpha_y\,(1-p_t)^{\gamma}\log p_t
+        \quad(\gamma=2),\qquad
+\mathcal{L}_{\text{CB}}(x,y)         = -\frac{1-\beta}{1-\beta^{n_y}}\,\log p_t
+        \quad(\beta=0.999).
+\end{align}
+The \textit{WeightedRandomSampler} method instead leaves the loss as plain CE
+but draws each training example $i$ with probability $\propto 1/n_{y_i}$.
+\end{theorybox}
+
+\textbf{Loss choice.} Each formulation tackles imbalance from a different
+angle: weighted/CB CE rescale the per-class gradient magnitude; focal loss
+\cite{lin2017focal} additionally down-weights examples the network already
+classifies confidently (large $p_t$ $\Rightarrow$ vanishing $(1-p_t)^\gamma$);
+WeightedRandomSampler is a \emph{sampling-side} fix that does not change the
+objective at all but changes the empirical mini-batch distribution.
+
+\textbf{Optimiser.} We use \textbf{Adam} \cite{kingma2014adam}
+($\eta=10^{-3}$, $\beta_{1{,}2}=(0.9,0.999)$, weight decay $10^{-4}$). Adam's
+per-parameter adaptive learning rates handle the heterogeneous gradient
+magnitudes that the weighted/focal losses produce; SGD with momentum was
+tested but converged more slowly and was more sensitive to the loss-rescaling.
+
+\textbf{Hyperparameters.} Batch size $128$, $8$ epochs, seed $42$ used for
+split, model-init and DataLoader. Eight epochs are enough to read the
+under/overfitting transition off the validation loss curve (Fig.~\ref{fig:overfit});
+running for many more epochs would mostly memorise the majority class.
+
+\subsection{Why these metrics?}
+
+For an imbalanced 7-class problem, accuracy is dominated by the majority class.
+We therefore report (i) per-class precision/recall/F1, (ii) macro-averaged F1
+(arithmetic mean of per-class F1 scores --- equal weight to every class),
+(iii) balanced accuracy (mean of per-class recall), and (iv) the full
+confusion matrix.
+
+\begin{warningbox}
+Reporting test \emph{accuracy} alone on HAM10000 \emph{hides minority-class
+collapse}: a model that always predicts \texttt{nv} scores $\approx 67\%$
+accuracy yet has zero recall on every other class.
+\end{warningbox}
+
+\section{Experimental Results}
+
+All metrics below come from one full end-to-end run on the real HAM10000
+corpus (10\,015 images; train\,=\,7008, val\,=\,1502, test\,=\,1505) using the
+exact CNN, optimiser and seed described above. Per-experiment training time
+on CPU was $\approx$\,2 minutes.
+
+\subsection{Loss and accuracy curves}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.49\textwidth}\centering
+\includegraphics[width=\linewidth]{loss_curves.png}
+\end{minipage}\hfill
+\begin{minipage}{0.49\textwidth}\centering
+\includegraphics[width=\linewidth]{acc_curves.png}
+\end{minipage}
+\caption{Real HAM10000 loss (left) and accuracy (right) per experiment.
+Standard CE drops fastest on train (it exploits the 67\% \texttt{nv} prior)
+and reaches $\sim$73\% test accuracy --- a number mostly explained by the
+prior, see Fig.~\ref{fig:cm-base}. Focal loss starts at small magnitudes
+because $(1{-}p_t)^{\gamma}$ collapses the loss on easy majority examples
+(absolute scale is not comparable across losses; the trend is).}
+\label{fig:loss}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\textwidth]{overfitting_annotated.png}
+\caption{Underfitting / overfitting interpretation on the Standard-CE
+baseline. Epochs 1--2 show simultaneously high train and validation loss
+(\emph{underfitting}); the dashed line marks the lowest validation loss --- past
+this point train loss continues to decrease while val loss starts to plateau or
+rise (\emph{overfitting} risk). In our runs the model was stopped before this
+divergence becomes severe, but it is the canonical use of the validation curve.}
+\label{fig:overfit}
+\end{figure}
+
+\subsection{Test-set metrics}
+
+Table~\ref{tab:metrics} reports the test-set metrics for all five experiments.
+The dichotomy between \textit{accuracy} and \textit{macro-F1\,/\,minority recall}
+on the Standard CE baseline is the central observation of this report.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Experiment} & \textbf{Acc.} & \textbf{Bal.\,Acc.} &
+\textbf{Macro\,P} & \textbf{Macro\,R} & \textbf{Macro\,F1} \\
+\midrule
+Standard CE                       & \textbf{0.736} & 0.352 & 0.527 & 0.352 & 0.381 \\
+Weighted CE                       & 0.521 & 0.505 & 0.339 & 0.505 & 0.341 \\
+Focal Loss ($\gamma{=}2$)         & 0.622 & \textbf{0.538} & 0.414 & \textbf{0.538} & \textbf{0.443} \\
+Class-Balanced CE                 & 0.718 & 0.447 & 0.428 & 0.447 & 0.395 \\
+Std CE + WeightedRandomSampler    & 0.464 & 0.537 & 0.386 & 0.537 & 0.391 \\
+\bottomrule
+\end{tabular}
+\caption{Test-set metrics on the real HAM10000 corpus (1\,505 test images).
+Bold = best per column. Standard CE has the highest \emph{accuracy} but
+the lowest \emph{macro recall}; Focal loss has the best macro F1.}
+\label{tab:metrics}
+\end{table}
+
+The per-class recall heatmap (Fig.~\ref{fig:heat}) makes this picture
+explicit: Standard CE achieves 0\% recall on the rarest class \texttt{df}
+and only 13.6\% on the second-rarest \texttt{vasc}; Focal restores them to
+38.9\% and 77.3\% respectively, at the cost of dropping \texttt{nv} recall
+from 92.5\% to 69.7\%.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{per_class_recall_heatmap.png}
+\caption{Per-class recall by experiment (real HAM10000). Standard CE has
+\emph{zero} recall on the rarest class \texttt{df}; only Focal and the
+WeightedRandomSampler recover it.}
+\label{fig:heat}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{metrics_comparison.png}
+\caption{Macro F1 (left) and recall on the rarest class \texttt{df} (right).
+Standard CE achieves $0.000$ recall on \texttt{df} --- it never predicts the
+rare class; only Focal Loss and the WeightedRandomSampler recover it to
+$\approx 0.39$. Weighted/CB CE move in the right direction but at this
+training budget (8 epochs) only marginally lift \texttt{df} recall.}
+\label{fig:metrics}
+\end{figure}
+
+\subsection{Confusion matrices}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.46\textwidth}
+\centering
+\includegraphics[width=\linewidth]{cm_standard.png}
+\end{minipage}
+\hfill
+\begin{minipage}{0.46\textwidth}
+\centering
+\includegraphics[width=\linewidth]{cm_best.png}
+\end{minipage}
+\caption{Real HAM10000 confusion matrices. \textbf{Left:} Standard CE ---
+the entire \texttt{df} row sums to zero in the \texttt{df} column (the network
+\emph{never} predicts \texttt{df}), and most rare-class examples are pushed
+onto the majority class \texttt{nv}. \textbf{Right:} Focal loss spreads
+predictions back across all seven classes, sacrificing some \texttt{nv} accuracy
+in exchange for non-trivial recall on every rare class.}
+\label{fig:cm-base}
+\end{figure}
+
+\subsection{Error analysis}
+
+For the Standard CE baseline, Figure~\ref{fig:err} shows the three
+\emph{most-confident wrong} predictions on the real HAM10000 test set. All
+three are true \texttt{bkl} (benign keratoses) lesions that the network
+re-labels as \texttt{nv} (melanocytic nevi) at $97{-}99.8\%$ confidence ---
+\texttt{nv} and \texttt{bkl} share visual cues (dark, homogeneously pigmented
+patches) and the imbalanced training set teaches the network that
+``when in doubt, output \texttt{nv}''. This is exactly the pathology that the
+weighted/focal/class-balanced losses and the oversampling sampler correct.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{error_analysis_baseline.png}
+\caption{Standard CE on the real HAM10000 test set: three highest-confidence
+\emph{wrong} predictions. All three are benign keratoses (\texttt{bkl})
+confidently mis-labelled as melanocytic nevi (\texttt{nv}) --- a textbook
+minority-class collapse driven by the 67\% \texttt{nv} prior.}
+\label{fig:err}
+\end{figure}
+
+\section{Discussion and Conclusion}
+
+\subsection{What the experiments tell us}
+
+\begin{insightbox}
+Three observations come out of the real HAM10000 run:
+(i) \textbf{Accuracy is a misleading metric on imbalanced data} --- the
+Standard CE baseline reaches $73.6\%$ accuracy yet has $0\%$ recall on the
+rarest class \texttt{df} and only $13.6\%$ on \texttt{vasc}; macro F1 is
+just $0.381$.
+(ii) \textbf{Focal loss is the strongest single drop-in fix} --- with
+$\gamma{=}2$ and inverse-frequency $\alpha$ it reaches the highest macro F1
+($0.443$) and balanced accuracy ($0.538$), and is the only loss-side method
+that meaningfully recovers \texttt{df} recall ($0.389$).
+(iii) \textbf{Loss reweighting and resampling are not interchangeable in
+practice}: WeightedRandomSampler matches Focal on minority recall, but at a
+substantial cost to overall accuracy ($0.46$ vs $0.62$); pure inverse-frequency
+weighted CE hurts accuracy without proportionate recall gains within an 8-epoch
+budget. Class-Balanced CE behaves like a softer Standard CE here.
+\end{insightbox}
+
+\subsection{Weaknesses of the model}
+
+The CNN is trained from scratch with only $\approx$\,106\,k parameters and at
+$64{\times}64$ input resolution --- modest relative to HAM10000's true visual
+variability ($600{\times}450$ originals) and tiny compared with a transferred
+ResNet-50. Imaging artefacts (hairs, ruler markings, vignettes) are not
+removed, and a Convolutional Autoencoder denoising preprocess could plausibly
+help recall on the visually noisier minority classes. The model also makes a
+flat 7-class decision; clinical practice prioritises a benign-vs-malignant
+first decision with downstream subtype classification, which would change the
+relevant cost matrix.
+
+\subsection{Future work}
+
+\begin{itemize}[leftmargin=1.2em,itemsep=2pt]
+    \item Replace the small from-scratch backbone with a pretrained
+          ResNet-50/EfficientNet-B0 and re-run the same loss comparison.
+    \item Add the Conv-Autoencoder denoising stage suggested in the project
+          brief and quantify its effect on minority-class recall.
+    \item Calibrate the predicted probabilities (e.g.\ temperature scaling)
+          so that confidence values are clinically meaningful, and report
+          recall at fixed false-positive rate (the operating-point metric a
+          dermatologist actually cares about).
+    \item Test stronger sampling/augmentation strategies: SMOTE in feature
+          space, MixUp, CutMix.
+    \item Extend to a hierarchical malignancy-first decision rule.
+\end{itemize}
+
+\subsection{Conclusion}
+
+\begin{answerbox}
+On the real HAM10000 task with a small from-scratch CNN, plain Cross-Entropy
+reaches a deceptively high $73.6\%$ accuracy by collapsing minority classes
+($0\%$ recall on \texttt{df}, $13.6\%$ on \texttt{vasc}); its macro F1 is
+only $0.381$. Of the four imbalance-aware alternatives, \textbf{Focal loss
+($\gamma{=}2$) is the clear winner} --- it lifts macro F1 to $0.443$ and is
+the only loss-side fix that materially recovers the rarest class. The
+WeightedRandomSampler reaches similar minority-class recall but at a much
+larger accuracy cost. Pure inverse-frequency Weighted CE and Class-Balanced
+CE move in the right direction but require longer training (or stronger
+regularisation) to compete; with deeper/transferred backbones we would expect
+their gap to close. The headline takeaway is unambiguous: \emph{accuracy is
+the wrong metric for HAM10000}; the right yardstick is per-class recall and
+macro F1, and the right tool to optimise it is Focal Loss.
+\end{answerbox}
+
+\bigskip
+
+\begin{thebibliography}{9}
+\bibitem{tschandl2018ham}
+P.~Tschandl, C.~Rosendahl, H.~Kittler.
+\textit{The HAM10000 dataset, a large collection of multi-source dermatoscopic
+images of common pigmented skin lesions}, Scientific Data 5 (2018).
+
+\bibitem{lin2017focal}
+T.-Y.~Lin, P.~Goyal, R.~Girshick, K.~He, P.~Doll{\'a}r.
+\textit{Focal Loss for Dense Object Detection}, ICCV 2017.
+
+\bibitem{cui2019cb}
+Y.~Cui, M.~Jia, T.-Y.~Lin, Y.~Song, S.~Belongie.
+\textit{Class-Balanced Loss Based on Effective Number of Samples}, CVPR 2019.
+
+\bibitem{kingma2014adam}
+D.~P.~Kingma, J.~Ba.
+\textit{Adam: A Method for Stochastic Optimization}, ICLR 2015.
+\end{thebibliography}
+
+\end{document}
+                                                                                                                                                                                                                                                                                                                                                                                           

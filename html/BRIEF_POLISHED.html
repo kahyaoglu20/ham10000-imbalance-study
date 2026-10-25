@@ -1,0 +1,1047 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MYZ 309E · AI on HAM10000 — A Textbook-Caliber Atlas</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#faf7f0;        /* cream paper */
+    --paper-2:#f3eee0;      /* warmer page tint */
+    --ink:#1c1917;          /* near-black */
+    --ink-2:#3f3c36;        /* warm secondary */
+    --rule:#cabfa3;         /* tea-stained rule */
+    --rule-2:#dcd2b6;
+    --accent:#0e6b4e;       /* deep emerald */
+    --accent-2:#1f8a64;     /* mid emerald */
+    --accent-soft:#e3efe8;  /* soft emerald wash */
+    --warn:#9a3412;         /* rust */
+    --warn-soft:#fdebd6;
+    --gold:#a67c1f;         /* warm gold */
+  }
+  html,body{background:var(--paper);color:var(--ink);}
+  body{font-family:"Source Serif 4","Iowan Old Style","Palatino Linotype",Georgia,serif;
+       font-feature-settings:"liga","kern","onum","ss01";
+       font-size:17px;line-height:1.65;}
+  .display,.font-display{font-family:"Cormorant Garamond","EB Garamond",Georgia,serif;letter-spacing:-0.01em;}
+  .ui,.font-ui{font-family:"Inter","Source Sans 3","Segoe UI",system-ui,-apple-system,sans-serif;font-feature-settings:"liga","kern";}
+  .mono{font-family:"JetBrains Mono","Source Code Pro",ui-monospace,monospace;font-feature-settings:"liga","ss02";}
+  .sc{font-variant:all-small-caps;letter-spacing:.085em;}
+  
+  .dropcap::first-letter{
+    font-family:"Cormorant Garamond",serif;font-weight:600;
+    font-size:4.0em;line-height:.85;float:left;
+    padding:.06em .12em 0 0;color:var(--accent);
+  }
+  
+  a.lit{text-decoration:underline;text-decoration-color:#bda871;text-underline-offset:3px;}
+  .rule-h{border-top:1px solid var(--rule);}
+  .rule-d{border-top:3px double var(--rule);}
+  .rule-fancy{
+    background-image:linear-gradient(to right,transparent,var(--rule) 8%,var(--rule) 92%,transparent);
+    height:1px;
+  }
+  
+  .frame{border:1px solid var(--rule);background:#fffdf6;}
+  .frame-thick{border:1.5px solid var(--ink);background:#fffdf6;}
+  
+  .badge{display:inline-flex;width:1.7rem;height:1.7rem;border-radius:9999px;
+         background:var(--accent);color:#fff;align-items:center;justify-content:center;
+         font:600 .82rem/1 "Inter",sans-serif;}
+  .badge-soft{display:inline-flex;width:1.6rem;height:1.6rem;border-radius:9999px;
+              background:var(--accent-soft);color:var(--accent);align-items:center;justify-content:center;
+              font:700 .78rem/1 "Inter",sans-serif;border:1px solid var(--accent);}
+  
+  .box-def{background:#fbf5e7;border:1px solid var(--rule);border-left:5px solid var(--gold);}
+  .box-thm{background:#eef6ee;border:1px solid var(--rule);border-left:5px solid var(--accent);}
+  .box-ex {background:#fdf4ec;border:1px solid var(--rule);border-left:5px solid var(--warn);}
+  .box-int{background:#f1eee5;border:1px solid var(--rule);border-left:5px solid var(--ink);}
+  .box-note{background:#eef0f5;border:1px solid #c8c8d2;border-left:5px solid #495569;}
+  
+  .mathframe{border:1px solid var(--rule);border-left:3px solid var(--accent);
+             background:#fffdf6;padding:.6rem 1rem;}
+  .chip{display:inline-block;border:1px solid var(--rule);border-radius:9999px;
+        padding:1px 9px;font:600 .72rem/1.4 "Inter",sans-serif;color:var(--ink);background:#fff;}
+  
+  .scroll-x::-webkit-scrollbar{height:8px;}
+  .scroll-x::-webkit-scrollbar-thumb{background:var(--rule);border-radius:8px;}
+  
+  .schem{stroke:var(--ink);stroke-width:1.4;fill:none;}
+  .term{border-bottom:1px dotted #8a7e60;cursor:help;position:relative;}
+  .term-tt{position:absolute;left:0;top:100%;margin-top:4px;z-index:30;width:300px;
+           background:var(--ink);color:#faf7f0;padding:.7rem .85rem;font-size:.84rem;line-height:1.45;
+           border-radius:4px;box-shadow:0 18px 30px rgba(0,0,0,.20);visibility:hidden;opacity:0;
+           transition:opacity .15s ease;}
+  .term:hover .term-tt,.term:focus-within .term-tt{visibility:visible;opacity:1;}
+  .roman{font-variant:small-caps;letter-spacing:.18em;font-weight:600;}
+  
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .fadeUp{animation:fadeUp .4s ease-out both;}
+  
+  table.book{width:100%;border-collapse:collapse;}
+  table.book th,table.book td{padding:.55rem .75rem;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top;}
+  table.book thead th{border-bottom:1.5px solid var(--ink);font-family:"Inter",sans-serif;
+                      font-variant:all-small-caps;letter-spacing:.06em;font-size:.78rem;font-weight:700;color:#3a3530;}
+  
+  .partmark{font-family:"Inter",sans-serif;font-variant:all-small-caps;letter-spacing:.18em;
+            color:var(--accent);font-weight:700;font-size:.78rem;}
+  section, h2, h3 {scroll-margin-top:90px;}
+  .gloss{font-family:"Inter",sans-serif;font-size:.78rem;line-height:1.5;color:#5a544a;
+         border-left:1px solid var(--rule);padding-left:.75rem;}
+  .stamp{display:inline-block;border:1.5px solid var(--accent);color:var(--accent);
+         padding:.18rem .55rem;font:700 .72rem/1 "Inter",sans-serif;letter-spacing:.06em;
+         text-transform:uppercase;border-radius:2px;}
+  pre.code{background:#1c1917;color:#e7e4d4;font-family:"JetBrains Mono",monospace;
+           font-size:.78rem;line-height:1.55;padding:1rem 1.1rem;border-radius:6px;overflow-x:auto;}
+  .papergrid{background-image:
+    linear-gradient(rgba(28,25,23,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(28,25,23,.03) 1px,transparent 1px);
+    background-size:30px 30px;}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="env,react">
+const {useState, useEffect, useMemo, useRef} = React;
+
+/* ============================================================
+   SECTION REGISTRY 
+   ============================================================ */
+const TOC = [
+  {part:"I", title:"Mathematical Preliminaries", chapters:[
+    {id:"how-to",  num:"0", t:"How to read this atlas"},
+    {id:"history", num:"1", t:"A brief history of deep learning"},
+    {id:"linalg",  num:"2", t:"Linear algebra essentials"},
+    {id:"calc",    num:"3", t:"Calculus essentials — gradients & the chain rule"},
+    {id:"prob",    num:"4", t:"Probability essentials — softmax and entropy"}
+  ]},
+  {part:"II", title:"The Algorithmic Neuron", chapters:[
+    {id:"bio",     num:"5", t:"Biological neurons → artificial neurons"},
+    {id:"percep",  num:"6", t:"The perceptron"},
+    {id:"acts",    num:"7", t:"Activation functions — sigmoid, tanh, ReLU"}
+  ]},
+  {part:"III", title:"Multilayer Networks", chapters:[
+    {id:"mlp",     num:"8",  t:"Multilayer perceptrons & the forward pass"},
+    {id:"loss",    num:"9",  t:"Loss functions — MSE vs cross-entropy"},
+    {id:"gd",      num:"10", t:"Gradient descent — the geometry of learning"},
+    {id:"backprop",num:"11", t:"Backpropagation — derived from scratch"},
+    {id:"opt",     num:"12", t:"Optimisers — SGD, momentum, Adam"}
+  ]},
+  {part:"IV", title:"Convolutional Networks", chapters:[
+    {id:"why-cnn", num:"13", t:"Why CNNs for images"},
+    {id:"conv",    num:"14", t:"The convolution operation"},
+    {id:"pool",    num:"15", t:"Pooling, padding, stride, receptive field"},
+    {id:"bn",      num:"16", t:"Batch normalisation"},
+    {id:"drop",    num:"17", t:"Dropout"},
+    {id:"gap",     num:"18", t:"Global Average Pooling & a complete CNN block"}
+  ]},
+  {part:"V", title:"The HAM10000 Project", chapters:[
+    {id:"problem", num:"19", t:"Clinical problem & the accuracy trap"},
+    {id:"dataset", num:"20", t:"HAM10000 anatomy"},
+    {id:"pipeline",num:"21", t:"Data engineering pipeline"},
+    {id:"skincnn", num:"22", t:"SkinCNN — our architecture"},
+    {id:"losses",  num:"23", t:"Five losses for imbalanced data"},
+    {id:"training",num:"24", t:"Training mechanics in practice"},
+    {id:"metrics", num:"25", t:"Metrics that matter"},
+    {id:"results", num:"26", t:"Real results & per-class analysis"},
+    {id:"errors",  num:"27", t:"Error analysis — pathology of failure"},
+    {id:"close",   num:"28", t:"Synthesis & future work"}
+  ]}
+];
+
+/* ============================================================
+   REAL DATA from the project run
+   ============================================================ */
+const CLASSES = [
+  {key:"akiec",name:"Actinic keratoses / IEC", n:327,  pct:3.3, train:229, color:"#0e6b4e", clinical:"Pre-malignant",                                  desc:"Sun-damaged keratinocytes; an in-situ precursor to squamous-cell carcinoma."},
+  {key:"bcc",  name:"Basal-cell carcinoma",    n:514,  pct:5.1, train:360, color:"#8c2f8b", clinical:"Malignant — most common skin cancer",            desc:"Locally invasive; rarely metastasises. The most frequently encountered skin cancer."},
+  {key:"bkl",  name:"Benign keratosis-like",   n:1099, pct:11.0,train:769, color:"#9b6b22", clinical:"Benign — seborrheic / solar / LP-like keratoses",desc:"Visual overlap with nv (dark, homogeneously pigmented patches)."},
+  {key:"df",   name:"Dermatofibroma",          n:115,  pct:1.1, train:80,  color:"#475569", clinical:"Benign — rarest in dataset",                     desc:"Firm benign fibrous nodule. Only 115 images — the canonical 'tail'."},
+  {key:"mel",  name:"Melanoma",                n:1113, pct:11.1,train:779, color:"#bb451a", clinical:"Malignant — aggressive",                         desc:"Arises from melanocytes; early detection is life-saving."},
+  {key:"nv",   name:"Melanocytic nevi",        n:6705, pct:67.0,train:4694,color:"#1e508f", clinical:"Benign — common mole",                            desc:"The dominant class; 67 % of HAM10000."},
+  {key:"vasc", name:"Vascular lesions",        n:142,  pct:1.4, train:99,  color:"#c0392b", clinical:"Benign — angiomas, haemorrhage",                  desc:"Cherry angiomas, angiokeratomas, pyogenic granulomas."}
+];
+const ORDER = ["akiec","bcc","bkl","df","mel","nv","vasc"]; // alphabetical (sklearn order)
+const RESULTS = [
+  {name:"Standard CE",        acc:.736, bal:.352, mp:.527, mr:.352, f1:.381, recall:[.224,.377,.515,.000,.287,.925,.136], note:"baseline · highest accuracy · 0 % df recall"},
+  {name:"Weighted CE",        acc:.521, bal:.505, mp:.339, mr:.505, f1:.341, recall:[.469,.727,.291,.056,.491,.549,.955], note:"trades accuracy for minority recall · vasc up to 95 %"},
+  {name:"Focal Loss (γ=2)",   acc:.622, bal:.538, mp:.414, mr:.538, f1:.443, winner:true, recall:[.531,.494,.267,.389,.617,.697,.773], note:"best macro F1 · best balanced accuracy"},
+  {name:"Class-Balanced CE",  acc:.718, bal:.447, mp:.428, mr:.447, f1:.395, recall:[.265,.584,.170,.056,.323,.915,.818], note:"softer reweighting · similar to baseline plus vasc/df nudge"},
+  {name:"Std CE + Sampler",   acc:.464, bal:.537, mp:.386, mr:.537, f1:.391, recall:[.286,.662,.418,.389,.778,.407,.818], note:"oversampling matches Focal on minority recall · accuracy cost"}
+];
+
+/* ============================================================
+   HERO + NAV
+   ============================================================ */
+function Hero() {
+  return (
+    <header className="papergrid border-b border-[var(--rule)] relative">
+      <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-20">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
+          <div>
+            <div className="stamp mb-5">MYZ 309E · Istanbul Technical University</div>
+            <h1 className="display text-5xl md:text-7xl font-semibold tracking-tight text-stone-900 leading-[0.95]">
+              Artificial Intelligence in<br/>
+              <span className="italic text-emerald-800">Mathematical Engineering</span>
+            </h1>
+            <p className="display text-2xl md:text-3xl text-stone-700 mt-5 italic">
+              An educational atlas built around the HAM10000 project.
+            </p>
+            <div className="rule-d w-40 my-6"></div>
+            <p className="text-stone-700 max-w-3xl text-lg leading-relaxed">
+              This document develops, from first principles, the entire mathematical
+              and computational machinery used in our skin-lesion classification
+              project — biological neurons, the perceptron, activation functions,
+              gradient descent, backpropagation, convolutional networks, and the
+              full HAM10000 pipeline — at the depth required by an undergraduate
+              mathematics engineering course, with every derivation written out
+              in full and every concept paired with a geometric figure.
+            </p>
+          </div>
+          <div className="ui text-sm text-stone-600 md:text-right shrink-0">
+            <div className="mb-1"><span className="sc text-stone-500">Author</span> · Ömer Kahyaoğlu</div>
+            <div className="mb-1"><span className="sc text-stone-500">Student no.</span> · 090240741</div>
+            <div className="mb-1"><span className="sc text-stone-500">Course</span> · MYZ 309E · CRN 23577</div>
+            <div className="mb-1"><span className="sc text-stone-500">Lecturer</span> · Prof. Muhammed Kurulay, PhD</div>
+            <div className="mt-3 text-stone-400">May 2026</div>
+          </div>
+        </div>
+      </div>
+      <div className="rule-fancy"></div>
+    </header>
+  );
+}
+
+function StickyNav({active, onJump}) {
+  return (
+    <nav className="sticky top-0 z-40 bg-[var(--paper)]/95 backdrop-blur border-b border-[var(--rule)]">
+      <div className="max-w-6xl mx-auto px-6 md:px-10 overflow-x-auto scroll-x">
+        <div className="flex items-center gap-4 py-2 min-w-max ui text-sm">
+          {TOC.map(part=>(
+            <div key={part.part} className="flex items-center gap-1">
+              <span className="sc text-[11px] text-emerald-800 font-bold pr-1">PT {part.part}</span>
+              {part.chapters.map(ch=>(
+                <button key={ch.id} onClick={()=>onJump(ch.id)}
+                  className={`px-2 py-1 rounded text-stone-600 hover:text-emerald-800 hover:bg-emerald-50
+                              ${active===ch.id?"text-emerald-900 bg-emerald-50 font-semibold":""}`}
+                  title={ch.t}>
+                  <span className="mono text-[11px] text-stone-400 mr-1">§{ch.num}</span>
+                  {ch.t.length>22?ch.t.slice(0,22)+"…":ch.t}
+                </button>
+              ))}
+              <span className="text-stone-300 mx-1">·</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+/* ============================================================
+   REUSABLE COMPONENTS
+   ============================================================ */
+function PartCover({roman, title, blurb}) {
+  return (
+    <div className="my-14 fadeUp">
+      <div className="text-center">
+        <div className="roman text-emerald-800 mb-2 text-sm">PART {roman}</div>
+        <div className="rule-fancy w-32 mx-auto my-3"></div>
+        <h2 className="display text-4xl md:text-5xl font-semibold text-stone-900 tracking-tight">{title}</h2>
+        {blurb && <p className="mt-4 ui text-stone-500 text-sm max-w-2xl mx-auto italic">{blurb}</p>}
+        <div className="rule-fancy w-32 mx-auto my-3"></div>
+      </div>
+    </div>
+  );
+}
+function Chapter({id, num, title, eyebrow, children}) {
+  return (
+    <section id={id} className="my-12 fadeUp" style={{scrollMarginTop: "90px"}}>
+      <div className="grid md:grid-cols-12 gap-6 md:gap-10">
+        <aside className="md:col-span-2 md:text-right">
+          <div className="ui text-xs text-stone-400 sc">CHAPTER</div>
+          <div className="display text-5xl md:text-6xl text-emerald-800 font-semibold leading-none">{num}</div>
+          {eyebrow && <div className="mt-2 ui text-xs text-stone-500 sc">{eyebrow}</div>}
+        </aside>
+        <div className="md:col-span-10">
+          <h2 className="display text-3xl md:text-4xl font-semibold text-stone-900 mb-3 leading-snug">{title}</h2>
+          <div className="rule-h mb-6"></div>
+          <div className="prose-style">{children}</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+function Definition({title, children}) {
+  return (
+    <div className="box-def p-4 my-4 rounded-r-md">
+      <div className="ui sc text-xs text-amber-800 font-bold mb-1">DEFINITION · {title}</div>
+      <div className="text-[16px] leading-relaxed">{children}</div>
+    </div>
+  );
+}
+function Theorem({title, children}) {
+  return (
+    <div className="box-thm p-4 my-4 rounded-r-md">
+      <div className="ui sc text-xs text-emerald-800 font-bold mb-1">THEOREM · {title}</div>
+      <div className="text-[16px] leading-relaxed">{children}</div>
+    </div>
+  );
+}
+function Example({title, children}) {
+  return (
+    <div className="box-ex p-4 my-4 rounded-r-md">
+      <div className="ui sc text-xs text-amber-900 font-bold mb-1">EXAMPLE · {title}</div>
+      <div className="text-[16px] leading-relaxed">{children}</div>
+    </div>
+  );
+}
+function Intuition({title, children}) {
+  return (
+    <div className="box-int p-4 my-4 rounded-r-md">
+      <div className="ui sc text-xs text-stone-700 font-bold mb-1">GEOMETRIC INTUITION{title?` · ${title}`:""}</div>
+      <div className="text-[16px] leading-relaxed">{children}</div>
+    </div>
+  );
+}
+function Aside({title, children}) {
+  return (
+    <div className="box-note p-4 my-4 rounded-r-md">
+      <div className="ui sc text-xs text-slate-600 font-bold mb-1">{title || "NOTE"}</div>
+      <div className="text-[15px] leading-relaxed ui">{children}</div>
+    </div>
+  );
+}
+function Two({left, right}) { return <div className="grid md:grid-cols-2 gap-6 my-6">{left}{right}</div>; }
+function Figure({caption, children}) {
+  return (
+    <figure className="my-6">
+      <div className="frame p-4 rounded bg-white flex justify-center items-center">{children}</div>
+      {caption && <figcaption className="ui text-xs text-stone-500 italic mt-2 text-center">{caption}</figcaption>}
+    </figure>
+  );
+}
+function MathBlock({tex, children}) {
+    return <div className="mathframe my-4 overflow-x-auto text-[17px]">$$ {tex || children} $$</div>;
+}
+
+/* ============================================================
+   PART I: MATHEMATICS
+   ============================================================ */
+const PartI_HOW_TO = () => (
+<div>
+  <p className="dropcap text-stone-800">
+    This atlas is written for a student who has just finished introductory
+    calculus, has met matrices but not necessarily eigenvalues, and has
+    never trained a neural network. Every concept in the project — the
+    convolutional architecture, the five loss functions, the optimiser,
+    the evaluation metrics — is built up from first principles in the
+    order in which it becomes necessary. Nothing is skipped on the grounds
+    that it is "obvious." Every formula appears with its derivation.
+    Every diagram is annotated.
+  </p>
+  <p>
+    The text is organised as a small book. Part I revisits the linear
+    algebra, calculus and probability we will need. Part II constructs the
+    artificial neuron and the perceptron. Part III stacks neurons into
+    networks and derives the learning algorithm. Part IV specialises the
+    machinery to images. Part V brings everything to bear on the actual
+    HAM10000 skin-cancer project.
+  </p>
+  <Intuition title="Why so much foundational material before the project?">
+    The HAM10000 project is, fundamentally, a story about <i>imbalanced</i>
+    optimisation. To understand why one loss function recovers minority-class
+    recall and another does not, we need to know what a loss <i>is</i>, what
+    a gradient <i>is</i>, what backpropagation actually computes, and what
+    a convolutional filter is computing under the hood. Treating any of
+    those as a black box would hide exactly the part of the project that
+    is interesting.
+  </Intuition>
+</div>);
+
+const PartI_HISTORY = () => (
+<div>
+  <p className="dropcap">
+    Deep learning is not a recent invention. The mathematical objects we will
+    use in this project — the perceptron, the gradient, the convolutional
+    filter — were proposed, abandoned and revived over roughly eight decades.
+    Knowing this chronology explains why certain decisions (ReLU activations, mini-batch training, Adam) are now considered defaults rather than choices.
+  </p>
+  <h3 className="display text-2xl font-semibold mt-8 mb-3">The Four Eras</h3>
+  <p><b>1943–1957 — Mathematical biology.</b> McCulloch and Pitts proposed biological neurons as threshold units. No learning algorithms existed.</p>
+  <p><b>1958–1969 — The perceptron.</b> Frank Rosenblatt added a learning rule. Minsky and Papert proved single layers couldn't compute XOR, triggering the first "AI Winter".</p>
+  <p><b>1986–2011 — Backpropagation & small CNNs.</b> Rumelhart et al. applied the chain rule to train multi-layer networks. Yann LeCun deployed early CNNs (LeNet) for digit recognition, but compute and data limited scalability.</p>
+  <p><b>2012–today — The deep era.</b> AlexNet (2012) proved CNNs scale with GPUs. ResNet (2015), Focal Loss (2017) and massive datasets (HAM10000, 2018) solidified the modern toolkit used in our project.</p>
+</div>);
+
+const PartI_LINALG = () => (
+<div>
+  <p className="dropcap">
+    A neural network is, in its entirety, a long chain of linear-algebra
+    operations interleaved with element-wise non-linearities. To read the
+    rest of this atlas we need four objects — the scalar, the vector, the
+    matrix, the tensor — and three operations — the dot product, the
+    matrix-vector product, the matrix-matrix product.
+  </p>
+  <Definition title="Tensor">
+    {String.raw`A tensor of order $k$ is an indexed collection of real numbers with $k$ indices. 
+    A scalar is order 0; a vector order 1; a matrix order 2. A batch of $N$ colour images at resolution $H\times W$ is a tensor of order 4 with shape $(N, 3, H, W)$.`}
+  </Definition>
+  <Definition title="Dot product">
+    {String.raw`Given two vectors $\mathbf{a},\mathbf{b}\in\mathbb{R}^n$, their dot product is the scalar 
+    $\mathbf{a}\cdot\mathbf{b} = \mathbf{a}^{\!\top}\mathbf{b} = \sum_{i=1}^{n} a_i b_i$.
+    Geometrically, $\mathbf{a}\cdot\mathbf{b}=\|\mathbf{a}\|\|\mathbf{b}\|\cos\theta$. It is a measure of similarity or alignment between two vectors.`}
+  </Definition>
+  <Intuition title="What a neural layer is doing">
+    {String.raw`Every fully-connected layer computes $\mathbf{z}=\mathbf{W}\mathbf{x}+\mathbf{b}$. Each row $\mathbf{w}_i$ of the weight matrix $\mathbf{W}$ acts as a "feature detector": it measures how aligned the input $\mathbf{x}$ is with $\mathbf{w}_i$ via a dot product.`}
+  </Intuition>
+</div>);
+
+const PartI_CALC = () => (
+<div>
+  <p className="dropcap">
+    Optimization requires knowing which direction to adjust our parameters. This is the domain of differential calculus. We need two primary tools: the gradient (the direction of steepest ascent) and the chain rule (how to compute gradients through nested functions).
+  </p>
+  <Definition title="The Gradient">
+    {String.raw`For a scalar-valued multivariate function $f: \mathbb{R}^n \to \mathbb{R}$, the gradient $\nabla f(\mathbf{x})$ is a vector containing all first-order partial derivatives:`}
+    <MathBlock>{String.raw`\nabla f(\mathbf{x}) = \begin{bmatrix} \frac{\partial f}{\partial x_1} \\ \frac{\partial f}{\partial x_2} \\ \vdots \\ \frac{\partial f}{\partial x_n} \end{bmatrix}`}</MathBlock>
+    The gradient vector always points in the direction of steepest <i>increase</i> of the function.
+  </Definition>
+  <Theorem title="The Chain Rule (Multivariable)">
+    {String.raw`If $y = f(u_1, u_2, \dots, u_m)$ and each $u_i = g_i(x_1, \dots, x_n)$, then the partial derivative of $y$ with respect to $x_j$ is the sum of products of partial derivatives along all paths connecting $x_j$ to $y$:`}
+    <MathBlock>{String.raw`\frac{\partial y}{\partial x_j} = \sum_{i=1}^{m} \frac{\partial y}{\partial u_i} \frac{\partial u_i}{\partial x_j}`}</MathBlock>
+    This theorem is the singular mathematical engine behind Backpropagation.
+  </Theorem>
+</div>);
+
+const PartI_PROB = () => (
+<div>
+  <p className="dropcap">
+    To classify a skin lesion into one of 7 categories, our network must output a probability distribution. The raw outputs of a neural network are unbounded real numbers called <i>logits</i>. We need a function to map these logits to a valid probability space.
+  </p>
+  <Definition title="Softmax Function">
+    {String.raw`Given a vector of logits $\mathbf{z} \in \mathbb{R}^K$ for $K$ classes, the softmax function $\sigma(\mathbf{z})_i$ yields the probability of class $i$:`}
+    <MathBlock>{String.raw`p_i = \sigma(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}}`}</MathBlock>
+  </Definition>
+  <Aside title="Shift Invariance">
+    {String.raw`Adding a constant $C$ to all logits does not change the softmax output because $e^{z_i + C} = e^{z_i}e^C$, and the $e^C$ terms cancel out in the numerator and denominator. In practice, we subtract $\max(z)$ from all logits before computing exponentials to prevent numerical overflow (e.g., $e^{1000} \to \infty$).`}
+  </Aside>
+</div>);
+
+/* ============================================================
+   PART II: THE NEURON
+   ============================================================ */
+const PartII_BIO = () => (
+<div>
+  <p className="dropcap">
+    The architecture of artificial neural networks is loosely inspired by biological brains. While the modern engineering discipline has diverged significantly from neuroscience, understanding the biological analogy helps contextualize the terminology (weights, bias, activation).
+  </p>
+  <Two left={
+    <div>
+      <h4 className="font-bold text-emerald-800 mb-2">Biological Neuron</h4>
+      <ul className="list-disc pl-5 ui text-sm space-y-2">
+        <li><b>Dendrites:</b> Receive chemical signals from other neurons.</li>
+        <li><b>Synapses:</b> The connection points. Varying synaptic strengths dictate how much signal passes through.</li>
+        <li><b>Soma:</b> Accumulates the incoming signals.</li>
+        <li><b>Axon & Action Potential:</b> If the accumulated signal surpasses a threshold, the neuron "fires" an electrical spike down its axon.</li>
+      </ul>
+    </div>
+  } right={
+    <div>
+      <h4 className="font-bold text-amber-800 mb-2">Artificial Neuron</h4>
+      <ul className="list-disc pl-5 ui text-sm space-y-2">
+        <li><b>Inputs ({String.raw`$x_i$`}):</b> The data features flowing in.</li>
+        <li><b>Weights ({String.raw`$w_i$`}):</b> Learnable parameters acting as synaptic strengths.</li>
+        <li><b>Summation ({String.raw`$\sum w_i x_i + b$`}):</b> The dot product, accumulating the signal (with a baseline bias {String.raw`$b$`}).</li>
+        <li><b>Activation ({String.raw`$f(z)$`}):</b> A non-linear mathematical function dictating the final output.</li>
+      </ul>
+    </div>
+  }/>
+</div>);
+
+const PartII_PERCEP = () => (
+<div>
+  <p className="dropcap">
+    The simplest possible artificial neural network is the Perceptron. Proposed by Frank Rosenblatt in 1958, it is a single mathematical unit that computes a weighted sum of its inputs and applies a step function.
+  </p>
+  <Definition title="The Perceptron Equation">
+    {String.raw`For an input vector $\mathbf{x} \in \mathbb{R}^n$, weight vector $\mathbf{w} \in \mathbb{R}^n$, and scalar bias $b$, the output $y \in \{0, 1\}$ is:`}
+    <MathBlock>{String.raw`z = \mathbf{w} \cdot \mathbf{x} + b \quad \implies \quad y = \begin{cases} 1 & \text{if } z \ge 0 \\ 0 & \text{if } z < 0 \end{cases}`}</MathBlock>
+  </Definition>
+  <Intuition title="The Hyperplane">
+    {String.raw`The equation $\mathbf{w} \cdot \mathbf{x} + b = 0$ defines a hyperplane in $n$-dimensional space. The vector $\mathbf{w}$ is the normal vector orthogonal to this plane. The perceptron simply checks which side of the hyperplane the input vector $\mathbf{x}$ lies on. If a dataset cannot be separated by a flat plane (like the XOR problem), a single perceptron will permanently fail to classify it.`}
+  </Intuition>
+</div>);
+
+const PartII_ACTS = () => (
+<div>
+  <p className="dropcap">
+    The perceptron's step function is highly problematic for calculus: its derivative is {String.raw`$0$`} almost everywhere, and undefined at the threshold. To use gradient descent, we need continuous, differentiable non-linear functions to "activate" our neurons.
+  </p>
+  <Definition title="Why Non-Linearity?">
+    {String.raw`Without activation functions, a neural network of any depth collapses into a single linear matrix transformation: $\mathbf{W}_3(\mathbf{W}_2(\mathbf{W}_1\mathbf{x})) = (\mathbf{W}_3\mathbf{W}_2\mathbf{W}_1)\mathbf{x} = \mathbf{W}_{eq}\mathbf{x}$. Non-linearities allow networks to model complex, curved decision boundaries.`}
+  </Definition>
+  
+  <div className="grid md:grid-cols-3 gap-4 my-6">
+    <div className="frame p-4 rounded bg-white">
+      <h4 className="font-bold text-center mb-2">Sigmoid {String.raw`$\sigma(x)$`}</h4>
+      <MathBlock>{String.raw`\frac{1}{1 + e^{-x}}`}</MathBlock>
+      <p className="ui text-xs text-center text-stone-600 mt-2">Squashes to {String.raw`$(0, 1)$`}. Suffers from vanishing gradients at extremes. Used heavily in the 1990s.</p>
+    </div>
+    <div className="frame p-4 rounded bg-white">
+      <h4 className="font-bold text-center mb-2">Tanh {String.raw`$\tanh(x)$`}</h4>
+      <MathBlock>{String.raw`\frac{e^x - e^{-x}}{e^x + e^{-x}}`}</MathBlock>
+      <p className="ui text-xs text-center text-stone-600 mt-2">Squashes to {String.raw`$(-1, 1)$`}. Zero-centered, which aids optimization, but still vanishes at extremes.</p>
+    </div>
+    <div className="frame p-4 rounded bg-white border-b-4 border-b-emerald-600">
+      <h4 className="font-bold text-center mb-2">ReLU {String.raw`$f(x)$`}</h4>
+      <MathBlock>{String.raw`\max(0, x)`}</MathBlock>
+      <p className="ui text-xs text-center text-stone-600 mt-2">Derivative is {String.raw`$1$`} for {String.raw`$x>0$`}. Solved the vanishing gradient problem. The default choice for modern deep learning.</p>
+    </div>
+  </div>
+</div>);
+
+/* ============================================================
+   PART III: MULTILAYER NETWORKS
+   ============================================================ */
+const PartIII_MLP = () => (
+<div>
+  <p className="dropcap">
+    To overcome the linear limitations of the perceptron, we stack multiple layers of artificial neurons. A Multilayer Perceptron (MLP) consists of an input layer, one or more hidden layers, and an output layer.
+  </p>
+  <Definition title="The Forward Pass">
+    {String.raw`Let $\mathbf{x}$ be the input vector. For a hidden layer $\ell$, with weight matrix $\mathbf{W}^{(\ell)}$ and bias vector $\mathbf{b}^{(\ell)}$, the pre-activation $\mathbf{z}^{(\ell)}$ and activation $\mathbf{a}^{(\ell)}$ are computed as:`}
+    <MathBlock>{String.raw`\mathbf{z}^{(\ell)} = \mathbf{W}^{(\ell)} \mathbf{a}^{(\ell-1)} + \mathbf{b}^{(\ell)}`}</MathBlock>
+    <MathBlock>{String.raw`\mathbf{a}^{(\ell)} = f(\mathbf{z}^{(\ell)})`}</MathBlock>
+    {String.raw`where $\mathbf{a}^{(0)} = \mathbf{x}$, and $f$ is the non-linear activation function (e.g., ReLU) applied element-wise.`}
+  </Definition>
+</div>);
+
+const PartIII_LOSS = () => (
+<div>
+  <p className="dropcap">
+    {String.raw`How do we measure if the network's predictions are "good"? We define a Loss Function $\mathcal{L}$, which takes the network's prediction $\hat{\mathbf{y}}$ and the true ground-truth label $\mathbf{y}$, and outputs a single scalar penalty. Training a network is strictly the mathematical process of minimizing $\mathcal{L}$.`}
+  </p>
+  
+  <Two left={
+    <div>
+      <h4 className="font-bold text-stone-800 mb-2">Mean Squared Error (MSE)</h4>
+      <MathBlock>{String.raw`\mathcal{L}_{MSE} = \frac{1}{N} \sum (y_i - \hat{y}_i)^2`}</MathBlock>
+      <p className="ui text-sm text-stone-700">Perfect for regression (predicting continuous numbers). Disastrous for classification when paired with Softmax/Sigmoid, as the derivative {String.raw`$\sigma'(z)$`} flattens out when confident, causing gradients to vanish and learning to stall even when the prediction is completely wrong.</p>
+    </div>
+  } right={
+    <div>
+      <h4 className="font-bold text-emerald-800 mb-2">Cross-Entropy (CE)</h4>
+      <MathBlock>{String.raw`\mathcal{L}_{CE} = - \sum_{c=1}^{K} y_c \log(\hat{y}_c)`}</MathBlock>
+      <p className="ui text-sm text-stone-700">The gold standard for classification. If true class is {String.raw`$k$`}, {String.raw`$y_k=1$`} and all other {String.raw`$y_c=0$`}. The loss simplifies to {String.raw`$-\log(\hat{y}_k)$`}. The derivative of {String.raw`$-\log(x)$`} perfectly cancels the flat derivative of Softmax, guaranteeing strong gradients when the model is wrong.</p>
+    </div>
+  }/>
+</div>);
+
+const PartIII_GD = () => (
+<div>
+  <p className="dropcap">
+    With a network capable of making predictions (Forward Pass) and a metric to measure its failure (Loss Function), we need a method to adjust the weights {String.raw`$\mathbf{W}$`} to reduce that failure. This is Gradient Descent.
+  </p>
+  <Intuition title="The Mountain Geometry">
+    Imagine standing on a rugged, fog-covered mountain. Your goal is the lowest valley (minimum loss). You cannot see the landscape globally. However, you can feel the slope under your feet (the gradient). By repeatedly taking small steps in the direction of the steepest downhill slope (negative gradient), you will eventually reach a valley.
+  </Intuition>
+  <Definition title="Gradient Descent Update Rule">
+    {String.raw`For a parameter vector $\boldsymbol{\theta}$ and learning rate $\eta$:`}
+    <MathBlock>{String.raw`\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t - \eta \nabla_{\boldsymbol{\theta}} \mathcal{L}(\boldsymbol{\theta}_t)`}</MathBlock>
+  </Definition>
+</div>);
+
+const PartIII_BACK = () => (
+<div>
+  <p className="dropcap">
+    {String.raw`Gradient descent requires us to know $\frac{\partial \mathcal{L}}{\partial w_{ij}^{(\ell)}}$ for every single weight in the network. For a 106,000-parameter CNN, calculating this analytically by writing out the full expanded equation is physically impossible. Backpropagation is the recursive algorithm that solves this using the Chain Rule.`}
+  </p>
+  
+  <Theorem title="The Backpropagation Algorithm">
+    {String.raw`For a specific layer $\ell$, let $\boldsymbol{\delta}^{(\ell)} = \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(\ell)}}$ be the "error term" at that layer. We compute this backwards from the output layer to the input.`}
+    <br/><br/>
+    <b>1. Output Layer Error:</b>
+    <MathBlock>{String.raw`\boldsymbol{\delta}^{(L)} = \hat{\mathbf{y}} - \mathbf{y} \quad \text{(for CE Loss + Softmax)}`}</MathBlock>
+    
+    <b>2. Hidden Layer Error (Recursive):</b> The error propagates backwards through the transpose of the next layer's weights, multiplied element-wise by the derivative of the current layer's activation.
+    <MathBlock>{String.raw`\boldsymbol{\delta}^{(\ell)} = (\mathbf{W}^{(\ell+1)})^{\!\top} \boldsymbol{\delta}^{(\ell+1)} \odot f'(\mathbf{z}^{(\ell)})`}</MathBlock>
+    
+    <b>3. Parameter Gradients:</b> Once we have the error {String.raw`$\boldsymbol{\delta}$`} for a layer, the gradients with respect to weights and biases are simply:
+    <MathBlock>{String.raw`\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{(\ell)}} = \boldsymbol{\delta}^{(\ell)} (\mathbf{a}^{(\ell-1)})^{\!\top}`}</MathBlock>
+    <MathBlock>{String.raw`\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{(\ell)}} = \boldsymbol{\delta}^{(\ell)}`}</MathBlock>
+  </Theorem>
+  <Aside title="Why it's brilliant">
+    Instead of recomputing overlapping derivatives, Backprop computes the error at the end, and passes it backward, layer by layer, multiplying matrices. It turns an intractable calculus problem into highly efficient matrix multiplications suited for GPUs.
+  </Aside>
+</div>);
+
+const PartIII_OPT = () => (
+<div>
+  <p className="dropcap">
+    Standard Stochastic Gradient Descent (SGD) computes the gradient on a small batch of data and takes a step. However, the loss landscape is often a highly irregular terrain with ravines and saddle points, causing plain SGD to oscillate or stall. Modern training utilizes advanced optimizers to smooth this journey.
+  </p>
+  <Two left={
+    <div>
+      <h4 className="font-bold mb-2">Momentum</h4>
+      <p className="ui text-sm">Maintains a running average of past gradients (velocity). If gradients consistently point in one direction, velocity builds up, accelerating through flat regions. If gradients oscillate, they cancel out, dampening zig-zag motion.</p>
+    </div>
+  } right={
+    <div>
+      <h4 className="font-bold mb-2">Adam (Adaptive Moment Estimation)</h4>
+      <p className="ui text-sm">The default optimizer used in our HAM10000 project. Adam computes individual learning rates for <i>each parameter</i>. It keeps an exponentially decaying average of past gradients (momentum) AND past squared gradients (uncentered variance). Parameters with small, consistent gradients get accelerated; parameters with massive, explosive gradients get suppressed.</p>
+    </div>
+  } />
+</div>);
+
+/* ============================================================
+   PART IV: CONVOLUTIONAL NETWORKS
+   ============================================================ */
+const PartIV_WHY = () => (
+<div>
+  <p className="dropcap">
+    {String.raw`If we flatten a 64×64 RGB image into a 1D vector, we get $64 \times 64 \times 3 = 12,288$ inputs. A single hidden layer with 1,024 neurons would require $12,288 \times 1,024 \approx 12.5$ million weights. This leads to severe overfitting and completely ignores the 2D spatial structure of the image (a pixel is related to its neighbors, not a pixel 1000 indices away).`}
+  </p>
+  <Definition title="The CNN Inductive Bias">
+    Convolutional Neural Networks (CNNs) solve this via <b>Local Connectivity</b> (neurons only look at small patches of the image) and <b>Parameter Sharing</b> (the exact same feature detector is slid across the entire image).
+  </Definition>
+</div>);
+
+const PartIV_CONV = () => (
+<div>
+  <p className="dropcap">
+    {String.raw`A convolutional layer consists of learnable "filters" (or kernels). A filter is a small 3D tensor (e.g., $3 \times 3 \times 3$ for an RGB image) containing weights. We slide this filter across the image, computing dot products.`}
+  </p>
+  <Definition title="Discrete 2D Cross-Correlation (Math of Convolution)">
+    {String.raw`For an input image $X$ and a $3\times3$ filter $W$, the output pixel $Y_{i,j}$ is:`}
+    <MathBlock>{String.raw`Y_{i,j} = \sum_{m=0}^{2} \sum_{n=0}^{2} X_{i+m, j+n} \cdot W_{m,n}`}</MathBlock>
+  </Definition>
+  <Intuition title="Visualizing the Filter">
+    Think of a filter as a magnifying glass looking for a specific pattern (an edge, a color blob, a texture). Because the filter slides across the whole image, if it learns to detect a malignant melanoma edge in the top left, it can detect that exact same edge in the bottom right using the exact same weights. This is <i>translation invariance</i>.
+  </Intuition>
+</div>);
+
+const PartIV_POOL = () => (
+<div>
+  <p className="dropcap">
+    As we process an image, we want to look for larger and larger patterns. Pooling layers physically reduce the spatial dimensions of the feature map, allowing subsequent convolutional filters to see a larger "receptive field" of the original image.
+  </p>
+  <Two left={
+    <div className="box-def p-4 rounded-md h-full">
+      <h4 className="font-bold text-amber-800 text-sm mb-1 sc">Max Pooling</h4>
+      <p className="text-[15px]">{String.raw`Slides a $2\times2$ window over the feature map and outputs only the maximum value. It halves the width and height (reducing computation by 75%). Functionally, it tells the network: `}<i>{String.raw`"Did this feature exist anywhere in this $2\times2$ region?"`}</i> while discarding exact positional data.</p>
+    </div>
+  } right={
+    <div className="box-int p-4 rounded-md h-full">
+      <h4 className="font-bold text-stone-700 text-sm mb-1 sc">Receptive Field</h4>
+      <p className="text-[15px]">{String.raw`A $3\times3$ filter sees a $3\times3$ pixel area. If we max-pool (scale down by 2), and apply another $3\times3$ filter, this new filter is actually looking at a $6\times6$ area of the original image. Deep CNNs use this mechanism to let final layers "see" the entire skin lesion at once.`}</p>
+    </div>
+  }/>
+</div>);
+
+const PartIV_BN = () => (
+<div>
+  <p className="dropcap">
+    As data flows through a deep network, the distribution of activations can shift wildly (Internal Covariate Shift). This makes deeper layers constantly adapt to changing inputs, requiring tiny learning rates and slowing down training. Batch Normalization fixes this.
+  </p>
+  <Theorem title="Batch Normalization">
+    {String.raw`For a mini-batch of activations $x$, BN standardizes them to have mean 0 and variance 1, then scales and shifts them using learnable parameters $\gamma$ and $\beta$:`}
+    <MathBlock>{String.raw`\mu_B = \frac{1}{m}\sum x_i \quad,\quad \sigma^2_B = \frac{1}{m}\sum (x_i - \mu_B)^2`}</MathBlock>
+    <MathBlock>{String.raw`\hat{x}_i = \frac{x_i - \mu_B}{\sqrt{\sigma^2_B + \epsilon}}`}</MathBlock>
+    <MathBlock>{String.raw`y_i = \gamma \hat{x}_i + \beta`}</MathBlock>
+    By inserting this between Conv and ReLU layers, we guarantee stable gradient flow and can safely increase the learning rate.
+  </Theorem>
+</div>);
+
+const PartIV_DROP = () => (
+<div>
+  <p className="dropcap">
+    Neural networks are powerful enough to memorize the training data entirely, leading to catastrophic overfitting. Dropout is a brutal but highly effective regularization technique to prevent this.
+  </p>
+  <Definition title="Dropout">
+    {String.raw`During training, on every forward pass, we randomly zero out a percentage (e.g., $p=0.5$) of the neurons in a layer. `}
+    <br/><br/>
+    <b>Intuition:</b> This prevents complex co-adaptations. No single neuron can rely on the presence of another specific neuron to make a decision, forcing the network to learn robust, distributed representations of the skin lesions. During evaluation (inference), Dropout is turned off, and weights are scaled by {String.raw`$(1-p)$`} to compensate.
+  </Definition>
+</div>);
+
+const PartIV_GAP = () => (
+<div>
+  <p className="dropcap">
+    Traditionally, the end of a CNN flattens the 3D feature map into a 1D vector and passes it through massive fully-connected (Dense) layers. This is highly parameter-inefficient and prone to overfitting. We use a modern alternative: Global Average Pooling (GAP).
+  </p>
+  <Intuition title="GAP vs Flatten">
+    {String.raw`Suppose our final convolutional layer outputs a tensor of shape $128 \text{ channels} \times 4 \times 4 \text{ spatial size}$.`}
+    <br/><br/>
+    <b>Flattening</b> creates a vector of {String.raw`$128 \times 4 \times 4 = 2,048$`} numbers. Connecting this to a 64-neuron layer requires {String.raw`$2,048 \times 64 \approx 131,000$`} parameters.
+    <br/><br/>
+    <b>GAP</b> takes the spatial average of each {String.raw`$4\times4$`} grid independently. It outputs exactly {String.raw`$128$`} numbers (one per channel). Connecting this to a 64-neuron layer requires only {String.raw`$128 \times 64 \approx 8,192$`} parameters. It enforces that channels correspond to global concepts (e.g., "is there asymmetry anywhere in the image?") and heavily regularizes the network.
+  </Intuition>
+</div>);
+
+/* ============================================================
+   PART V: HAM10000 PROJECT
+   ============================================================ */
+const PartV_PROBLEM = () => (
+<div>
+  <p className="dropcap">
+    We now transition from pure mathematics to applied clinical engineering. The HAM10000 dataset contains 10,015 dermoscopic images. The clinical objective is to classify these into 7 diagnostic categories, including deadly Melanoma and common Benign Nevi.
+  </p>
+  <div className="box-ex p-5 border-l-[6px] border-red-600 bg-red-50">
+    <h3 className="font-bold text-red-800 mb-2">The Accuracy Trap</h3>
+    <p className="text-[16px] text-red-900">
+      Nature is imbalanced. 67.0% of the dataset consists of benign moles (Melanocytic Nevi). 
+      If a student submits a neural network that completely ignores the image pixels and <i>always</i> prints "Benign Mole" for every single patient, that network will achieve <b>67.0% accuracy</b>.
+      <br/><br/>
+      In a clinical setting, this model has missed 100% of the melanomas, killing every cancer patient, yet boasts a "passing" accuracy score. This project is a mathematical study of how to fix this exact problem.
+    </p>
+  </div>
+</div>);
+
+const PartV_DATASET = () => (
+<div>
+  <p className="dropcap">
+    To understand the scope of the imbalance, we must look at the raw distribution of the 7 classes.
+  </p>
+  
+  <Figure caption="HAM10000 Class Distribution. Notice the extreme tail: Dermatofibroma (df) has only 115 images compared to nv's 6705.">
+    <div className="w-full">
+      {CLASSES.map((c, i) => (
+        <div key={i} className="flex items-center mb-2 text-sm">
+          <div className="w-16 font-mono font-bold text-stone-600">{c.key}</div>
+          <div className="flex-1 bg-stone-100 h-5 rounded overflow-hidden flex">
+            <div className="h-full flex items-center px-2 text-[10px] text-white font-bold" 
+                 style={{width: `${(c.n/6705)*100}%`, backgroundColor: c.color}}>
+            </div>
+          </div>
+          <div className="w-16 text-right tabular-nums text-stone-500 text-xs">{c.n}</div>
+        </div>
+      ))}
+    </div>
+  </Figure>
+  <p className="ui text-sm text-stone-600 mt-4">
+    <i>Classes: akiec (Actinic keratoses), bcc (Basal-cell carcinoma), bkl (Benign keratosis), df (Dermatofibroma), mel (Melanoma), nv (Melanocytic nevi), vasc (Vascular lesions).</i>
+  </p>
+</div>);
+
+const PartV_PIPELINE = () => (
+<div>
+  <p className="dropcap">
+    Deep learning requires feeding data to the GPU fast enough so it doesn't idle. Reading 10,000 JPEGs from a ZIP file every epoch is an IO bottleneck. We engineered a highly specific pipeline.
+  </p>
+  <div className="grid md:grid-cols-2 gap-4 mt-6">
+    <div className="frame p-4 rounded bg-stone-50">
+      <h4 className="font-bold text-sm sc text-stone-500 mb-2">1. Cache to Tensor</h4>
+      <p className="ui text-sm">{String.raw`Images are extracted from the ZIP, resized via bilinear interpolation to $64\times64$ (a trade-off retaining gross morphology while drastically reducing compute), converted to `}<code className="bg-stone-200 px-1 rounded">uint8</code>, and saved as a single <code className="bg-stone-200 px-1 rounded">.npy</code> binary file. Load time drops from minutes to ~3 seconds.</p>
+    </div>
+    <div className="frame p-4 rounded bg-stone-50">
+      <h4 className="font-bold text-sm sc text-stone-500 mb-2">2. Stratified Split</h4>
+      <p className="ui text-sm">We split the data 70/15/15 (Train/Val/Test). Crucially, we use <i>stratified</i> splitting. This guarantees that the test set has exactly 1.1% 'df' lesions, maintaining the real-world prior distribution for valid evaluation.</p>
+    </div>
+    <div className="frame p-4 rounded bg-stone-50 md:col-span-2">
+      <h4 className="font-bold text-sm sc text-stone-500 mb-2">3. Data Augmentation & Normalization</h4>
+      <p className="ui text-sm">During training, we apply random horizontal and vertical flips. Skin lesions have no "up" or "down" orientation, so this effectively quadruples our dataset variety for free. Finally, pixels are normalized to zero-mean and unit-variance using ImageNet statistics.</p>
+    </div>
+  </div>
+</div>);
+
+const PartV_CNN = () => (
+<div>
+  <p className="dropcap">
+    We designed a bespoke lightweight CNN specifically for this project. With only 106,391 trainable parameters, it is resistant to severe overfitting and fast enough to train on a CPU, yet deep enough to isolate complex lesion textures.
+  </p>
+  <Figure caption="The SkinCNN Architecture Flow">
+    <svg viewBox="0 0 800 200" className="w-full">
+      <defs>
+        <marker id="arrowB" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4 Z" fill="#9ca3af"/></marker>
+      </defs>
+      
+      {/* Input */}
+      <rect x="20" y="60" width="60" height="80" rx="8" fill="#e0f2fe" stroke="#0ea5e9" strokeWidth="2"/>
+      <text x="50" y="95" textAnchor="middle" className="ui text-xs font-bold fill-sky-800">INPUT</text>
+      <text x="50" y="115" textAnchor="middle" className="mono text-[10px] fill-sky-700">3×64×64</text>
+      
+      {/* Arrows & Blocks */}
+      {[
+        {x: 120, label:"Block 1", sub:"16×32×32", color:"#dcfce7", border:"#22c55e", text:"#166534"},
+        {x: 230, label:"Block 2", sub:"32×16×16", color:"#dcfce7", border:"#22c55e", text:"#166534"},
+        {x: 340, label:"Block 3", sub:"64×8×8", color:"#dcfce7", border:"#22c55e", text:"#166534"},
+        {x: 450, label:"Block 4", sub:"128×4×4", color:"#dcfce7", border:"#22c55e", text:"#166534"},
+        {x: 560, label:"GAP", sub:"128", color:"#f3e8ff", border:"#a855f7", text:"#6b21a8"},
+        {x: 670, label:"Dense", sub:"64 → 7", color:"#ffedd5", border:"#f97316", text:"#9a3412"}
+      ].map((b, i) => (
+        <g key={i}>
+          <line x1={b.x - 30} y1="100" x2={b.x - 5} y2="100" stroke="#9ca3af" strokeWidth="2" markerEnd="url(#arrowB)"/>
+          <rect x={b.x} y={60} width="70" height="80" rx="8" fill={b.color} stroke={b.border} strokeWidth="2"/>
+          <text x={b.x+35} y={95} textAnchor="middle" className="ui text-[11px] font-bold" fill={b.text}>{b.label}</text>
+          <text x={b.x+35} y={115} textAnchor="middle" className="mono text-[9px]" fill={b.text}>{b.sub}</text>
+          {i < 4 && <text x={b.x+35} y={155} textAnchor="middle" className="ui text-[8px] fill-stone-500">Conv+BN+ReLU+Pool</text>}
+        </g>
+      ))}
+    </svg>
+  </Figure>
+</div>);
+
+const PartV_LOSSES = () => (
+<div>
+  <p className="dropcap">
+    This is the scientific core of the project. We train the exact same SkinCNN model, with the exact same data, random seeds, and optimizer, changing <i>only</i> the loss function. This isolates the mathematical effect of imbalance handling.
+  </p>
+
+  <div className="space-y-6 mt-8">
+    <div className="frame p-5 rounded">
+      <h4 className="font-bold text-stone-800 text-lg mb-2">1. Standard Cross-Entropy (The Baseline)</h4>
+      <MathBlock>{String.raw`\mathcal{L}_{CE} = -\log(p_t)`}</MathBlock>
+      <p className="ui text-sm text-stone-600">{String.raw`Where $p_t$ is the predicted probability for the true class. Treats every image equally. The network quickly realizes that predicting 'nv' all the time yields the lowest average loss.`}</p>
+    </div>
+
+    <div className="frame p-5 rounded">
+      <h4 className="font-bold text-stone-800 text-lg mb-2">2. Weighted Cross-Entropy</h4>
+      <MathBlock>{String.raw`\mathcal{L}_{wCE} = -w_t \log(p_t) \quad \text{where } w_t = \frac{\text{Total}}{\text{NumClasses} \times N_t}`}</MathBlock>
+      <p className="ui text-sm text-stone-600">Multiplies the loss of a class by its inverse frequency. A 'df' mistake is penalized 58x harder than an 'nv' mistake. Often unstable, causing volatile gradients.</p>
+    </div>
+
+    <div className="frame p-5 rounded border-l-[6px] border-emerald-600 bg-emerald-50">
+      <div className="flex justify-between items-center mb-2">
+        <h4 className="font-bold text-emerald-800 text-lg">3. Focal Loss (The Winner)</h4>
+        <span className="chip bg-emerald-200 text-emerald-800 border-emerald-300">Lin et al., 2017</span>
+      </div>
+      <MathBlock>{String.raw`\mathcal{L}_{Focal} = -\alpha_t (1 - p_t)^\gamma \log(p_t)`}</MathBlock>
+      <p className="ui text-sm text-stone-800">
+        {String.raw`Introduces a modulating factor $(1-p_t)^\gamma$. If the model easily predicts 'nv' with 95% confidence ($p_t=0.95$), the weight becomes $(1-0.95)^2 = 0.0025$. `}<b>It literally silences the majority class gradient.</b> The network is forced to allocate its learning capacity to hard, rare examples.
+      </p>
+    </div>
+
+    <div className="frame p-5 rounded">
+      <h4 className="font-bold text-stone-800 text-lg mb-2">4. Class-Balanced CE</h4>
+      <MathBlock>{String.raw`\mathcal{L}_{CB} = -\frac{1 - \beta}{1 - \beta^{N_t}} \log(p_t) \quad \text{where } \beta=0.999`}</MathBlock>
+      <p className="ui text-sm text-stone-600">Based on the concept of "effective volume" of data. Assumes new images of the same class overlap in feature space. Provides a smoother re-weighting than naive Weighted CE.</p>
+    </div>
+
+    <div className="frame p-5 rounded">
+      <h4 className="font-bold text-stone-800 text-lg mb-2">5. Weighted Random Sampler (Data-level approach)</h4>
+      <p className="ui text-sm text-stone-600">Loss remains Standard CE. Instead, the PyTorch DataLoader is rigged to sample rare classes more frequently, ensuring every batch has an artificially equal number of all 7 classes. Equivalent to oversampling.</p>
+    </div>
+  </div>
+</div>);
+
+const PartV_TRAINING = () => (
+<div>
+  <p className="dropcap">
+    Training dynamics are highly sensitive to hyperparameters. To ensure absolute fairness in our loss-function comparison, the training regime was locked in place.
+  </p>
+  <ul className="list-disc pl-5 ui space-y-2 mt-4 text-[16px] text-stone-700">
+    <li><b>Optimizer:</b> {String.raw`Adam ($\beta_1=0.9, \beta_2=0.999$, LR=$1e-3$). Adam handles the vastly different gradient magnitudes generated by these loss functions better than SGD.`}</li>
+    <li><b>Regularization:</b> {String.raw`Weight Decay ($1e-4$) and Dropout ($p=0.5$).`}</li>
+    <li><b>Batch Size:</b> 128. Large enough for stable batch-norm statistics, small enough to fit in RAM.</li>
+    <li><b>Epochs:</b> 8. A deliberate, constrained budget. We stop early to observe which loss function learns fastest and to prevent the network from simply memorizing the training set (which happens around epoch 12).</li>
+  </ul>
+</div>);
+
+const PartV_METRICS = () => (
+<div>
+  <p className="dropcap">
+    As established, overall accuracy is a lie. We must evaluate our experiments using metrics that expose performance on the minority classes.
+  </p>
+  <Two left={
+    <div className="box-int p-4">
+      <h4 className="font-bold text-sm sc">Per-Class Recall</h4>
+      <MathBlock>{String.raw`R_c = \frac{TP}{TP + FN}`}</MathBlock>
+      <p className="text-[14px]">"Of all the true Melanomas, how many did we catch?" A false negative in skin cancer is fatal. Maximizing minority recall is our primary objective.</p>
+    </div>
+  } right={
+    <div className="box-thm p-4">
+      <h4 className="font-bold text-sm sc">Macro F1-Score</h4>
+      <MathBlock>{String.raw`F1_{macro} = \frac{1}{7} \sum_{c=1}^{7} 2 \frac{P_c R_c}{P_c + R_c}`}</MathBlock>
+      <p className="text-[14px]">Calculates the F1 (harmonic mean of Precision and Recall) for each class, then averages them <b>equally</b>. The 115 'df' images have the exact same mathematical weight as the 6,705 'nv' images.</p>
+    </div>
+  }/>
+</div>);
+
+const PartV_RESULTS = () => (
+<div>
+  <p className="dropcap">
+    The experiment produced exactly the pathological behavior we predicted, and Focal Loss proved to be the optimal mathematical cure. Here are the results evaluated on the strict 1,505-image test holdout.
+  </p>
+
+  <div className="overflow-x-auto my-8 frame rounded">
+    <table className="book">
+      <thead>
+        <tr>
+          <th>Experiment</th>
+          <th className="text-right">Accuracy (Misleading)</th>
+          <th className="text-right text-emerald-800">Macro F1</th>
+          <th className="text-right">'df' Recall (Rarest Class)</th>
+        </tr>
+      </thead>
+      <tbody className="ui text-sm">
+        {RESULTS.map((r, i) => (
+          <tr key={i} className={r.winner ? "bg-emerald-50 border-l-4 border-emerald-500" : ""}>
+            <td className="font-medium">
+              {r.name}
+              {r.winner && <span className="ml-2 text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full uppercase tracking-wider">Winner</span>}
+              <div className="text-[11px] text-stone-500 font-normal mt-1">{r.note}</div>
+            </td>
+            <td className={`text-right mono ${r.name==="Standard CE" ? "text-red-600 font-bold" : ""}`}>{(r.acc*100).toFixed(1)}%</td>
+            <td className={`text-right mono ${r.winner ? "text-emerald-700 font-bold text-[15px]" : ""}`}>{r.f1.toFixed(3)}</td>
+            <td className={`text-right mono ${r.name==="Standard CE" ? "text-red-600 font-bold" : ""}`}>{(r.recall[3]*100).toFixed(1)}%</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <Intuition title="Reading the Data">
+    The <b>Standard CE</b> achieved the highest accuracy (73.6%) but literally scored <b>0.0% recall</b> on Dermatofibroma (df). It never predicted 'df' once.
+    <br/><br/>
+    {String.raw`<b>Focal Loss ($\gamma=2$)</b> sacrificed top-level accuracy (dropping to 62.2%) but radically boosted Macro F1 to 0.443. Crucially, it lifted 'df' recall from 0% to 38.9%. The model was mathematically forced to look at the tail.`}
+  </Intuition>
+</div>);
+
+const PartV_ERRORS = () => (
+<div>
+  <p className="dropcap">
+    Why did Standard CE fail so specifically? Analyzing the confusion matrix and highest-confidence errors reveals the model's internal logic.
+  </p>
+  <ul className="list-disc pl-5 ui space-y-3 mt-4 text-[16px] text-stone-700">
+    <li><b>The 99% Confident Mistake:</b> The baseline model frequently predicted 'nv' (benign) for 'bkl' (keratosis) images with >98% confidence. It learned a visual heuristic: "dark, homogeneous blob = nv". Because 67% of the data matched this, the loss landscape rewarded this lazy heuristic.</li>
+    <li><b>Feature Short-circuiting:</b> In early epochs, the model sometimes learned to detect ruler marks or surgical ink (which appear randomly in some classes) rather than lesion pathology. Heavy data augmentation (flipping) mitigated this by destroying spatial correlations of watermarks.</li>
+  </ul>
+</div>);
+
+const PartV_CLOSE = () => (
+<div>
+  <p className="dropcap">
+    We set out to build an end-to-end mathematical engineering project. We implemented a complete PyTorch pipeline, engineered a custom CNN architecture, and conducted a rigorous experimental comparison of 5 loss formulations on a highly imbalanced, real-world clinical dataset.
+  </p>
+  
+  <h3 className="display text-2xl font-semibold mt-8 mb-3">Core Takeaways</h3>
+  <div className="grid md:grid-cols-2 gap-6 my-6">
+    <div className="frame-thick p-5 rounded-lg border-emerald-800">
+      <h4 className="font-bold text-emerald-800 mb-2">1. Accuracy is invalid on imbalanced data.</h4>
+      <p className="ui text-sm text-stone-700">A model can achieve 73% accuracy while completely missing the rarest, potentially fatal classes. Macro F1 and Recall are non-negotiable metrics.</p>
+    </div>
+    <div className="frame-thick p-5 rounded-lg border-emerald-800">
+      <h4 className="font-bold text-emerald-800 mb-2">2. Focal Loss solves the gradient math.</h4>
+      <p className="ui text-sm text-stone-700">{String.raw`By multiplying the CE loss by $(1-p_t)^\gamma$, we zero out the overwhelming gradient signal from "easy" majority examples, letting the network learn the rare classes.`}</p>
+    </div>
+  </div>
+
+  <Aside title="Future Work">
+    With a larger compute budget, the next steps would be: 1) Replacing the custom SkinCNN with a frozen ResNet-50 backbone initialized on ImageNet. 2) Utilizing advanced augmentation like CutMix to force the network to look at lesion borders rather than centers. 3) Implementing temperature scaling for better probability calibration.
+  </Aside>
+</div>);
+
+/* ============================================================
+   APP — assembles the entire textbook
+   ============================================================ */
+function App(){
+  const [active, setActive] = useState("how-to");
+  
+  const jump = (id) => {
+    setActive(id);
+    document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"start"});
+  };
+  
+  // Intersection Observer for the Scroll Spy
+  useEffect(()=>{
+    const ids = TOC.flatMap(p=>p.chapters.map(c=>c.id));
+    const obs = new IntersectionObserver((es)=>{
+      es.forEach(e=>{
+        if(e.isIntersecting){
+          const id = e.target.id;
+          if(ids.includes(id)) setActive(id);
+        }
+      });
+    },{rootMargin:"-20% 0px -70% 0px"});
+    ids.forEach(id=>{const el=document.getElementById(id); if(el) obs.observe(el);});
+    return ()=>obs.disconnect();
+  },[]);
+
+  // KaTeX Auto-Render Trigger
+  useEffect(() => {
+    // Timeout gives React a moment to fully inject the string literals to the DOM
+    const timer = setTimeout(() => {
+      if (window.renderMathInElement) {
+        window.renderMathInElement(document.getElementById("root"), {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+    }, 150);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div>
+      <Hero/>
+      <StickyNav active={active} onJump={jump}/>
+      <main className="max-w-6xl mx-auto px-6 md:px-10 py-10">
+        <PartCover roman="I" title="Mathematical Preliminaries" blurb="The minimal foundation of linear algebra, calculus, and probability required to read the derivations."/>
+        <Chapter id="how-to"  num="0"  title="How to read this atlas"        eyebrow="Pedagogy"><PartI_HOW_TO/></Chapter>
+        <Chapter id="history" num="1"  title="A brief history of deep learning" eyebrow="Context"><PartI_HISTORY/></Chapter>
+        <Chapter id="linalg"  num="2"  title="Linear algebra essentials"     eyebrow="Tensors & Dots"><PartI_LINALG/></Chapter>
+        <Chapter id="calc"    num="3"  title="Calculus essentials" eyebrow="Gradients & Chains"><PartI_CALC/></Chapter>
+        <Chapter id="prob"    num="4"  title="Probability essentials" eyebrow="Softmax"><PartI_PROB/></Chapter>
+
+        <PartCover roman="II" title="The Algorithmic Neuron" blurb="From biological inspiration to the mathematical step function."/>
+        <Chapter id="bio"     num="5"  title="Biological vs Artificial" eyebrow="Analogy"><PartII_BIO/></Chapter>
+        <Chapter id="percep"  num="6"  title="The Perceptron"                eyebrow="Linear Boundaries"><PartII_PERCEP/></Chapter>
+        <Chapter id="acts"    num="7"  title="Activation Functions" eyebrow="Non-Linearity"><PartII_ACTS/></Chapter>
+
+        <PartCover roman="III" title="Multilayer Networks" blurb="Stacking neurons, measuring error, and walking downhill."/>
+        <Chapter id="mlp"     num="8"  title="Multilayer Perceptrons" eyebrow="The Forward Pass"><PartIII_MLP/></Chapter>
+        <Chapter id="loss"    num="9"  title="Loss Functions"    eyebrow="MSE vs Cross-Entropy"><PartIII_LOSS/></Chapter>
+        <Chapter id="gd"      num="10" title="Gradient Descent" eyebrow="Optimization"><PartIII_GD/></Chapter>
+        <Chapter id="backprop"num="11" title="Backpropagation"   eyebrow="The Chain Rule Algorithm"><PartIII_BACK/></Chapter>
+        <Chapter id="opt"     num="12" title="Optimisers"         eyebrow="Momentum & Adam"><PartIII_OPT/></Chapter>
+
+        <PartCover roman="IV" title="Convolutional Networks" blurb="The architectural priors required for computer vision."/>
+        <Chapter id="why-cnn" num="13" title="Why CNNs?"           eyebrow="Parameter Sharing"><PartIV_WHY/></Chapter>
+        <Chapter id="conv"    num="14" title="The Convolution Operation"     eyebrow="Math"><PartIV_CONV/></Chapter>
+        <Chapter id="pool"    num="15" title="Pooling & Receptive Fields" eyebrow="Geometry"><PartIV_POOL/></Chapter>
+        <Chapter id="bn"      num="16" title="Batch Normalisation"           eyebrow="Stabilization"><PartIV_BN/></Chapter>
+        <Chapter id="drop"    num="17" title="Dropout"                       eyebrow="Regularization"><PartIV_DROP/></Chapter>
+        <Chapter id="gap"     num="18" title="Global Average Pooling" eyebrow="Modern Heads"><PartIV_GAP/></Chapter>
+
+        <PartCover roman="V" title="The HAM10000 Project" blurb="Applying the mathematical machinery to a highly imbalanced clinical dataset."/>
+        <Chapter id="problem" num="19" title="Clinical Problem" eyebrow="The Accuracy Trap"><PartV_PROBLEM/></Chapter>
+        <Chapter id="dataset" num="20" title="Dataset Anatomy"              eyebrow="The 58:1 Ratio"><PartV_DATASET/></Chapter>
+        <Chapter id="pipeline"num="21" title="Data Engineering"     eyebrow="Pipeline"><PartV_PIPELINE/></Chapter>
+        <Chapter id="skincnn" num="22" title="SkinCNN Architecture"    eyebrow="106k Parameters"><PartV_CNN/></Chapter>
+        <Chapter id="losses"  num="23" title="Imbalanced Loss Formulations" eyebrow="The Experiments"><PartV_LOSSES/></Chapter>
+        <Chapter id="training"num="24" title="Training Dynamics" eyebrow="Hyperparameters"><PartV_TRAINING/></Chapter>
+        <Chapter id="metrics" num="25" title="Metrics That Matter"           eyebrow="F1 & Recall"><PartV_METRICS/></Chapter>
+        <Chapter id="results" num="26" title="Results Analysis" eyebrow="Evaluating the Tail"><PartV_RESULTS/></Chapter>
+        <Chapter id="errors"  num="27" title="Error Pathology" eyebrow="Why the baseline failed"><PartV_ERRORS/></Chapter>
+        <Chapter id="close"   num="28" title="Synthesis & Future Work"       eyebrow="Conclusion"><PartV_CLOSE/></Chapter>
+
+        <div className="rule-d my-12"></div>
+        <footer className="ui text-sm text-stone-500 leading-relaxed text-center py-8">
+          <div className="mb-2 sc text-stone-700 font-bold tracking-widest">Colophon</div>
+          Set in Cormorant Garamond, Source Serif 4, Inter, and JetBrains Mono.<br/>
+          Mathematics rendered with KaTeX. Diagrams hand-built with inline SVG.<br/>
+          Single self-contained HTML file — no build step, no external assets beyond CDNs.<br/>
+          <div className="mt-4 text-stone-400">© 2026 Ömer Kahyaoğlu · Written for MYZ 309E · Istanbul Technical University</div>
+        </footer>
+      </main>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

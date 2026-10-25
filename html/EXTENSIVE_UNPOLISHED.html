@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MYZ 309E · AI on HAM10000 — A Textbook-Caliber Atlas</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous" />
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#faf7f0;--paper-2:#f3eee0;--ink:#1c1917;--ink-2:#3f3c36;
+    --rule:#cabfa3;--rule-2:#dcd2b6;--accent:#0e6b4e;--accent-2:#1f8a64;
+    --accent-soft:#e3efe8;--warn:#9a3412;--warn-soft:#fdebd6;--gold:#a67c1f;
+  }
+  html,body{background:var(--paper);color:var(--ink);scroll-behavior:smooth;}
+  body{font-family:"Source Serif 4","Iowan Old Style","Palatino Linotype",Georgia,serif;
+       font-feature-settings:"liga","kern","onum","ss01";font-size:17px;line-height:1.65;}
+  .display,.font-display{font-family:"Cormorant Garamond","EB Garamond",Georgia,serif;letter-spacing:-0.01em;}
+  .ui,.font-ui{font-family:"Inter","Source Sans 3","Segoe UI",system-ui,-apple-system,sans-serif;font-feature-settings:"liga","kern";}
+  .mono{font-family:"JetBrains Mono","Source Code Pro",ui-monospace,monospace;font-feature-settings:"liga","ss02";}
+  .sc{font-variant:all-small-caps;letter-spacing:.085em;}
+  
+  /* Prose Formatting */
+  .prose-style { font-size: 1.0625rem; line-height: 1.65; }
+  .prose-style p { margin-bottom: 1.25rem; }
+  .prose-style ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; }
+  .prose-style li { margin-bottom: 0.5rem; }
+  .prose-style strong, .prose-style b { font-weight: 600; color: var(--ink); }
+  .prose-style em, .prose-style i { font-style: italic; }
+  
+  .dropcap::first-letter{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:4.0em;line-height:.85;float:left;padding:.06em .12em 0 0;color:var(--accent);}
+  .rule-h{border-top:1px solid var(--rule);}
+  .rule-d{border-top:3px double var(--rule);}
+  .rule-fancy{background-image:linear-gradient(to right,transparent,var(--rule) 8%,var(--rule) 92%,transparent);height:1px;}
+  .frame{border:1px solid var(--rule);background:#fffdf6;}
+  .frame-thick{border:1.5px solid var(--ink);background:#fffdf6;}
+  .badge{display:inline-flex;width:1.7rem;height:1.7rem;border-radius:9999px;background:var(--accent);color:#fff;align-items:center;justify-content:center;font:600 .82rem/1 "Inter",sans-serif;}
+  .badge-soft{display:inline-flex;width:1.6rem;height:1.6rem;border-radius:9999px;background:var(--accent-soft);color:var(--accent);align-items:center;justify-content:center;font:700 .78rem/1 "Inter",sans-serif;border:1px solid var(--accent);}
+  .box-def{background:#fbf5e7;border:1px solid var(--rule);border-left:5px solid var(--gold);}
+  .box-thm{background:#eef6ee;border:1px solid var(--rule);border-left:5px solid var(--accent);}
+  .box-ex {background:#fdf4ec;border:1px solid var(--rule);border-left:5px solid var(--warn);}
+  .box-int{background:#f1eee5;border:1px solid var(--rule);border-left:5px solid var(--ink);}
+  .box-note{background:#eef0f5;border:1px solid #c8c8d2;border-left:5px solid #495569;}
+  .mathframe{border:1px solid var(--rule);border-left:3px solid var(--accent);background:#fffdf6;padding:.6rem 1rem;}
+  .chip{display:inline-block;border:1px solid var(--rule);border-radius:9999px;padding:1px 9px;font:600 .72rem/1.4 "Inter",sans-serif;color:var(--ink);background:#fff;}
+  .scroll-x::-webkit-scrollbar{height:6px;}
+  .scroll-x::-webkit-scrollbar-thumb{background:var(--rule);border-radius:6px;}
+  .roman{font-variant:small-caps;letter-spacing:.18em;font-weight:600;}
+  
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .fadeUp{animation:fadeUp .4s ease-out both;}
+  
+  table.book{width:100%;border-collapse:collapse;}
+  table.book th,table.book td{padding:.55rem .75rem;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top;}
+  table.book thead th{border-bottom:1.5px solid var(--ink);font-family:"Inter",sans-serif;font-variant:all-small-caps;letter-spacing:.06em;font-size:.78rem;font-weight:700;color:#3a3530;}
+  
+  section, h2, h3 {scroll-margin-top:90px;}
+  .stamp{display:inline-block;border:1.5px solid var(--accent);color:var(--accent);padding:.18rem .55rem;font:700 .72rem/1 "Inter",sans-serif;letter-spacing:.06em;text-transform:uppercase;border-radius:2px;}
+  pre.code{background:#1c1917;color:#e7e4d4;font-family:"JetBrains Mono",monospace;font-size:.78rem;line-height:1.55;padding:1rem 1.1rem;border-radius:6px;overflow-x:auto;}
+  .papergrid{background-image:linear-gradient(rgba(28,25,23,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(28,25,23,.03) 1px,transparent 1px);background-size:30px 30px;}
+  .pq{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1.25rem;line-height:1.45;color:#3f3c36;border-left:3px solid var(--accent);padding:.2rem 1rem;margin:1.2rem 0;}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="env,react">
+const { useState, useEffect, useMemo, useRef } = React;
+
+/* TOC */
+const TOC = [
+  {part:"I", title:"Mathematical Preliminaries", chapters:[
+    {id:"how-to", num:"0", t:"How to read this atlas"},
+    {id:"history",num:"1", t:"A brief history of deep learning"},
+    {id:"linalg", num:"2", t:"Linear algebra essentials"},
+    {id:"calc",   num:"3", t:"Calculus essentials"},
+    {id:"prob",   num:"4", t:"Probability essentials"}]},
+  {part:"II", title:"The Algorithmic Neuron", chapters:[
+    {id:"bio",    num:"5", t:"Biological → artificial neurons"},
+    {id:"percep", num:"6", t:"The perceptron"},
+    {id:"acts",   num:"7", t:"Activation functions"}]},
+  {part:"III", title:"Multilayer Networks", chapters:[
+    {id:"mlp",     num:"8",  t:"MLPs & the forward pass"},
+    {id:"loss",    num:"9",  t:"Loss functions — MSE vs CE"},
+    {id:"gd",      num:"10", t:"Gradient descent"},
+    {id:"backprop",num:"11", t:"Backpropagation"},
+    {id:"opt",     num:"12", t:"Optimisers — SGD, Adam"}]},
+  {part:"IV", title:"Convolutional Networks", chapters:[
+    {id:"why-cnn",num:"13", t:"Why CNNs for images"},
+    {id:"conv",   num:"14", t:"The convolution operation"},
+    {id:"pool",   num:"15", t:"Pooling, padding, stride, receptive field"},
+    {id:"bn",     num:"16", t:"Batch normalisation"},
+    {id:"drop",   num:"17", t:"Dropout"},
+    {id:"gap",    num:"18", t:"Global Average Pooling"}]},
+  {part:"V", title:"The HAM10000 Project", chapters:[
+    {id:"problem", num:"19", t:"Clinical problem & the accuracy trap"},
+    {id:"dataset", num:"20", t:"HAM10000 anatomy"},
+    {id:"pipeline",num:"21", t:"Data engineering pipeline"},
+    {id:"skincnn", num:"22", t:"SkinCNN — our architecture"},
+    {id:"losses",  num:"23", t:"Five losses for imbalanced data"},
+    {id:"training",num:"24", t:"Training mechanics"},
+    {id:"metrics", num:"25", t:"Metrics that matter"},
+    {id:"results", num:"26", t:"Real results & per-class analysis"},
+    {id:"errors",  num:"27", t:"Error analysis"},
+    {id:"close",   num:"28", t:"Synthesis & future work"}]}
+];
+
+const CLASSES = [
+  {key:"akiec",name:"Actinic keratoses / IEC",n:327,pct:3.3,train:229,color:"#0e6b4e",clinical:"Pre-malignant",desc:"Sun-damaged keratinocytes; an in-situ precursor to squamous-cell carcinoma."},
+  {key:"bcc", name:"Basal-cell carcinoma",   n:514,pct:5.1,train:360,color:"#8c2f8b",clinical:"Malignant — most common skin cancer",desc:"Locally invasive; rarely metastasises."},
+  {key:"bkl", name:"Benign keratosis-like",  n:1099,pct:11.0,train:769,color:"#9b6b22",clinical:"Benign — seborrheic / solar / LP-like",desc:"Visual overlap with nv (dark, homogeneously pigmented patches)."},
+  {key:"df",  name:"Dermatofibroma",         n:115,pct:1.1,train:80,color:"#475569",clinical:"Benign — rarest in dataset",desc:"Firm benign fibrous nodule. Only 115 images — the canonical tail."},
+  {key:"mel", name:"Melanoma",               n:1113,pct:11.1,train:779,color:"#bb451a",clinical:"Malignant — aggressive",desc:"Arises from melanocytes; early detection is life-saving."},
+  {key:"nv",  name:"Melanocytic nevi",       n:6705,pct:67.0,train:4694,color:"#1e508f",clinical:"Benign — common mole",desc:"The dominant class; 67 % of HAM10000."},
+  {key:"vasc",name:"Vascular lesions",       n:142,pct:1.4,train:99,color:"#c0392b",clinical:"Benign — angiomas, haemorrhage",desc:"Cherry angiomas, angiokeratomas, pyogenic granulomas."}
+];
+
+const ORDER = ["akiec","bcc","bkl","df","mel","nv","vasc"];
+const RESULTS = [
+  {name:"Standard CE",        acc:.736,bal:.352,mp:.527,mr:.352,f1:.381,recall:[.224,.377,.515,.000,.287,.925,.136],note:"highest accuracy · 0 % df recall"},
+  {name:"Weighted CE",        acc:.521,bal:.505,mp:.339,mr:.505,f1:.341,recall:[.469,.727,.291,.056,.491,.549,.955],note:"trades accuracy for minority recall"},
+  {name:"Focal Loss (γ=2)",   acc:.622,bal:.538,mp:.414,mr:.538,f1:.443,winner:true,recall:[.531,.494,.267,.389,.617,.697,.773],note:"best macro F1 + balanced accuracy"},
+  {name:"Class-Balanced CE",  acc:.718,bal:.447,mp:.428,mr:.447,f1:.395,recall:[.265,.584,.170,.056,.323,.915,.818],note:"softer reweighting · close to baseline"},
+  {name:"Std CE + Sampler",   acc:.464,bal:.537,mp:.386,mr:.537,f1:.391,recall:[.286,.662,.418,.389,.778,.407,.818],note:"matches Focal on minority recall · accuracy cost"}
+];
+
+/* Components */
+function GlobalDefs() {
+  return (
+    <svg width="0" height="0" style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
+      <defs>
+        <marker id="arr" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 Z" fill="#1c1917"/></marker>
+        <marker id="arrG" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 Z" fill="#0e6b4e"/></marker>
+        <marker id="arrR" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 Z" fill="#9a3412"/></marker>
+      </defs>
+    </svg>
+  );
+}
+
+function Hero(){return(
+  <header className="papergrid border-b border-[var(--rule)] relative">
+    <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-20">
+      <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
+        <div>
+          <div className="stamp mb-5">MYZ 309E · Istanbul Technical University</div>
+          <h1 className="display text-5xl md:text-7xl font-semibold tracking-tight text-stone-900 leading-[0.95]">Artificial Intelligence in<br/><span className="italic text-emerald-800">Mathematical Engineering</span></h1>
+          <p className="display text-2xl md:text-3xl text-stone-700 mt-5 italic">An educational atlas built around the HAM10000 project.</p>
+          <div className="rule-d w-40 my-6"></div>
+          <p className="text-stone-700 max-w-3xl text-lg leading-relaxed">This document develops, from first principles, the entire mathematical and computational machinery used in our skin-lesion classification project — biological neurons, the perceptron, activation functions, gradient descent, backpropagation, convolutional networks, and the full HAM10000 pipeline — at the depth required by an undergraduate mathematics engineering course, with every derivation written out in full and every concept paired with a geometric figure.</p>
+        </div>
+        <div className="ui text-sm text-stone-600 md:text-right shrink-0">
+          <div className="mb-1"><span className="sc text-stone-500">Author</span> · Ömer Kahyaoğlu</div>
+          <div className="mb-1"><span className="sc text-stone-500">Student no.</span> · 090240741</div>
+          <div className="mb-1"><span className="sc text-stone-500">Course</span> · MYZ 309E · CRN 23577</div>
+          <div className="mb-1"><span className="sc text-stone-500">Lecturer</span> · Prof. Muhammed Kurulay, PhD</div>
+          <div className="mt-3 text-stone-400">May 2026</div>
+        </div>
+      </div>
+    </div>
+    <div className="rule-fancy"></div>
+  </header>);}
+
+function StickyNav({ active, onJump }) {
+  const navRef = useRef(null);
+
+  useEffect(() => {
+    const activeBtn = document.getElementById(`nav-btn-${active}`);
+    if (activeBtn && navRef.current) {
+      const container = navRef.current;
+      const scrollLeft = activeBtn.offsetLeft - container.clientWidth / 2 + activeBtn.clientWidth / 2;
+      container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+    }
+  }, [active]);
+
+  return (
+    <nav className="sticky top-0 z-40 bg-[var(--paper)]/95 backdrop-blur border-b border-[var(--rule)]">
+      <div ref={navRef} className="max-w-6xl mx-auto px-6 md:px-10 overflow-x-auto scroll-x scroll-smooth">
+        <div className="flex items-center gap-4 py-2 min-w-max ui text-sm">
+          {TOC.map(part => (
+            <div key={part.part} className="flex items-center gap-1">
+              <span className="sc text-[11px] text-emerald-800 font-bold pr-1">PT {part.part}</span>
+              {part.chapters.map(ch => (
+                <button key={ch.id} id={`nav-btn-${ch.id}`} onClick={() => onJump(ch.id)}
+                  className={`px-2 py-1 rounded transition-colors text-stone-600 hover:text-emerald-800 hover:bg-emerald-50 ${active === ch.id ? "text-emerald-900 bg-emerald-50 font-semibold" : ""}`} title={ch.t}>
+                  <span className="mono text-[11px] text-stone-400 mr-1">§{ch.num}</span>
+                  {ch.t.length > 22 ? ch.t.slice(0, 22) + "…" : ch.t}
+                </button>
+              ))}
+              <span className="text-stone-300 mx-1">·</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+function PartCover({roman,title,blurb}){return(
+  <div className="my-14 fadeUp">
+    <div className="text-center">
+      <div className="roman text-emerald-800 mb-2 text-sm">PART {roman}</div>
+      <div className="rule-fancy w-32 mx-auto my-3"></div>
+      <h2 className="display text-4xl md:text-5xl font-semibold text-stone-900 tracking-tight">{title}</h2>
+      {blurb && <p className="mt-4 ui text-stone-500 text-sm max-w-2xl mx-auto italic">{blurb}</p>}
+      <div className="rule-fancy w-32 mx-auto my-3"></div>
+    </div>
+  </div>);}
+
+function Chapter({id,num,title,eyebrow,children}){return(
+  <section id={id} className="my-12 fadeUp">
+    <div className="grid md:grid-cols-12 gap-6 md:gap-10">
+      <aside className="md:col-span-2 md:text-right">
+        <div className="ui text-xs text-stone-400 sc">CHAPTER</div>
+        <div className="display text-5xl md:text-6xl text-emerald-800 font-semibold leading-none">{num}</div>
+        {eyebrow && <div className="mt-2 ui text-xs text-stone-500 sc">{eyebrow}</div>}
+      </aside>
+      <div className="md:col-span-10">
+        <h2 className="display text-3xl md:text-4xl font-semibold text-stone-900 mb-3 leading-snug">{title}</h2>
+        <div className="rule-h mb-6"></div>
+        <div className="prose-style">{children}</div>
+      </div>
+    </div>
+  </section>);}
+
+function Definition({title,children}){return(<div className="box-def p-4 my-4 rounded-r-md"><div className="ui sc text-xs text-amber-800 font-bold mb-1">DEFINITION · {title}</div><div className="text-[16px] leading-relaxed">{children}</div></div>);}
+function Theorem({title,children}){return(<div className="box-thm p-4 my-4 rounded-r-md"><div className="ui sc text-xs text-emerald-800 font-bold mb-1">THEOREM · {title}</div><div className="text-[16px] leading-relaxed">{children}</div></div>);}
+function Example({title,children}){return(<div className="box-ex p-4 my-4 rounded-r-md"><div className="ui sc text-xs text-amber-900 font-bold mb-1">EXAMPLE · {title}</div><div className="text-[16px] leading-relaxed">{children}</div></div>);}
+function Intuition({title,children}){return(<div className="box-int p-4 my-4 rounded-r-md"><div className="ui sc text-xs text-stone-700 font-bold mb-1">GEOMETRIC INTUITION{title?` · ${title}`:""}</div><div className="text-[16px] leading-relaxed">{children}</div></div>);}
+function Aside({title,children}){return(<div className="box-note p-4 my-4 rounded-r-md"><div className="ui sc text-xs text-slate-600 font-bold mb-1">{title||"NOTE"}</div><div className="text-[15px] leading-relaxed ui">{children}</div></div>);}
+function Two({left,right}){return <div className="grid md:grid-cols-2 gap-6 my-6">{left}{right}</div>;}
+function Figure({caption,children}){return(<figure className="my-6"><div className="frame p-4 rounded bg-white flex justify-center items-center">{children}</div>{caption && <figcaption className="ui text-xs text-stone-500 italic mt-2 text-center">{caption}</figcaption>}</figure>);}
+function MathBlock({tex,children}){return <div className="mathframe my-4 overflow-x-auto text-[17px]">{`$$${tex||children}$$`}</div>;}
+
+/* --- CHAPTERS GO BELOW --- */
+/* === PART I === */
+const PartI_HOW_TO = () => (<div>
+  <p className="dropcap">This atlas is written for a student who has just finished introductory calculus, has met matrices but not necessarily eigenvalues, and has never trained a neural network. Every concept used in the project — the convolutional architecture, the five loss functions, the optimiser, the evaluation metrics — is built up from first principles in the order in which it becomes necessary. Nothing is skipped on the grounds that it is "obvious." Every formula appears with its derivation. Every diagram is annotated.</p>
+  <p>The text is organised as a small textbook. Part I revisits the linear algebra, calculus and probability that we will need. Part II constructs the artificial neuron and the perceptron. Part III stacks neurons into networks and derives the learning algorithm. Part IV specialises the machinery to images. Part V applies everything to the actual HAM10000 skin-cancer project. The five parts can be read in order, or a more experienced reader can jump straight to Part V and back-track through the cross-references whenever something is unfamiliar.</p>
+  <Two left={<Aside title="Notational conventions">
+    <ul className="space-y-1.5">
+      <li><b>Scalars</b> in italic ({String.raw`$x,\,w_i,\,\sigma$`}); <b>vectors</b> in bold lowercase ({String.raw`$\mathbf{x},\,\mathbf{w}$`}); <b>matrices</b> in bold uppercase ({String.raw`$\mathbf{W},\,\mathbf{X}$`}).</li>
+      <li>Indices: samples $i$, classes $c$, layers {String.raw`$\ell$`}, components $j,k$.</li>
+      <li>Natural log is written {String.raw`$\log$`}; base-10 is {String.raw`$\log_{10}$`}.</li>
+      <li>Transpose {String.raw`$\mathbf{A}^{\!\top}$`}; Hadamard product {String.raw`$\odot$`}; element-wise function {String.raw`$f(\mathbf{z})$`} applied component-wise.</li>
+      <li>{String.raw`$\mathbb{R}^n$`} is the $n$-dimensional real vector space; {String.raw`$\mathbf{1}[\cdot]$`} is the indicator function.</li>
+    </ul></Aside>} right={<Aside title="Box conventions">
+    <ul className="space-y-1.5">
+      <li><span className="chip" style={{borderColor:"#a67c1f",color:"#a67c1f"}}>Definition</span> — a precise statement of meaning.</li>
+      <li><span className="chip" style={{borderColor:"#0e6b4e",color:"#0e6b4e"}}>Theorem</span> — a statement that can be proved.</li>
+      <li><span className="chip" style={{borderColor:"#9a3412",color:"#9a3412"}}>Example</span> — a worked computation.</li>
+      <li><span className="chip" style={{borderColor:"#1c1917",color:"#1c1917"}}>Intuition</span> — the geometric or verbal picture.</li>
+      <li><span className="chip" style={{borderColor:"#495569",color:"#495569"}}>Note</span> — practical / historical aside.</li>
+    </ul></Aside>}/>
+  <Intuition title="Why so much foundational material before the project?">
+    The HAM10000 project is, at its core, a story about <i>imbalanced</i> optimisation. To understand why one loss function recovers minority-class recall and another does not, we must know what a loss <i>is</i>, what a gradient <i>is</i>, what backpropagation actually computes, and what a convolutional filter is computing under the hood. Treating any of those as a black box would hide exactly the part of the project that is interesting. So we build them.
+  </Intuition>
+  <div className="pq">"Mathematics is not a careful march down a well-cleared highway, but a journey into a strange wilderness where the explorers often get lost." — W.S. Anglin</div>
+</div>);
+
+const PartI_HISTORY = () => (<div>
+  <p className="dropcap">Deep learning is not a recent invention. The mathematical objects we will use in this project — the perceptron, the gradient, the convolutional filter — were proposed, abandoned and revived over roughly eight decades. Knowing this chronology explains why the modern recipe combines the parts it does, and why certain decisions (ReLU activations, mini-batch training, Adam) are now considered defaults rather than choices.</p>
+  <Figure caption="Eight decades of deep learning, condensed. Green dots are milestones that survive directly into the HAM10000 project.">
+    <svg viewBox="0 0 980 360" className="w-full">
+      <line x1="40" y1="60" x2="940" y2="60" stroke="#cabfa3" strokeWidth="2"/>
+      {[{x:60,y:1943,t:"McCulloch–Pitts",sub:"binary neuron model"},
+        {x:160,y:1958,t:"Rosenblatt",sub:"the perceptron"},
+        {x:255,y:1969,t:"Minsky–Papert",sub:"XOR limitation"},
+        {x:355,y:1986,t:"Rumelhart et al.",sub:"backpropagation"},
+        {x:460,y:1989,t:"LeCun",sub:"convolutional nets"},
+        {x:560,y:1998,t:"LeNet-5",sub:"first deployed CNN"},
+        {x:665,y:2012,t:"AlexNet",sub:"deep CNN wins ImageNet",hi:true},
+        {x:760,y:2015,t:"BatchNorm · ResNet",sub:"residual + normalised",hi:true},
+        {x:830,y:2017,t:"Focal loss",sub:"imbalanced detection",hi:true},
+        {x:910,y:2018,t:"HAM10000",sub:"Tschandl et al.",hi:true}].map((m,i)=>(
+        <g key={i} transform={`translate(${m.x},60)`}>
+          <circle r={m.hi?7:5} fill={m.hi?"#0e6b4e":"#1c1917"}/>
+          <text y="-12" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#1c1917">{m.y}</text>
+          <line x1="0" y1="8" x2="0" y2="30" stroke="#cabfa3"/>
+          <text y="50" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill={m.hi?"#0e6b4e":"#1c1917"}>{m.t}</text>
+          <text y="66" textAnchor="middle" className="ui" fontSize="10" fill="#5a544a">{m.sub}</text>
+        </g>))}
+      {[{x1:40,x2:300,y:200,label:"FIRST WINTER",note:"limited compute, no chain-rule training"},
+        {x1:300,x2:560,y:200,label:"REVIVAL",note:"backprop + small networks"},
+        {x1:560,x2:940,y:200,label:"DEEP ERA",note:"GPUs, big data, modern recipes"}].map((e,i)=>(
+        <g key={i}>
+          <rect x={e.x1} y={e.y-18} width={e.x2-e.x1} height="36" fill={i===2?"#e3efe8":"#f3eee0"} stroke="#cabfa3"/>
+          <text x={(e.x1+e.x2)/2} y={e.y-2} textAnchor="middle" className="ui" fontWeight="700" fontSize="11" fill="#1c1917">{e.label}</text>
+          <text x={(e.x1+e.x2)/2} y={e.y+12} textAnchor="middle" className="ui" fontSize="10" fill="#5a544a">{e.note}</text>
+        </g>))}
+      <text x="40" y="290" className="ui" fontSize="11" fontWeight="700" fill="#0e6b4e">Concepts that survive into our project:</text>
+      <text x="40" y="308" className="ui" fontSize="11" fill="#3f3c36">Perceptron · Backpropagation · Convolutional filters · BatchNorm · ResNet depth · Focal loss · HAM10000 corpus.</text>
+      <text x="40" y="335" className="ui" fontSize="11" fontStyle="italic" fill="#5a544a">Every component we will use was invented between 1943 and 2019.</text>
+    </svg></Figure>
+  <h3 className="display text-2xl font-semibold mt-8 mb-3">1.1 · The four eras</h3>
+  <p><b>1943–1957 — Mathematical biology.</b> McCulloch and Pitts proposed that a biological neuron could be approximated as a threshold unit summing weighted inputs and firing if the sum exceeded a threshold. There was no learning algorithm; weights were set by hand.</p>
+  <p><b>1958–1969 — The perceptron and its winter.</b> Frank Rosenblatt added a learning rule to the McCulloch–Pitts neuron and built the Mark I Perceptron, a physical machine that could learn linearly separable patterns. Minsky and Papert subsequently proved that a single-layer perceptron cannot compute the XOR function. Since no one knew how to train multiple layers, funding collapsed for over a decade.</p>
+  <p><b>1986–2011 — Backpropagation and small CNNs.</b> Rumelhart, Hinton and Williams popularised the use of the chain rule to compute gradients through arbitrary stacks of differentiable layers. Yann LeCun used the same machinery, together with convolutional filters and pooling, to build LeNet-5 — a CNN that read postal cheques in production at AT&amp;T in the 1990s. Compute and data were too limited to scale this idea.</p>
+  <p><b>2012–today — The deep era.</b> Krizhevsky, Sutskever and Hinton's AlexNet halved the ImageNet error rate using a deep CNN trained on GPUs. Within five years the field had standardised on the recipe we use here: deep CNN backbones, ReLU, BatchNorm, dropout, Adam, and — when classes are imbalanced — Focal loss (Lin et al., 2017). HAM10000 itself was released in 2018 by Tschandl, Rosendahl and Kittler.</p>
+  <Aside title="Why this chronology matters for our project">Every architectural choice we will make is a frozen snapshot of one of these milestones. Conv layers are 1989; ReLU is 2011; BatchNorm is 2015; the focal-loss formulation is 2017; the dataset itself is 2018. Reading a modern paper without this chronology is like reading the last chapter of a novel: the parts make sense individually, but their relationships have to be taken on faith.</Aside>
+</div>);
+
+const PartI_LINALG = () => (<div>
+  <p className="dropcap">A neural network is, in its entirety, a long chain of linear-algebra operations interleaved with element-wise non-linearities. To read the rest of this atlas we need four objects — the scalar, the vector, the matrix, the tensor — and three operations — the dot product, the matrix–vector product, the matrix–matrix product. We define each precisely with the geometric picture that goes with it.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">2.1 · Vectors, matrices, tensors</h3>
+  <Definition title="Vector">{`A vector $\\mathbf{x}\\in\\mathbb{R}^n$ is an ordered $n$-tuple of real numbers $(x_1,\\ldots,x_n)$. Geometrically, $\\mathbf{x}$ is an arrow from the origin of $\\mathbb{R}^n$ to the point with these coordinates. We treat vectors as column matrices by default: $\\mathbf{x} = (x_1,\\ldots,x_n)^{\\!\\top}$.`}</Definition>
+  <Definition title="Matrix">{`A matrix $\\mathbf{A}\\in\\mathbb{R}^{m\\times n}$ is a rectangular array of $mn$ real numbers, $A_{ij}$ being the $(i,j)$ entry. Transpose: $(\\mathbf{A}^{\\!\\top})_{ij}=A_{ji}$.`}</Definition>
+  <Definition title="Tensor">{`A tensor of order $k$ is an indexed collection of real numbers with $k$ indices. A scalar is order $0$; a vector order $1$; a matrix order $2$. A colour image at $H\\times W$ with three channels is order $3$, shape $(3,H,W)$. A batch of $N$ such images is order $4$, shape $(N,3,H,W)$ — exactly what flows through our CNN.`}</Definition>
+  <h3 className="display text-2xl font-semibold mt-8 mb-3">2.2 · The dot product</h3>
+  <Definition title="Dot product">{`$\\mathbf{a}\\cdot\\mathbf{b} = \\mathbf{a}^{\\!\\top}\\mathbf{b} = \\sum_{i=1}^{n}a_ib_i$. Equivalently $\\mathbf{a}\\cdot\\mathbf{b}=\\|\\mathbf{a}\\|\\|\\mathbf{b}\\|\\cos\\theta$, where $\\theta$ is the angle between the two arrows.`}</Definition>
+  <Figure caption="Three vectors illustrating the dot product as a measure of alignment. Same direction: positive; perpendicular: zero; opposite: negative.">
+    <svg viewBox="0 0 720 220" className="w-full">
+      {[100,360,620].map((cx,idx)=>(
+        <g key={idx} transform={`translate(${cx},120)`}>
+          <line x1="-70" y1="0" x2="70" y2="0" stroke="#cabfa3"/>
+          <line x1="0" y1="-70" x2="0" y2="70" stroke="#cabfa3"/>
+          <line x1="0" y1="0" x2="50" y2="-30" stroke="#0e6b4e" strokeWidth="2" markerEnd="url(#arrG)"/>
+          <text x="55" y="-30" className="mono" fontSize="11" fill="#0e6b4e">a</text>
+          {idx===0 && <>
+            <line x1="0" y1="0" x2="60" y2="-20" stroke="#9a3412" strokeWidth="2" markerEnd="url(#arrR)"/>
+            <text x="65" y="-18" className="mono" fontSize="11" fill="#9a3412">b</text>
+            <text x="0" y="100" textAnchor="middle" className="ui" fontSize="12" fontWeight="700">a · b &gt; 0</text>
+            <text x="0" y="116" textAnchor="middle" className="ui" fontSize="10" fill="#5a544a">similar direction</text></>}
+          {idx===1 && <>
+            <line x1="0" y1="0" x2="30" y2="50" stroke="#9a3412" strokeWidth="2" markerEnd="url(#arrR)"/>
+            <text x="35" y="55" className="mono" fontSize="11" fill="#9a3412">b</text>
+            <text x="0" y="100" textAnchor="middle" className="ui" fontSize="12" fontWeight="700">a · b = 0</text>
+            <text x="0" y="116" textAnchor="middle" className="ui" fontSize="10" fill="#5a544a">orthogonal</text></>}
+          {idx===2 && <>
+            <line x1="0" y1="0" x2="-50" y2="30" stroke="#9a3412" strokeWidth="2" markerEnd="url(#arrR)"/>
+            <text x="-58" y="30" className="mono" fontSize="11" fill="#9a3412">b</text>
+            <text x="0" y="100" textAnchor="middle" className="ui" fontSize="12" fontWeight="700">a · b &lt; 0</text>
+            <text x="0" y="116" textAnchor="middle" className="ui" fontSize="10" fill="#5a544a">opposite direction</text></>}
+        </g>))}
+    </svg></Figure>
+  <Example title="A worked dot product">{`Let $\\mathbf{a}=(1,2,3)$ and $\\mathbf{b}=(4,5,6)$. Then $\\mathbf{a}\\cdot\\mathbf{b}=1\\cdot4+2\\cdot5+3\\cdot6=32$. Because the result is large and positive, the vectors point in similar directions. If we replace $\\mathbf{b}$ by $(-4,-5,-6)$ the result is $-32$ — vectors point in opposite directions. A dot product of zero means the vectors are orthogonal.`}</Example>
+  <h3 className="display text-2xl font-semibold mt-8 mb-3">2.3 · Matrix–vector product</h3>
+  <Definition title="Matrix–vector product">{`For $\\mathbf{A}\\in\\mathbb{R}^{m\\times n}$ and $\\mathbf{x}\\in\\mathbb{R}^n$, $\\bigl(\\mathbf{A}\\mathbf{x}\\bigr)_i=\\sum_{j=1}^{n}A_{ij}x_j$. The $i$-th entry of $\\mathbf{A}\\mathbf{x}$ is the dot product of the $i$-th row of $\\mathbf{A}$ with $\\mathbf{x}$.`}</Definition>
+  <Intuition title="What a neural layer is doing, in one equation">{`Every fully-connected layer computes $\\mathbf{z}=\\mathbf{W}\\mathbf{x}+\\mathbf{b}$ followed by an element-wise non-linearity. Each row $\\mathbf{w}_i$ of $\\mathbf{W}$ acts as a feature detector: it measures how aligned the input $\\mathbf{x}$ is with $\\mathbf{w}_i$ via a dot product. The non-linearity then turns that alignment score into the next layer's activation. The rest of this atlas repeats this picture recursively.`}</Intuition>
+  <h3 className="display text-2xl font-semibold mt-8 mb-3">2.4 · Norms and distances</h3>
+  <Definition title="Euclidean (ℓ₂) norm">{`$\\|\\mathbf{x}\\|_2=\\sqrt{\\sum_i x_i^2}$ measures the length of the arrow. The Euclidean distance between two vectors is $d(\\mathbf{x},\\mathbf{y})=\\|\\mathbf{x}-\\mathbf{y}\\|_2$.`}</Definition>
+  <Aside title="Only what we will use">A full linear-algebra course covers determinants, inverses, eigenvalues, singular-value decompositions, rank, null space, and more. None of those objects appear in the HAM10000 project. Everything that follows relies only on §§2.1–2.4: vectors, matrices, dot products, matrix–vector products, norms.</Aside>
+</div>);
+
+const PartI_CALC = () => (<div>
+  <p className="dropcap">Optimisation — the act of nudging weights so the loss goes down — requires knowing in which direction to nudge. That direction is the gradient. Computing it through deep networks requires the chain rule. These two ideas are the entire calculus we need.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">3.1 · Derivative as a slope</h3>
+  <Definition title="Derivative">{`For a one-variable function $f:\\mathbb{R}\\to\\mathbb{R}$, $$f'(x)=\\lim_{h\\to 0}\\frac{f(x+h)-f(x)}{h}.$$ It is the slope of the tangent at $x$.`}</Definition>
+  <Figure caption="The derivative is the local slope. A positive derivative means the function is increasing; a negative one means it is decreasing.">
+    <svg viewBox="0 0 500 220" className="w-full">
+      <line x1="40" y1="180" x2="460" y2="180" stroke="#cabfa3"/>
+      <line x1="40" y1="20"  x2="40"  y2="180" stroke="#cabfa3"/>
+      <path d="M 40 160 Q 200 -40 460 160" stroke="#0e6b4e" strokeWidth="2" fill="none"/>
+      <line x1="180" y1="110" x2="320" y2="40" stroke="#9a3412" strokeWidth="1.6" strokeDasharray="3 3"/>
+      <circle cx="250" cy="75" r="4" fill="#9a3412"/>
+      <text x="262" y="70" className="ui" fontSize="11" fill="#9a3412">f'(x) = slope of tangent</text>
+      <text x="240" y="195" className="ui" fontSize="11" fill="#5a544a">x</text>
+      <text x="20" y="100" className="ui" fontSize="11" fill="#5a544a">f(x)</text>
+    </svg></Figure>
+  <h3 className="display text-2xl font-semibold mt-8 mb-3">3.2 · Partial derivatives and the gradient</h3>
+  <Definition title="Partial derivative">{`For $f:\\mathbb{R}^n\\to\\mathbb{R}$, $$\\frac{\\partial f}{\\partial x_j}(\\mathbf{x})=\\lim_{h\\to 0}\\frac{f(\\mathbf{x}+h\\mathbf{e}_j)-f(\\mathbf{x})}{h}.$$ It treats every other coordinate as fixed and differentiates with respect to $x_j$ alone.`}</Definition>
+  <Definition title="Gradient">{`$$\\nabla f(\\mathbf{x})=\\left(\\frac{\\partial f}{\\partial x_1},\\ldots,\\frac{\\partial f}{\\partial x_n}\\right)^{\\!\\top}\\in\\mathbb{R}^n.$$ Each entry is a partial derivative.`}</Definition>
+  <Theorem title="The gradient points uphill">{`$\\nabla f(\\mathbf{x})$ is the direction of steepest increase of $f$ at the point $\\mathbf{x}$. Equivalently, $-\\nabla f(\\mathbf{x})$ is the direction of steepest decrease. Gradient descent (Chapter 10) walks down this latter direction.`}</Theorem>
+  <h3 className="display text-2xl font-semibold mt-8 mb-3">3.3 · The chain rule</h3>
+  <Theorem title="Multivariable chain rule">{`If $y=f(u_1,\\ldots,u_m)$ and each $u_i=g_i(x_1,\\ldots,x_n)$, then $$\\frac{\\partial y}{\\partial x_j}=\\sum_{i=1}^{m}\\frac{\\partial y}{\\partial u_i}\\frac{\\partial u_i}{\\partial x_j}.$$ This single theorem is the entire engine of backpropagation.`}</Theorem>
+  <Example title="Worked chain rule">{`Let $y=\\sin(u),\\,u=x^2$. Then $\\frac{dy}{du}=\\cos u$ and $\\frac{du}{dx}=2x$. The chain rule gives $\\frac{dy}{dx}=\\cos(x^2)\\cdot 2x$.`}</Example>
+  <Intuition title="Why the chain rule, geometrically">{`Composition $f\\circ g$ is a "two-step zoom". The chain rule says: to find the slope of the composite, multiply the slopes of the two steps. In a deep network, every layer is one such step, and we will multiply roughly one Jacobian per layer to propagate the gradient backward.`}</Intuition>
+</div>);
+
+const PartI_PROB = () => (<div>
+  <p className="dropcap">The output of our CNN is a vector of seven real numbers (one per class). To diagnose a lesion we need this vector to be a <i>probability distribution</i> — non-negative entries summing to one. The softmax function performs this conversion; cross-entropy is the natural loss between two such distributions.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">4.1 · Discrete probability distribution</h3>
+  <Definition title="Discrete probability distribution">{`A vector $\\mathbf{p}=(p_1,\\ldots,p_K)$ is a distribution on $K$ classes if $p_c\\ge 0$ for every $c$ and $\\sum_{c=1}^{K}p_c=1$.`}</Definition>
+  <h3 className="display text-2xl font-semibold mt-8 mb-3">4.2 · The softmax function</h3>
+  <Definition title="Softmax">{`Given logits $\\mathbf{z}\\in\\mathbb{R}^K$, $$\\mathrm{softmax}(\\mathbf{z})_c=\\frac{e^{z_c}}{\\sum_{k=1}^{K}e^{z_k}}.$$ The exponential makes every output positive; the denominator forces the sum to one.`}</Definition>
+  <Aside title="Shift invariance, used for numerical stability">{`Adding a constant $C$ to every logit leaves softmax unchanged because the $e^C$ factor cancels in numerator and denominator. In practice we subtract $\\max(\\mathbf{z})$ from $\\mathbf{z}$ before exponentiating to prevent overflow (otherwise $e^{1000}=\\infty$).`}</Aside>
+  <Figure caption="Softmax converts a vector of real-valued logits into a probability distribution. The class with the largest logit gets the largest probability — but the gap matters too.">
+    <svg viewBox="0 0 600 200" className="w-full">
+      {[{c:"akiec",z:0.2,p:0.07},{c:"bcc",z:1.4,p:0.24},{c:"bkl",z:0.5,p:0.10},{c:"df",z:-1.2,p:0.02},{c:"mel",z:2.4,p:0.66},{c:"nv",z:-0.5,p:0.04},{c:"vasc",z:-1.5,p:0.01}].map((d,i)=>(
+        <g key={i} transform={`translate(${30+i*80},10)`}>
+          <rect x="0" y={60-d.z*15} width="50" height={Math.abs(d.z*15)} fill="#cabfa3"/>
+          <text x="25" y="95" textAnchor="middle" className="mono" fontSize="11" fill="#5a544a">{d.c}</text>
+          <text x="25" y="110" textAnchor="middle" className="mono" fontSize="9" fill="#5a544a">z={d.z}</text>
+          <rect x="0" y={160-d.p*80} width="50" height={d.p*80} fill="#0e6b4e"/>
+          <text x="25" y="175" textAnchor="middle" className="mono" fontSize="10" fill="#0e6b4e" fontWeight="700">{(d.p*100).toFixed(0)}%</text>
+        </g>))}
+      <text x="10" y="60" className="ui" fontSize="11" fontWeight="700" fill="#1c1917">logits</text>
+      <text x="10" y="155" className="ui" fontSize="11" fontWeight="700" fill="#0e6b4e">softmax probs</text>
+    </svg></Figure>
+  <h3 className="display text-2xl font-semibold mt-8 mb-3">4.3 · Cross-entropy</h3>
+  <Definition title="Cross-entropy">{`Between a target distribution $\\mathbf{q}$ and a predicted distribution $\\mathbf{p}$: $$H(\\mathbf{q},\\mathbf{p})=-\\sum_{c=1}^{K}q_c\\log p_c.$$ For classification with a one-hot target ($q_y=1$, else $0$) this collapses to $-\\log p_y$ — the negative log-probability the model assigns to the correct class.`}</Definition>
+  <Theorem title="Why cross-entropy goes well with softmax">{`The composite "softmax then cross-entropy" has an unusually clean gradient with respect to the logits: $$\\frac{\\partial H}{\\partial z_c}=p_c-q_c.$$ Derived in §11. This is precisely why classification networks use the softmax + cross-entropy pair rather than softmax + MSE: the gradient does not vanish even when the prediction is hopelessly wrong.`}</Theorem>
+</div>);
+
+/* === PART II === */
+const PartII_BIO = () => (<div>
+  <p className="dropcap">A biological neuron is an electro-chemical decision unit. An artificial neuron is a mathematical model that strips this device down to the simplest possible caricature: a weighted sum followed by a non-linearity. The analogy is loose — modern AI has long since detached from neuroscience — but it explains the inherited vocabulary (weights, bias, activation) that we will use throughout the rest of this atlas.</p>
+  <Figure caption="Biological neuron (left) and its artificial counterpart (right). Each part of the cell maps onto an algebraic object.">
+    <svg viewBox="0 0 880 280" className="w-full">
+      {/* Biological neuron */}
+      <g transform="translate(60,140)">
+        <ellipse cx="0" cy="0" rx="40" ry="32" fill="#e3efe8" stroke="#0e6b4e" strokeWidth="1.8"/>
+        <text x="0" y="4" textAnchor="middle" className="ui" fontWeight="700" fontSize="11" fill="#0e6b4e">soma</text>
+        {[-30,-50,-70,-30,-50,-70].map((dy,i)=>{const x=-90-Math.abs(i%3)*8;const y=(i<3?1:-1)*Math.abs(dy);return(<g key={i}><line x1={-32} y1={i<3?15-i*8:-15+(i-3)*8} x2={x} y2={y} stroke="#0e6b4e" strokeWidth="1.6"/><circle cx={x} cy={y} r="3" fill="#0e6b4e"/></g>);})}
+        <line x1="40" y1="0" x2="220" y2="0" stroke="#0e6b4e" strokeWidth="2.2"/>
+        <text x="130" y="-8" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#0e6b4e">axon</text>
+        {[-20,0,20].map((dy,i)=>(<g key={i}><line x1="220" y1="0" x2="240" y2={dy} stroke="#0e6b4e" strokeWidth="1.6"/><circle cx="240" cy={dy} r="3.5" fill="#0e6b4e"/></g>))}
+        <text x="-120" y="100" className="ui" fontSize="11" fill="#5a544a">dendrites</text>
+        <text x="-120" y="-100" className="ui" fontSize="11" fill="#5a544a">(inputs)</text>
+        <text x="250" y="-20" className="ui" fontSize="11" fill="#5a544a">synapse</text>
+        <text x="250" y="35" className="ui" fontSize="11" fill="#5a544a">(output)</text>
+      </g>
+      <line x1="400" y1="30" x2="400" y2="250" stroke="#cabfa3" strokeDasharray="3 3"/>
+      {/* Artificial neuron */}
+      <g transform="translate(560,140)">
+        {[-50,-20,10,40].map((dy,i)=>(<g key={i}>
+          <line x1="-120" y1={dy} x2="-15" y2="0" stroke="#9a3412" strokeWidth="1.6" markerEnd="url(#arrR)"/>
+          <text x="-145" y={dy+4} className="mono" fontSize="11" fill="#9a3412">{`x${i+1}`}</text>
+          <text x="-75" y={dy-3} className="mono" fontSize="10" fill="#5a544a">{`w${i+1}`}</text></g>))}
+        <circle r="32" fill="#fbf5e7" stroke="#a67c1f" strokeWidth="1.8"/>
+        <text x="0" y="-3" textAnchor="middle" className="ui" fontSize="10" fontWeight="700" fill="#a67c1f">Σ + b</text>
+        <text x="0" y="11" textAnchor="middle" className="ui" fontSize="10" fill="#a67c1f">f(·)</text>
+        <line x1="32" y1="0" x2="120" y2="0" stroke="#1c1917" strokeWidth="1.6" markerEnd="url(#arr)"/>
+        <text x="130" y="4" className="mono" fontSize="12" fontWeight="700" fill="#1c1917">y</text>
+        <text x="0" y="80" textAnchor="middle" className="ui" fontSize="11" fill="#5a544a">y = f(w·x + b)</text>
+        <text x="0" y="-80" textAnchor="middle" className="ui" fontWeight="700" fontSize="12" fill="#a67c1f">artificial neuron</text>
+      </g>
+    </svg></Figure>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">5.1 · The four-part correspondence</h3>
+  <div className="frame rounded overflow-x-auto">
+    <table className="book"><thead><tr><th>Biology</th><th>Mathematics</th><th>Role</th></tr></thead><tbody>
+      <tr><td><b>Dendrite</b></td><td>Input $x_i$</td><td>Carries an incoming signal</td></tr>
+      <tr><td><b>Synaptic strength</b></td><td>Weight $w_i$</td><td>Scales how much that signal contributes</td></tr>
+      <tr><td><b>Soma membrane potential</b></td><td>Pre-activation {String.raw`$z=\sum w_i x_i + b$`}</td><td>The accumulated signal</td></tr>
+      <tr><td><b>Resting threshold</b></td><td>Bias $b$</td><td>A constant offset; how easy it is to fire</td></tr>
+      <tr><td><b>Action-potential firing rule</b></td><td>Activation $y=f(z)$</td><td>Non-linear yes/how-much output</td></tr>
+      <tr><td><b>Axon</b></td><td>Output $y$</td><td>The signal forwarded to the next layer</td></tr>
+    </tbody></table>
+  </div>
+  <Aside title="Where the analogy breaks">Real neurons fire in discrete spikes, time matters, dendrites perform their own computation, and chemistry — not algebra — controls the synapse. Artificial neural networks borrow only the high-level abstraction. They are not models of brains.</Aside>
+</div>);
+
+const PartII_PERCEP = () => (<div>
+  <p className="dropcap">A <b>perceptron</b> is the simplest possible artificial neuron equipped with a learning rule. It was proposed by Rosenblatt in 1958 as both a mathematical model and a piece of hardware (the Mark I Perceptron). Mastering it gives us, in one page, every concept we will reuse for the rest of the atlas: weights, bias, decision boundary, linear separability.</p>
+  <Definition title="The perceptron">{`Given input $\\mathbf{x}\\in\\mathbb{R}^n$, weight vector $\\mathbf{w}\\in\\mathbb{R}^n$ and scalar bias $b$, the perceptron outputs $$y=\\begin{cases}1 & \\text{if } \\mathbf{w}\\cdot\\mathbf{x}+b\\ge 0,\\\\ 0 & \\text{if } \\mathbf{w}\\cdot\\mathbf{x}+b<0.\\end{cases}$$ The function $z\\mapsto\\mathbf{1}[z\\ge 0]$ is the Heaviside step.`}</Definition>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">6.1 · The decision boundary is a hyperplane</h3>
+  <Theorem title="Geometry of the perceptron">{`The set $\\{\\mathbf{x}\\in\\mathbb{R}^n:\\,\\mathbf{w}\\cdot\\mathbf{x}+b=0\\}$ is an $(n-1)$-dimensional hyperplane. The vector $\\mathbf{w}$ is normal to it. The perceptron simply checks which side of this hyperplane the input lies on.`}</Theorem>
+  <Figure caption="A perceptron in 2D. The grey line is the hyperplane w·x + b = 0. Everything in the green half-plane is classified as 1, everything in the rust half-plane as 0. The vector w points perpendicular to the boundary, into the positive half-plane.">
+    <svg viewBox="0 0 520 280" className="w-full">
+      <line x1="30" y1="240" x2="490" y2="240" stroke="#cabfa3"/>
+      <line x1="30" y1="20" x2="30" y2="240" stroke="#cabfa3"/>
+      <line x1="80" y1="40" x2="460" y2="220" stroke="#1c1917" strokeWidth="1.5"/>
+      <polygon points="80,40 460,220 460,20" fill="#e3efe8"/>
+      <polygon points="80,40 460,220 80,240 30,240 30,40" fill="#fdebd6"/>
+      <line x1="250" y1="135" x2="305" y2="65" stroke="#0e6b4e" strokeWidth="2.5" markerEnd="url(#arrG)"/>
+      <text x="295" y="60" className="mono" fontSize="13" fontWeight="700" fill="#0e6b4e">w</text>
+      {[[150,120,"#0e6b4e","+"],[200,90,"#0e6b4e","+"],[120,180,"#0e6b4e","+"],[350,180,"#9a3412","–"],[400,210,"#9a3412","–"],[380,140,"#9a3412","–"]].map((p,i)=>(
+        <g key={i}><circle cx={p[0]} cy={p[1]} r="6" fill={p[2]}/><text x={p[0]} y={p[1]+4} textAnchor="middle" className="ui" fontWeight="700" fontSize="11" fill="#fff">{p[3]}</text></g>))}
+      <text x="450" y="40" textAnchor="end" className="ui" fontSize="11" fontWeight="700" fill="#0e6b4e">w·x + b ≥ 0  → class 1</text>
+      <text x="100" y="220" className="ui" fontSize="11" fontWeight="700" fill="#9a3412">w·x + b &lt; 0  → class 0</text>
+      <text x="250" y="270" textAnchor="middle" className="ui" fontSize="11" fill="#5a544a">hyperplane = decision boundary</text>
+    </svg></Figure>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">6.2 · Linear separability and the XOR limitation</h3>
+  <Intuition title="Why a single perceptron cannot compute XOR">{`The four points $(0,0),(0,1),(1,0),(1,1)$ with their XOR labels $\\{0,1,1,0\\}$ form a chess-board pattern. A single straight line cannot separate the two "$1$" points from the two "$0$" points. This is precisely the Minsky–Papert objection of 1969. The way forward — discovered in 1986 — is to stack multiple perceptrons into a multi-layer network and replace the step function with a differentiable activation. That is the entirety of the next chapter.`}</Intuition>
+  <Aside title="Why we still teach the perceptron">Although our project does not literally instantiate a Rosenblatt perceptron, every neuron inside our CNN computes the same algebra: {String.raw`$z=\mathbf{w}\cdot\mathbf{x}+b$`} followed by an activation. The perceptron is the irreducible building block.</Aside>
+</div>);
+
+const PartII_ACTS = () => (<div>
+  <p className="dropcap">A neural network without an activation function is, no matter how many layers it has, equivalent to a single linear map: {String.raw`$\mathbf{W}_3(\mathbf{W}_2(\mathbf{W}_1\mathbf{x}))=(\mathbf{W}_3\mathbf{W}_2\mathbf{W}_1)\mathbf{x}$`}. Non-linearity is what gives a deep network the ability to learn curved decision boundaries. Choosing the right non-linearity also dictates how easily gradients flow during training.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">7.1 · The three activations we care about</h3>
+  <Figure caption="Three activation functions (top row) and their derivatives (bottom row). ReLU's derivative is constantly 1 for positive inputs — gradients do not vanish — which is why every Conv layer in our SkinCNN uses it.">
+    <svg viewBox="0 0 900 380" className="w-full">
+      {[80,400,720].map((cx,i)=>(<g key={"top"+i}>
+        <line x1={cx-90} y1="100" x2={cx+90} y2="100" stroke="#cabfa3"/>
+        <line x1={cx}    y1="20"  x2={cx}    y2="170" stroke="#cabfa3"/>
+        <text x={cx-90} y="190" className="ui" fontSize="10" fill="#5a544a">−4</text>
+        <text x={cx+90} y="190" textAnchor="end" className="ui" fontSize="10" fill="#5a544a">+4</text>
+      </g>))}
+      {/* sigmoid */}
+      <polyline fill="none" stroke="#0e6b4e" strokeWidth="2.5"
+        points={Array.from({length:81},(_,k)=>{const x=-4+k*0.1;const s=1/(1+Math.exp(-x));return (80+x*22.5)+","+(100-(s-0.5)*150);}).join(" ")}/>
+      <text x="80" y="14" textAnchor="middle" className="display" fontSize="16" fill="#0e6b4e">σ(x) = 1 / (1 + e⁻ˣ)</text>
+      {/* tanh */}
+      <polyline fill="none" stroke="#1e508f" strokeWidth="2.5"
+        points={Array.from({length:81},(_,k)=>{const x=-4+k*0.1;const s=Math.tanh(x);return (400+x*22.5)+","+(100-s*70);}).join(" ")}/>
+      <text x="400" y="14" textAnchor="middle" className="display" fontSize="16" fill="#1e508f">tanh(x) = (eˣ − e⁻ˣ)/(eˣ + e⁻ˣ)</text>
+      {/* relu */}
+      <polyline fill="none" stroke="#9a3412" strokeWidth="2.5"
+        points={Array.from({length:81},(_,k)=>{const x=-4+k*0.1;const s=Math.max(0,x);return (720+x*22.5)+","+(160-s*22.5);}).join(" ")}/>
+      <text x="720" y="14" textAnchor="middle" className="display" fontSize="16" fill="#9a3412">ReLU(x) = max(0, x)</text>
+      {/* second row: derivatives */}
+      {[80,400,720].map((cx,i)=>(<g key={"bot"+i}>
+        <line x1={cx-90} y1="290" x2={cx+90} y2="290" stroke="#cabfa3"/>
+        <line x1={cx}    y1="210" x2={cx}    y2="360" stroke="#cabfa3"/>
+      </g>))}
+      {/* sigmoid' */}
+      <polyline fill="none" stroke="#0e6b4e" strokeWidth="2.5"
+        points={Array.from({length:81},(_,k)=>{const x=-4+k*0.1;const s=1/(1+Math.exp(-x));const sp=s*(1-s);return (80+x*22.5)+","+(360-sp*240);}).join(" ")}/>
+      <text x="80" y="380" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#0e6b4e">σ'(x) = σ(x)(1−σ(x)) · max 0.25</text>
+      {/* tanh' */}
+      <polyline fill="none" stroke="#1e508f" strokeWidth="2.5"
+        points={Array.from({length:81},(_,k)=>{const x=-4+k*0.1;const t=Math.tanh(x);const tp=1-t*t;return (400+x*22.5)+","+(360-tp*70);}).join(" ")}/>
+      <text x="400" y="380" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#1e508f">tanh'(x) = 1 − tanh²(x) · max 1.0</text>
+      {/* relu' */}
+      <polyline fill="none" stroke="#9a3412" strokeWidth="2.5"
+        points="630,290 720,290 720,220 810,220"/>
+      <text x="720" y="380" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#9a3412">ReLU'(x) = 1[x &gt; 0]</text>
+    </svg></Figure>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">7.2 · Sigmoid</h3>
+  <Definition title="Sigmoid (logistic)">{`$\\sigma(x)=\\dfrac{1}{1+e^{-x}}$.  Output range $(0,1)$. Derivative: $\\sigma'(x)=\\sigma(x)(1-\\sigma(x))$, with a maximum of $1/4$ at $x=0$.`}</Definition>
+  <p>Why it fell out of favour: the derivative saturates to zero for $|x|$ large. When you stack many sigmoid layers, the product of small derivatives during backpropagation collapses to numerical zero — the so-called <b>vanishing-gradient problem</b>. This was the dominant obstacle to training deep networks before 2011.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">7.3 · Hyperbolic tangent</h3>
+  <Definition title="Tanh">{`$\\tanh(x)=\\dfrac{e^{x}-e^{-x}}{e^{x}+e^{-x}}=2\\sigma(2x)-1$. Output range $(-1,1)$. Derivative: $1-\\tanh^2(x)$.`}</Definition>
+  <p>Tanh is essentially a re-centred sigmoid. It is zero-centred (helpful when the data is also zero-centred, e.g. after BatchNorm), but it still saturates, so it suffers the same vanishing-gradient pathology in deep stacks.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">7.4 · Rectified Linear Unit (ReLU)</h3>
+  <Definition title="ReLU">{`$\\mathrm{ReLU}(x)=\\max(0,x)$. Derivative: $1$ if $x>0$, else $0$ (the value at $0$ is conventionally taken to be $0$).`}</Definition>
+  <Theorem title="Why ReLU enabled the deep era">{`For any $x>0$, $\\mathrm{ReLU}'(x)=1$. Composing many ReLU layers therefore preserves gradient magnitude (instead of multiplying it by $\\sigma'\\le 1/4$). This is the single mathematical reason the 2012 AlexNet was trainable while a 1990s tanh network of the same depth would not have been.`}</Theorem>
+  <Example title="What ReLU does to a feature map">{`Suppose a Conv layer outputs the pixel-wise pre-activation $z=(-1.2,\\,0.4,\\,3.1,\\,-0.7,\\,0.2)$. After ReLU it becomes $(0,\\,0.4,\\,3.1,\\,0,\\,0.2)$ — every negative response is clipped to zero. The non-zero entries are interpreted as "feature present, with this strength."`}</Example>
+  <div className="frame rounded overflow-x-auto"><table className="book"><thead><tr><th>Property</th><th>Sigmoid</th><th>Tanh</th><th>ReLU</th></tr></thead><tbody>
+    <tr><td>Range</td><td>$(0,1)$</td><td>$(-1,1)$</td><td>{String.raw`$[0,\infty)$`}</td></tr>
+    <tr><td>Zero-centred</td><td>No</td><td>Yes</td><td>No (output always {String.raw`$\ge 0$`})</td></tr>
+    <tr><td>Vanishing-gradient</td><td>Severe</td><td>Severe</td><td>None (for $x>0$)</td></tr>
+    <tr><td>Compute cost</td><td>One {String.raw`$\exp$`}</td><td>Two {String.raw`$\exp$`}</td><td>One comparison</td></tr>
+    <tr><td>Used in our SkinCNN?</td><td>No</td><td>No</td><td><b>Yes — every Conv block</b></td></tr>
+  </tbody></table></div>
+</div>);
+
+/* === PART III === */
+const PartIII_MLP = () => (<div>
+  <p className="dropcap">Stack several perceptrons in parallel and you get a <i>layer</i>. Stack several layers and replace the step function with a differentiable activation and you get a <b>multilayer perceptron</b> (MLP). The forward pass is the act of pushing data through this stack.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">8.1 · One layer in matrix form</h3>
+  <Definition title="Affine layer">{`Given a previous-layer activation $\\mathbf{a}^{(\\ell-1)}\\in\\mathbb{R}^{n_{\\ell-1}}$, weight matrix $\\mathbf{W}^{(\\ell)}\\in\\mathbb{R}^{n_\\ell\\times n_{\\ell-1}}$ and bias $\\mathbf{b}^{(\\ell)}\\in\\mathbb{R}^{n_\\ell}$, layer $\\ell$ computes the pre-activation and activation $$\\mathbf{z}^{(\\ell)}=\\mathbf{W}^{(\\ell)}\\mathbf{a}^{(\\ell-1)}+\\mathbf{b}^{(\\ell)},\\quad \\mathbf{a}^{(\\ell)}=f^{(\\ell)}(\\mathbf{z}^{(\\ell)}),$$ where $f^{(\\ell)}$ is applied component-wise. The first activation is the input: $\\mathbf{a}^{(0)}=\\mathbf{x}$. The last activation $\\mathbf{a}^{(L)}$ is the output.`}</Definition>
+  <Figure caption="The forward pass through a small MLP (4-dim input → 5 neurons → 3 outputs). Black solid lines carry numbers; the green box is the element-wise activation.">
+    <svg viewBox="0 0 640 260" className="w-full">
+      {[60,120,180,240].map((y,i)=>(<g key={"i"+i}><circle cx="60" cy={y} r="16" fill="#fff" stroke="#1c1917" strokeWidth="1.6"/><text x="60" y={y+4} textAnchor="middle" className="mono" fontSize="11">{`x${i+1}`}</text></g>))}
+      {[40,110,180,250,120].slice(0,5).map((_,i)=>{const y=40+i*45;return(<g key={"h"+i}><circle cx="300" cy={y} r="16" fill="#e3efe8" stroke="#0e6b4e" strokeWidth="1.6"/><text x="300" y={y+4} textAnchor="middle" className="mono" fontSize="11" fill="#0e6b4e">{`a${i+1}`}</text></g>);})}
+      {[100,160,220].map((y,i)=>(<g key={"o"+i}><circle cx="540" cy={y} r="16" fill="#fdebd6" stroke="#9a3412" strokeWidth="1.6"/><text x="540" y={y+4} textAnchor="middle" className="mono" fontSize="11" fill="#9a3412">{`y${i+1}`}</text></g>))}
+      {[60,120,180,240].map((iy)=>Array.from({length:5},(_,j)=>{const hy=40+j*45;return(<line key={`${iy}-${j}`} x1="76" y1={iy} x2="284" y2={hy} stroke="#cabfa3"/>);}))}
+      {Array.from({length:5},(_,i)=>{const hy=40+i*45;return[100,160,220].map(oy=>(<line key={`${i}-${oy}`} x1="316" y1={hy} x2="524" y2={oy} stroke="#cabfa3"/>));})}
+      <text x="60" y="20" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#1c1917">input</text>
+      <text x="300" y="20" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#0e6b4e">hidden (ReLU)</text>
+      <text x="540" y="20" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#9a3412">output (softmax)</text>
+      <text x="180" y="255" textAnchor="middle" className="ui" fontStyle="italic" fontSize="11" fill="#5a544a">W⁽¹⁾, b⁽¹⁾</text>
+      <text x="420" y="255" textAnchor="middle" className="ui" fontStyle="italic" fontSize="11" fill="#5a544a">W⁽²⁾, b⁽²⁾</text>
+    </svg></Figure>
+  <Theorem title="Universal approximation (informal)">{`An MLP with one hidden layer of sufficient width and any non-polynomial activation can approximate any continuous function on a compact subset of $\\mathbb{R}^n$ to arbitrary precision. The result is theoretical: in practice depth is usually more efficient than width.`}</Theorem>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">8.2 · Mini-batch form</h3>
+  <p>{`Real training works on a batch of $N$ samples at once. Stacking inputs as rows of $\\mathbf{X}\\in\\mathbb{R}^{N\\times n}$, the forward pass becomes $\\mathbf{Z}=\\mathbf{X}(\\mathbf{W}^{(\\ell)})^{\\!\\top}+\\mathbf{1}\\,\\mathbf{b}^{(\\ell)\\!\\top}$. The single matrix multiply lets GPUs achieve their advertised throughput.`}</p>
+</div>);
+
+const PartIII_LOSS = () => (<div>
+  <p className="dropcap">A network only learns what its <b>loss function</b> {String.raw`$\mathcal{L}$`} penalises. Training literally is the minimisation of {String.raw`$\mathcal{L}$`} over the parameters {String.raw`$\boldsymbol{\theta}$`}. The choice of loss therefore picks the goal. For regression we use squared error; for classification we use cross-entropy. Mixing them up is a common student bug — and it is what motivates the entire imbalanced-loss study in Part V.</p>
+  <Two left={<div className="frame rounded p-5">
+    <div className="ui sc text-xs text-stone-500 font-bold">REGRESSION</div>
+    <h4 className="display text-xl font-semibold mt-1 mb-2">Mean Squared Error</h4>
+    <MathBlock>{`\\mathcal{L}_{\\mathrm{MSE}}=\\frac{1}{N}\\sum_{i=1}^{N}\\bigl(y_i-\\hat y_i\\bigr)^2`}</MathBlock>
+    <p className="text-[15px]">{`Used when the target is a real-valued quantity (house price, temperature). Differentiable everywhere; convex in $\\hat y_i$; equally penalises positive and negative errors.`}</p>
+  </div>} right={<div className="frame rounded p-5 border-l-[5px] border-emerald-700 bg-emerald-50/50">
+    <div className="ui sc text-xs text-emerald-700 font-bold">CLASSIFICATION</div>
+    <h4 className="display text-xl font-semibold mt-1 mb-2">Cross-Entropy</h4>
+    <MathBlock>{`\\mathcal{L}_{\\mathrm{CE}}=-\\sum_{c=1}^{K}q_c\\log p_c`}</MathBlock>
+    <p className="text-[15px]">{`Used when the target is one of $K$ classes. With a one-hot target it collapses to $-\\log p_y$ — the negative log-probability of the correct class.`}</p>
+  </div>}/>
+  <Theorem title="Why MSE is the wrong loss for classification">{`If we used MSE on top of softmax, the gradient of $\\mathcal{L}$ with respect to a logit $z_c$ would contain a factor of $\\sigma'(z_c)$, which vanishes when $|z_c|$ is large. The model could then be confidently wrong and still receive zero gradient. Cross-entropy + softmax avoids this exactly because, as derived in §11, $\\partial\\mathcal{L}/\\partial z_c=p_c-q_c$ — a gradient that never vanishes while the prediction is wrong.`}</Theorem>
+  <Figure caption="Cross-entropy as a function of the true-class probability p_y. It explodes when p_y → 0 (the model is confidently wrong) and reaches zero only at p_y = 1.">
+    <svg viewBox="0 0 500 220" className="w-full">
+      <line x1="40" y1="180" x2="460" y2="180" stroke="#cabfa3"/>
+      <line x1="40" y1="20" x2="40" y2="180" stroke="#cabfa3"/>
+      <polyline fill="none" stroke="#bb451a" strokeWidth="2"
+        points={Array.from({length:50},(_,i)=>{const p=0.02+i*0.02;const L=-Math.log(p);return (40+p*400)+","+(180-Math.min(160,L*30));}).join(" ")}/>
+      <text x="60" y="50" className="ui" fontSize="11" fontWeight="700" fill="#bb451a">explodes as pᵧ → 0</text>
+      <text x="320" y="170" className="ui" fontSize="11" fontWeight="700" fill="#bb451a">→ 0 as pᵧ → 1</text>
+      <text x="20" y="100" className="ui" fontSize="11" fill="#5a544a" transform="rotate(-90 20 100)">−log pᵧ</text>
+      <text x="250" y="200" textAnchor="middle" className="ui" fontSize="11" fill="#5a544a">pᵧ ∈ (0, 1]</text>
+    </svg></Figure>
+</div>);
+
+const PartIII_GD = () => (<div>
+  <p className="dropcap">Once we have a loss {String.raw`$\mathcal{L}(\boldsymbol\theta)$`} — a real-valued function of all the parameters — minimising it numerically means starting somewhere and iteratively stepping in the direction in which {String.raw`$\mathcal{L}$`} decreases fastest. That direction is {String.raw`$-\nabla_{\boldsymbol\theta}\mathcal{L}$`}. The whole game is just a careful application of this idea.</p>
+  <Definition title="Gradient-descent update">{`Given a step size (learning rate) $\\eta>0$, $$\\boldsymbol\\theta_{t+1}=\\boldsymbol\\theta_{t}-\\eta\\,\\nabla_{\\boldsymbol\\theta}\\mathcal{L}(\\boldsymbol\\theta_t).$$`}</Definition>
+  <Figure caption="Gradient descent visualised on a one-dimensional cross-section of the loss surface. The orange dots show successive iterates of θ. With η too small the descent crawls; with η too large it overshoots and oscillates.">
+    <svg viewBox="0 0 820 250" className="w-full">
+      <path d="M 30 200 Q 200 60 400 180 T 770 80" fill="none" stroke="#0e6b4e" strokeWidth="2.5"/>
+      {[[60,195],[140,150],[250,110],[360,100],[470,130],[560,105],[650,80],[720,78]].map((p,i,arr)=>(<g key={i}>
+        <circle cx={p[0]} cy={p[1]} r="6" fill="#bb451a"/>
+        <text x={p[0]} y={p[1]-12} textAnchor="middle" className="mono" fontSize="10" fill="#bb451a">{`θ${i+1}`}</text>
+        {i<arr.length-1 && <line x1={p[0]+5} y1={p[1]} x2={arr[i+1][0]-5} y2={arr[i+1][1]} stroke="#bb451a" strokeWidth="1.4" strokeDasharray="3 3"/>}
+      </g>))}
+      <text x="30" y="225" className="ui" fontSize="12" fill="#5a544a">parameter axis (1 dim shown out of 106,391)</text>
+      <text x="780" y="225" textAnchor="end" className="ui" fontSize="12" fill="#0e6b4e">L(θ)</text>
+    </svg></Figure>
+  <Intuition title="Walking downhill in fog">{`Imagine standing on a foggy mountainside. You cannot see the whole landscape, but you can feel which way the ground slopes underfoot. Take a small step downhill, then re-measure the slope, then step again. After enough steps you will be in a valley. The gradient $-\\nabla\\mathcal{L}$ is precisely the "felt" downhill direction; the learning rate $\\eta$ is the size of your step.`}</Intuition>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">10.1 · Three flavours of gradient descent</h3>
+  <div className="frame rounded overflow-x-auto"><table className="book"><thead><tr><th>Flavour</th><th>Gradient computed on</th><th>Cost / step</th><th>Noisiness</th></tr></thead><tbody>
+    <tr><td><b>Batch GD</b></td><td>The entire training set</td><td>Slow</td><td>Smooth, deterministic</td></tr>
+    <tr><td><b>Stochastic GD (SGD)</b></td><td>One sample at a time</td><td>Fast</td><td>Very noisy</td></tr>
+    <tr><td><b>Mini-batch GD</b></td><td>A batch of $B$ samples (we use $B=128$)</td><td>Best of both</td><td>Moderate noise — helpful for escaping shallow minima</td></tr>
+  </tbody></table></div>
+  <Aside title="Step size matters more than anything">A learning rate that is too small wastes compute; one that is too large diverges to NaN. The popular Adam optimiser (Chapter 12) effectively tunes a separate learning rate per parameter, which is why we use it.</Aside>
+</div>);
+
+const PartIII_BACK = () => (<div>
+  <p className="dropcap">Gradient descent needs {String.raw`$\partial\mathcal{L}/\partial\theta$`} for every parameter {String.raw`$\theta$`} in the network. Our SkinCNN has {String.raw`$106,391$`} of them. Writing the loss as an explicit polynomial in all $106$k parameters and differentiating by hand is, of course, impossible. <b>Backpropagation</b> is the recursive algorithm — pure chain rule — that computes all those derivatives in one backward sweep, sharing work across layers.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">11.1 · The local-error variable δ</h3>
+  <Definition title="Error term δ">{`For each layer $\\ell$, define $$\\boldsymbol\\delta^{(\\ell)}=\\frac{\\partial \\mathcal{L}}{\\partial \\mathbf{z}^{(\\ell)}}.$$ This vector tells us how sensitive the loss is to each pre-activation in layer $\\ell$.`}</Definition>
+  <Theorem title="Output layer δ for softmax + cross-entropy">{`If the network ends with softmax and the target is one-hot $\\mathbf{q}$, then $$\\boldsymbol\\delta^{(L)}=\\mathbf{p}-\\mathbf{q}$$ where $\\mathbf{p}$ is the predicted distribution. The derivation is short enough to fit on the next line.`}</Theorem>
+  <Example title="Deriving δ⁽ᴸ⁾ = p − q">{`Cross-entropy: $\\mathcal{L}=-\\sum_c q_c\\log p_c$, softmax: $p_c=e^{z_c}/Z$, $Z=\\sum_j e^{z_j}$. Then $$\\frac{\\partial p_c}{\\partial z_k}=p_c(\\mathbf{1}[c=k]-p_k).$$So$$\\frac{\\partial\\mathcal{L}}{\\partial z_k}=-\\sum_c q_c\\,\\frac{1}{p_c}\\cdot p_c(\\mathbf{1}[c=k]-p_k)=-q_k+p_k\\sum_c q_c=p_k-q_k,$$ using $\\sum_c q_c=1$.`}</Example>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">11.2 · The recursion</h3>
+  <Theorem title="Backward pass (vector form)">{`For $\\ell=L-1,L-2,\\ldots,1$: $$\\boxed{\\;\\boldsymbol\\delta^{(\\ell)}=\\bigl[(\\mathbf{W}^{(\\ell+1)})^{\\!\\top}\\boldsymbol\\delta^{(\\ell+1)}\\bigr]\\odot f'\\bigl(\\mathbf{z}^{(\\ell)}\\bigr)\\;}$$Then$$\\frac{\\partial\\mathcal{L}}{\\partial \\mathbf{W}^{(\\ell)}}=\\boldsymbol\\delta^{(\\ell)}\\,\\bigl(\\mathbf{a}^{(\\ell-1)}\\bigr)^{\\!\\top},\\quad \\frac{\\partial\\mathcal{L}}{\\partial \\mathbf{b}^{(\\ell)}}=\\boldsymbol\\delta^{(\\ell)}.$$`}</Theorem>
+  <Figure caption="The computational graph. The forward pass (top, blue) computes activations and the loss; the backward pass (bottom, rust) computes δ at each layer using the chain rule, then converts δ into parameter gradients.">
+    <svg viewBox="0 0 920 320" className="w-full">
+      {["x","z⁽¹⁾","a⁽¹⁾","z⁽²⁾","a⁽²⁾","z⁽ᴸ⁾","p","L"].map((lbl,i)=>(
+        <g key={"f"+i} transform={`translate(${60+i*110},80)`}>
+          <rect x="-32" y="-22" width="64" height="44" rx="6" fill="#e3efe8" stroke="#0e6b4e" strokeWidth="1.6"/>
+          <text textAnchor="middle" y="6" className="mono" fontSize="13" fill="#0e6b4e">{lbl}</text>
+        </g>))}
+      {Array.from({length:7},(_,i)=>(<line key={"fa"+i} x1={60+i*110+32} y1="80" x2={60+(i+1)*110-32} y2="80" stroke="#0e6b4e" strokeWidth="1.6" markerEnd="url(#arrG)"/>))}
+      <text x="460" y="35" textAnchor="middle" className="ui" fontWeight="700" fontSize="12" fill="#0e6b4e">FORWARD PASS · compute activations and the loss</text>
+      {["∂L/∂x","δ⁽¹⁾","∂L/∂a⁽¹⁾","δ⁽²⁾","∂L/∂a⁽²⁾","δ⁽ᴸ⁾ = p − q","",""].map((lbl,i)=>(
+        i>=6?null:<g key={"b"+i} transform={`translate(${60+i*110},220)`}>
+          <rect x="-38" y="-22" width="76" height="44" rx="6" fill="#fdebd6" stroke="#bb451a" strokeWidth="1.6"/>
+          <text textAnchor="middle" y="6" className="mono" fontSize="11" fill="#bb451a">{lbl}</text>
+        </g>))}
+      {Array.from({length:5},(_,i)=>(<line key={"ba"+i} x1={60+(i+1)*110-38} y1="220" x2={60+i*110+38} y2="220" stroke="#bb451a" strokeWidth="1.6" markerEnd="url(#arrR)"/>))}
+      <text x="460" y="290" textAnchor="middle" className="ui" fontWeight="700" fontSize="12" fill="#bb451a">BACKWARD PASS · propagate δ via the chain rule</text>
+      <line x1="720" y1="100" x2="720" y2="200" stroke="#1c1917" strokeWidth="1.2" strokeDasharray="3 3"/>
+      <text x="735" y="155" className="ui" fontSize="11" fill="#1c1917">start backward at L</text>
+    </svg></Figure>
+  <Aside title="Computational saving">A naive computation of all {String.raw`$106,391$`} gradients would require evaluating one forward pass per parameter — minutes per gradient step. Backprop computes all of them in a <i>single</i> backward pass that costs about as much as a forward pass. This is the single algorithmic reason deep learning is practical.</Aside>
+</div>);
+
+const PartIII_OPT = () => (<div>
+  <p className="dropcap">Plain stochastic gradient descent (SGD) takes the gradient on a mini-batch and steps in that direction. The loss surface, however, is not a clean bowl: it has narrow ravines, saddle points and noisy mini-batch estimates. Modern optimisers add memory of past gradients (momentum) and per-parameter step sizes (Adam) to smooth this walk.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">12.1 · SGD with momentum</h3>
+  <Definition title="SGD + momentum">{`$$\\mathbf{v}_t=\\mu\\,\\mathbf{v}_{t-1}+\\mathbf{g}_t,\\quad \\boldsymbol\\theta_{t+1}=\\boldsymbol\\theta_t-\\eta\\,\\mathbf{v}_t.$$ The momentum coefficient $\\mu\\in[0,1)$ (often $0.9$) makes consistent gradients accumulate while oscillations cancel.`}</Definition>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">12.2 · Adam</h3>
+  <Definition title="Adam">{`Maintains two exponentially-decaying averages of past gradients: $$\\mathbf{m}_t=\\beta_1\\mathbf{m}_{t-1}+(1-\\beta_1)\\mathbf{g}_t,\\quad \\mathbf{v}_t=\\beta_2\\mathbf{v}_{t-1}+(1-\\beta_2)\\mathbf{g}_t^{\\odot 2}.$$With bias-corrected versions $\\hat{\\mathbf{m}}_t,\\hat{\\mathbf{v}}_t$, the update is$$\\boldsymbol\\theta_{t+1}=\\boldsymbol\\theta_t-\\eta\\,\\frac{\\hat{\\mathbf{m}}_t}{\\sqrt{\\hat{\\mathbf{v}}_t}+\\varepsilon}.$$ Defaults: $\\beta_1=0.9,\\,\\beta_2=0.999,\\,\\varepsilon=10^{-8}$.`}</Definition>
+  <Intuition title="What Adam is doing">{`Each parameter gets its <i>own</i> effective learning rate. Parameters with consistently large gradients (the $\\sqrt{\\hat{\\mathbf{v}}_t}$ denominator is large) take small steps; parameters with small / sparse gradients take large steps. This is essential for the HAM10000 project because weighted and focal losses produce vastly heterogeneous gradient magnitudes — Adam handles them gracefully where vanilla SGD would diverge.`}</Intuition>
+  <Figure caption="Schematic comparison of trajectories on a narrow-ravine loss surface. Plain SGD zig-zags (rust); momentum (gold) bridges the ravine; Adam (emerald) further adapts the step size per direction.">
+    <svg viewBox="0 0 760 240" className="w-full">
+      {[1,2,3,4].map(r=>(<ellipse key={r} cx="380" cy="120" rx={380-r*40} ry={70-r*8} fill="none" stroke="#cabfa3" strokeWidth="1"/>))}
+      <polyline points="50,70 100,170 140,80 190,160 230,90 290,150 360,110 440,135 540,120 640,120 700,120" fill="none" stroke="#bb451a" strokeWidth="1.8"/>
+      <text x="50" y="65" className="ui" fontSize="11" fill="#bb451a" fontWeight="700">SGD</text>
+      <polyline points="50,80 110,150 180,110 280,135 380,118 500,125 620,121 700,120" fill="none" stroke="#a67c1f" strokeWidth="1.8"/>
+      <text x="55" y="98" className="ui" fontSize="11" fill="#a67c1f" fontWeight="700">+ momentum</text>
+      <polyline points="50,90 130,130 220,118 340,122 480,120 640,120 700,120" fill="none" stroke="#0e6b4e" strokeWidth="2"/>
+      <text x="55" y="118" className="ui" fontSize="11" fill="#0e6b4e" fontWeight="700">Adam</text>
+      <text x="380" y="220" textAnchor="middle" className="ui" fontSize="11" fontStyle="italic" fill="#5a544a">"narrow ravine" — concentric contours</text>
+    </svg></Figure>
+  <Aside title="Why our project uses Adam">Adam with {String.raw`$\eta=10^{-3}$`} and weight decay {String.raw`$10^{-4}$`} converges within 8 epochs on the real HAM10000 corpus, with all five loss functions, on a CPU. SGD reaches the same place in 16+ epochs and needs careful learning-rate scheduling.</Aside>
+</div>);
+
+/* === PART IV === */
+const PartIV_WHY = () => (<div>
+  <p className="dropcap">A 64×64 RGB image flattened into a vector has {String.raw`$64\cdot 64\cdot 3=12,288$`} entries. A single fully-connected layer mapping that to 1,024 hidden units would need {String.raw`$\approx 12.6$`} million weights. Worse, an MLP throws away the fact that the input is a <i>two-dimensional grid</i>: shifting the image by one pixel completely reshuffles which input index is which. Convolutional networks bake three architectural priors into the design that fix all of this.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">13.1 · Three priors of a CNN</h3>
+  <div className="grid md:grid-cols-3 gap-4 my-6">
+    {[
+      {t:"Local connectivity", b:"Each neuron only sees a small patch (3×3 here) of the previous layer. Distant pixels are not directly wired together — only through stacks of layers.", ico:"⊞"},
+      {t:"Parameter sharing", b:"The same 3×3 filter is applied at every spatial location. The number of weights no longer scales with image size.", ico:"≡"},
+      {t:"Translation equivariance", b:"Shifting the input shifts the activation map by the same amount. A melanoma detector trained on the top-left of an image will also fire on the bottom-right.", ico:"⇄"}
+    ].map((f,i)=>(<div key={i} className="frame rounded p-5">
+      <div className="display text-4xl text-emerald-700 mb-1">{f.ico}</div>
+      <h4 className="display text-xl font-semibold mb-1">{f.t}</h4>
+      <p className="ui text-sm text-stone-700 leading-relaxed">{f.b}</p>
+    </div>))}
+  </div>
+  <Figure caption="MLP (left): every input pixel connects to every hidden unit — 12.6M weights for our toy example. CNN (right): a small filter is reused at every location — a single 3×3 filter has just 9 weights.">
+    <svg viewBox="0 0 760 220" className="w-full">
+      <g transform="translate(40,30)">
+        <text x="120" y="-10" textAnchor="middle" className="ui" fontWeight="700" fontSize="12" fill="#9a3412">MLP — fully connected</text>
+        {Array.from({length:12}).map((_,i)=>(<circle key={i} cx={i*20} cy="20" r="5" fill="#9a3412"/>))}
+        {Array.from({length:8}).map((_,j)=>(<circle key={j} cx={30+j*20} cy="120" r="6" fill="#fdebd6" stroke="#9a3412" strokeWidth="1.5"/>))}
+        {Array.from({length:12}).flatMap((_,i)=>Array.from({length:8},(_,j)=>(<line key={`${i}-${j}`} x1={i*20} y1="25" x2={30+j*20} y2="114" stroke="#fdebd6" strokeWidth=".6"/>)))}
+        <text x="120" y="160" textAnchor="middle" className="ui" fontSize="11" fill="#9a3412">every input × every hidden ⇒ 12 M params</text>
+      </g>
+      <g transform="translate(420,30)">
+        <text x="120" y="-10" textAnchor="middle" className="ui" fontWeight="700" fontSize="12" fill="#0e6b4e">CNN — shared 3×3 filter</text>
+        {Array.from({length:12}).map((_,i)=>(<circle key={i} cx={i*20} cy="20" r="5" fill="#0e6b4e"/>))}
+        {Array.from({length:8}).map((_,j)=>(<circle key={j} cx={30+j*20} cy="120" r="6" fill="#e3efe8" stroke="#0e6b4e" strokeWidth="1.5"/>))}
+        {Array.from({length:8}).flatMap((_,j)=>{
+          const base=j*20+30; return [-20,0,20].map((dx,k)=>(<line key={`${j}-${k}`} x1={base+dx} y1="25" x2={base} y2="114" stroke="#0e6b4e" strokeWidth="1.2"/>));})}
+        <text x="120" y="160" textAnchor="middle" className="ui" fontSize="11" fill="#0e6b4e">9 weights re-used at every location</text>
+      </g>
+    </svg></Figure>
+  <Aside title="Why this matters for skin lesions">A pigmentation pattern is a pigmentation pattern whether it appears in the top-left corner or the bottom-right of the dermoscopic image. We want a model that can learn that pattern <i>once</i> and apply it everywhere — exactly what parameter sharing buys us.</Aside>
+</div>);
+
+const PartIV_CONV = () => (<div>
+  <p className="dropcap">A convolutional layer is built from one piece of math: a small filter (kernel) slid across the image, computing a dot product at every location. The same filter applied at every position is what gives the layer its name; what it actually computes is a 2-D <i>cross-correlation</i> (engineering's "convolution" — true mathematical convolution flips the kernel, which has no learning consequence).</p>
+  <Definition title="2-D discrete convolution (single channel)">{`Given an input $X\\in\\mathbb{R}^{H\\times W}$ and a filter $K\\in\\mathbb{R}^{k\\times k}$, the output map $Y\\in\\mathbb{R}^{(H-k+1)\\times(W-k+1)}$ is $$Y_{i,j}=\\sum_{m=0}^{k-1}\\sum_{n=0}^{k-1}K_{m,n}\\,X_{i+m,\\,j+n}.$$ With $C_\\text{in}$ input channels, the same formula sums over channels; with $C_\\text{out}$ filters, we stack the resulting feature maps. The number of weights per Conv layer is $C_\\text{out}\\cdot C_\\text{in}\\cdot k\\cdot k$.`}</Definition>
+  <Figure caption="The sliding 3×3 filter. Each output pixel is the dot product of the filter weights with the 9 input pixels under it. The dashed arrow shows one position; the same filter slides to every other position.">
+    <svg viewBox="0 0 580 280" className="w-full">
+      {Array.from({length:8}).map((_,j)=>Array.from({length:8},(_,i)=>(<rect key={`${i}-${j}`} x={20+i*24} y={20+j*24} width="22" height="22" fill={(i+j)%2?"#f7f3e6":"#fff"} stroke="#cabfa3"/>)))}
+      <rect x="68" y="68" width="68" height="68" fill="#0e6b4e" fillOpacity=".18" stroke="#0e6b4e" strokeWidth="2"/>
+      <text x="102" y="105" textAnchor="middle" className="ui" fontWeight="700" fontSize="12" fill="#0e6b4e">3×3 K</text>
+      <rect x="380" y="20" width="180" height="180" fill="#fff" stroke="#1c1917" strokeWidth="1.4"/>
+      <text x="470" y="14" textAnchor="middle" className="ui" fontWeight="700" fontSize="12" fill="#1c1917">output map Y</text>
+      <rect x="395" y="35" width="14" height="14" fill="#0e6b4e"/>
+      <line x1="136" y1="102" x2="402" y2="42" stroke="#0e6b4e" strokeWidth="1.2" strokeDasharray="3 3"/>
+      <text x="380" y="245" className="ui" fontSize="11" fill="#5a544a">Y[i,j] = Σ K[m,n] · X[i+m, j+n]</text>
+      <text x="100" y="245" className="ui" fontSize="11" fill="#5a544a">slide K across X</text>
+    </svg></Figure>
+  <Example title="A worked 1-D convolution">{`Let $X=(1,3,2,5,4)$ and $K=(1,0,-1)$. The output of length $5-3+1=3$ is computed as $$Y_0=1\\cdot 1+0\\cdot 3+(-1)\\cdot 2=-1,\\;Y_1=1\\cdot 3+0\\cdot 2+(-1)\\cdot 5=-2,\\;Y_2=1\\cdot 2+0\\cdot 5+(-1)\\cdot 4=-2.$$ The filter $(1,0,-1)$ is an edge detector — it returns large magnitudes when the left and right neighbours differ.`}</Example>
+  <Intuition title="A filter as a learned template">{`Each filter is a small image patch that the network has learned. Convolving it with an image returns a heat-map: bright wherever the patch <i>matches</i> the local image content, dark elsewhere. Stacks of Conv layers learn increasingly abstract templates — edges → textures → object parts → whole objects.`}</Intuition>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">14.1 · Multi-channel and multi-filter Conv</h3>
+  <Theorem title="Full Conv2d operation">{`For an input tensor $X\\in\\mathbb{R}^{C_\\text{in}\\times H\\times W}$ and a kernel bank $K\\in\\mathbb{R}^{C_\\text{out}\\times C_\\text{in}\\times k\\times k}$ with bias $\\mathbf{b}\\in\\mathbb{R}^{C_\\text{out}}$, the output tensor $Y\\in\\mathbb{R}^{C_\\text{out}\\times H'\\times W'}$ is $$Y_{o,i,j}=b_o+\\sum_{c=1}^{C_\\text{in}}\\sum_{m,n}K_{o,c,m,n}\\,X_{c,\\,i+m,\\,j+n}.$$ Each of $C_\\text{out}$ filters produces one feature map; the feature maps are stacked along the channel axis.`}</Theorem>
+</div>);
+
+const PartIV_POOL = () => (<div>
+  <p className="dropcap">Convolutional layers extract <i>local</i> features at the resolution of the input. To detect patterns at multiple scales — a feature that spans an entire lesion, not just a few pixels — we have to progressively reduce spatial resolution while increasing channel depth. Pooling, padding and stride are the three knobs that control the spatial geometry.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">15.1 · Max pooling</h3>
+  <Definition title="Max pooling">{`Given a 2-D feature map $X$ and window size $k$ (here $k=2$) with stride $s=2$, $$\\bigl(\\mathrm{maxpool}_k(X)\\bigr)_{i,j}=\\max_{0\\le p,q<k}X_{si+p,\\,sj+q}.$$ Each output pixel takes the maximum activation in a non-overlapping $k\\times k$ patch. Width and height drop by a factor of $k$.`}</Definition>
+  <Figure caption="Max pooling with a 2×2 window and stride 2 on a 4×4 feature map. Each coloured tile in the input contributes its maximum value to one output cell. Spatial size is halved; channel count is unchanged.">
+    <svg viewBox="0 0 560 220" className="w-full">
+      {[[2,1,0,4],[6,3,5,2],[0,1,9,2],[3,7,8,4]].flatMap((row,j)=>row.map((v,i)=>{
+        const block = Math.floor(j/2)*2+Math.floor(i/2);
+        const colors=["#e3efe8","#fbf5e7","#fdebd6","#eef0f5"];
+        return(<g key={`${i}-${j}`}><rect x={40+i*40} y={20+j*40} width="38" height="38" fill={colors[block]} stroke="#cabfa3"/><text x={59+i*40} y={44+j*40} textAnchor="middle" className="mono" fontSize="13" fill="#1c1917">{v}</text></g>);
+      }))}
+      <text x="120" y="200" textAnchor="middle" className="ui" fontWeight="700" fontSize="12" fill="#1c1917">input 4×4</text>
+      <line x1="230" y1="100" x2="320" y2="100" stroke="#0e6b4e" strokeWidth="2" markerEnd="url(#arrG)"/>
+      <text x="275" y="92" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#0e6b4e">max-pool 2×2</text>
+      {[[6,5],[7,9]].flatMap((row,j)=>row.map((v,i)=>{
+        const colors=["#e3efe8","#fbf5e7","#fdebd6","#eef0f5"];const block = j*2+i;
+        return(<g key={`o${i}-${j}`}><rect x={360+i*60} y={50+j*60} width="56" height="56" fill={colors[block]} stroke="#0e6b4e" strokeWidth="2"/><text x={388+i*60} y={84+j*60} textAnchor="middle" className="mono" fontSize="16" fontWeight="700" fill="#0e6b4e">{v}</text></g>);
+      }))}
+      <text x="420" y="200" textAnchor="middle" className="ui" fontWeight="700" fontSize="12" fill="#0e6b4e">output 2×2</text>
+    </svg></Figure>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">15.2 · Padding and stride</h3>
+  <Definition title="Stride">{`The stride $s$ is the step size with which the filter (or pooling window) is moved across the input. Stride $1$ produces an output the same size as the input (minus the kernel-edge loss); stride $2$ halves the spatial size.`}</Definition>
+  <Definition title="Padding">{`Padding adds $p$ rows / columns of zeros around the input border. The output size with kernel $k$, stride $s$, padding $p$ is $$H'=\\Bigl\\lfloor\\frac{H+2p-k}{s}\\Bigr\\rfloor+1.$$ "Same" padding chooses $p$ so $H'=H$ when $s=1$.`}</Definition>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">15.3 · Receptive field</h3>
+  <Definition title="Receptive field">{`The receptive field of a neuron is the rectangle of pixels in the <i>original</i> input that can possibly influence its activation. After one $3\\times 3$ Conv the receptive field is $3$. After one $3\\times 3$ Conv plus one $2\\times 2$ max-pool the next $3\\times 3$ Conv sees a $6\\times 6$ patch of the input. After four such blocks (our SkinCNN), the receptive field covers roughly the entire $64\\times 64$ input.`}</Definition>
+  <Figure caption="Receptive-field growth in our 4-block SkinCNN. Each pool doubles how much of the original image one neuron can see.">
+    <svg viewBox="0 0 760 200" className="w-full">
+      {[3,6,12,24,48].map((rf,i)=>{const x=80+i*140;return(<g key={i} transform={`translate(${x},90)`}>
+        <rect x={-rf/2} y={-rf/2} width={rf} height={rf} fill="#e3efe8" stroke="#0e6b4e" strokeWidth="1.6"/>
+        <text x="0" y="-30" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#0e6b4e">{`block ${i}`}</text>
+        <text x="0" y="-15" textAnchor="middle" className="ui" fontSize="11" fill="#1c1917">{`RF = ${rf}×${rf}`}</text>
+      </g>);})}
+      <text x="380" y="180" textAnchor="middle" className="ui" fontSize="11" fontStyle="italic" fill="#5a544a">at block 4 a single neuron sees ≈ entire input</text>
+    </svg></Figure>
+</div>);
+
+const PartIV_BN = () => (<div>
+  <p className="dropcap">As data flows through a deep network the distribution of activations at each layer can drift dramatically — a phenomenon Ioffe and Szegedy (2015) called <i>internal covariate shift</i>. Each layer has to keep adapting to a moving target, which forces tiny learning rates. <b>Batch normalisation</b> (BN) fixes this by standardising every mini-batch to mean $0$ and variance $1$, then re-scaling and re-shifting with two learnable parameters.</p>
+  <Definition title="Batch normalisation">{`For a mini-batch $\\{x_i\\}_{i=1}^{m}$ at one neuron, $$\\mu_B=\\frac{1}{m}\\sum_i x_i,\\quad \\sigma_B^2=\\frac{1}{m}\\sum_i(x_i-\\mu_B)^2,$$ $$\\hat x_i=\\frac{x_i-\\mu_B}{\\sqrt{\\sigma_B^2+\\varepsilon}},\\quad y_i=\\gamma\\,\\hat x_i+\\beta.$$ The parameters $\\gamma,\\beta$ are learned per channel. At inference, $\\mu_B,\\sigma_B$ are replaced by running averages collected during training.`}</Definition>
+  <Figure caption="Before BN (left), activations of three channels have wildly different scales — gradients spread unevenly across them. After BN (right), every channel is standardised to N(0,1) before the learned γ, β rescaling.">
+    <svg viewBox="0 0 760 200" className="w-full">
+      {[{m:0,s:30,c:"#bb451a"},{m:120,s:8,c:"#0e6b4e"},{m:-40,s:18,c:"#1e508f"}].map((d,i)=>{
+        const y=40+i*40;return(<g key={"b"+i}>
+          <text x="40" y={y+4} className="mono" fontSize="11" fill={d.c}>{`ch${i+1}`}</text>
+          <rect x="80" y={y-10} width="240" height="20" fill="#f7f3e6" stroke="#cabfa3"/>
+          <line x1={170+d.m} y1={y-12} x2={170+d.m} y2={y+12} stroke={d.c} strokeWidth="2"/>
+          <text x={170+d.m+8} y={y+4} className="ui" fontSize="10" fill={d.c}>{`μ=${d.m}, σ=${d.s}`}</text>
+        </g>);})}
+      <text x="200" y="180" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#9a3412">before BN — drift</text>
+      <line x1="340" y1="100" x2="420" y2="100" stroke="#0e6b4e" strokeWidth="2" markerEnd="url(#arrG)"/>
+      <text x="380" y="90" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#0e6b4e">BN</text>
+      {[0,1,2].map(i=>{const y=40+i*40;return(<g key={"a"+i}>
+        <text x="440" y={y+4} className="mono" fontSize="11" fill="#0e6b4e">{`ch${i+1}`}</text>
+        <rect x="480" y={y-10} width="240" height="20" fill="#e3efe8" stroke="#0e6b4e"/>
+        <line x1="600" y1={y-12} x2="600" y2={y+12} stroke="#0e6b4e" strokeWidth="2"/>
+        <text x="608" y={y+4} className="ui" fontSize="10" fill="#0e6b4e">{"μ=0, σ=1"}</text>
+      </g>);})}
+      <text x="600" y="180" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#0e6b4e">after BN — comparable scales</text>
+    </svg></Figure>
+  <Theorem title="Why BN lets us use larger learning rates">{`Standardising activations bounds the Jacobian of each layer away from explosion. The gradient magnitude no longer drifts with depth, so a single global $\\eta$ remains safe across all layers. Empirically BN speeds convergence by 2–10× and acts as a mild regulariser (because the mini-batch statistics inject noise during training).`}</Theorem>
+  <Aside title="Where BN sits in our SkinCNN">After every Conv2d and before the ReLU. The order Conv → BN → ReLU is the standard recipe; some modern designs swap it, but for our project the canonical order is used.</Aside>
+</div>);
+
+const PartIV_DROP = () => (<div>
+  <p className="dropcap">A deep network with 100k+ parameters is powerful enough to memorise any training set verbatim. <b>Dropout</b> (Srivastava et al., 2014) is a startlingly simple regulariser: at every forward pass, independently zero out each neuron with probability $p$. The network is forced to learn redundant, robust features because it cannot rely on any specific co-adaptation of neurons that might be turned off next step.</p>
+  <Definition title="Dropout">{`During training, multiply the activation $a$ by a Bernoulli mask $m\\sim\\mathrm{Bernoulli}(1-p)$: $$\\tilde a = a\\cdot m / (1-p).$$ The factor $1/(1-p)$ keeps the expected magnitude unchanged. At evaluation, $m\\equiv 1$ — every neuron is used.`}</Definition>
+  <Figure caption="Dropout p=0.4 applied to a layer of 10 neurons. Hollow circles are dropped during this training step; the surviving neurons must still carry the full signal.">
+    <svg viewBox="0 0 600 140" className="w-full">
+      {Array.from({length:10}).map((_,i)=>{
+        const dropped = [1,4,6,9].includes(i);
+        return(<g key={i} transform={`translate(${50+i*55},70)`}>
+          {dropped
+            ? <><circle r="18" fill="#fff" stroke="#bb451a" strokeWidth="1.8" strokeDasharray="3 3"/><line x1="-14" y1="-14" x2="14" y2="14" stroke="#bb451a" strokeWidth="2"/><line x1="-14" y1="14" x2="14" y2="-14" stroke="#bb451a" strokeWidth="2"/></>
+            : <><circle r="18" fill="#e3efe8" stroke="#0e6b4e" strokeWidth="1.8"/><text textAnchor="middle" y="5" className="mono" fontSize="11" fill="#0e6b4e">{`a${i+1}`}</text></>}
+        </g>);
+      })}
+      <text x="300" y="120" textAnchor="middle" className="ui" fontSize="11" fontStyle="italic" fill="#5a544a">4 / 10 neurons dropped this step</text>
+    </svg></Figure>
+  <Intuition title="An ensemble disguised as a single network">{`Each forward pass uses a different random subset of neurons, so the gradient update trains a different "sub-network." Over many steps the parent network behaves like an exponentially large ensemble of these sub-networks — averaging their predictions at evaluation gives the regularised model.`}</Intuition>
+  <Aside title="Where dropout sits in our SkinCNN">Twice, both at $p=0.4$: once after the Global Average Pooling and once after the first dense layer. The Conv blocks do not use dropout (BatchNorm already provides mild stochasticity).</Aside>
+</div>);
+
+const PartIV_GAP = () => (<div>
+  <p className="dropcap">After the final Conv block our network holds a {String.raw`$128\times 4\times 4$`} tensor — {String.raw`$2,048$`} numbers per image. If we flatten this and feed it to a 64-unit dense layer we add {String.raw`$2,048\cdot 64\approx 131$`}k weights — more than the rest of the network combined and a recipe for overfitting. <b>Global Average Pooling</b> (Lin et al., 2014) replaces the flatten with a parameter-free reduction: take the spatial mean of each channel, producing exactly $128$ numbers.</p>
+  <Definition title="Global Average Pooling (GAP)">{`Given a feature tensor $X\\in\\mathbb{R}^{C\\times H\\times W}$, $$\\mathrm{GAP}(X)_c=\\frac{1}{HW}\\sum_{i=1}^{H}\\sum_{j=1}^{W}X_{c,i,j}\\in\\mathbb{R}^{C}.$$ Each channel becomes a single number — interpretable as "how strongly that feature was present <i>anywhere</i> in the image."`}</Definition>
+  <Figure caption="Flatten + Dense (left) vs Global Average Pooling + Dense (right). GAP keeps the channel structure intact and slashes parameter count.">
+    <svg viewBox="0 0 760 220" className="w-full">
+      <g transform="translate(40,30)">
+        <text x="170" y="-10" textAnchor="middle" className="ui" fontWeight="700" fontSize="12" fill="#9a3412">FLATTEN + DENSE</text>
+        <rect x="10" y="20" width="80" height="80" fill="#fdebd6" stroke="#9a3412"/>
+        <text x="50" y="65" textAnchor="middle" className="mono" fontSize="11" fill="#9a3412">128×4×4</text>
+        <line x1="90" y1="60" x2="140" y2="60" stroke="#9a3412" markerEnd="url(#arrR)"/>
+        <rect x="140" y="40" width="160" height="40" fill="#fdebd6" stroke="#9a3412"/>
+        <text x="220" y="65" textAnchor="middle" className="mono" fontSize="11" fill="#9a3412">flat 2048</text>
+        <line x1="300" y1="60" x2="335" y2="60" stroke="#9a3412" markerEnd="url(#arrR)"/>
+        <rect x="335" y="40" width="80" height="40" fill="#fff" stroke="#9a3412"/>
+        <text x="375" y="65" textAnchor="middle" className="mono" fontSize="11" fill="#9a3412">dense 64</text>
+        <text x="200" y="130" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#9a3412">≈ 131,000 weights</text>
+      </g>
+      <g transform="translate(40,150)">
+        <text x="170" y="-10" textAnchor="middle" className="ui" fontWeight="700" fontSize="12" fill="#0e6b4e">GAP + DENSE</text>
+        <rect x="10" y="0" width="80" height="40" fill="#e3efe8" stroke="#0e6b4e"/>
+        <text x="50" y="25" textAnchor="middle" className="mono" fontSize="11" fill="#0e6b4e">128×4×4</text>
+        <line x1="90" y1="20" x2="140" y2="20" stroke="#0e6b4e" markerEnd="url(#arrG)"/>
+        <rect x="140" y="0" width="100" height="40" fill="#e3efe8" stroke="#0e6b4e"/>
+        <text x="190" y="25" textAnchor="middle" className="mono" fontSize="11" fill="#0e6b4e">GAP 128</text>
+        <line x1="240" y1="20" x2="335" y2="20" stroke="#0e6b4e" markerEnd="url(#arrG)"/>
+        <rect x="335" y="0" width="80" height="40" fill="#fff" stroke="#0e6b4e"/>
+        <text x="375" y="25" textAnchor="middle" className="mono" fontSize="11" fill="#0e6b4e">dense 64</text>
+        <text x="200" y="60" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#0e6b4e">= 8,192 weights (16× fewer)</text>
+      </g>
+    </svg></Figure>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">18.1 · A complete CNN block — assembled</h3>
+  <p>Every Conv block in our SkinCNN is the canonical recipe assembled from the previous chapters:</p>
+  <div className="mathframe my-4 text-center text-[16px]">
+    <span className="mono">Conv2d(3×3, stride 1, pad 1) → BatchNorm2d → ReLU → MaxPool2d(2×2)</span>
+  </div>
+  <Theorem title="Why this exact order">{`<b>Conv2d</b> learns local templates (§14). <b>BatchNorm</b> standardises the activation distribution per channel so the next non-linearity sees a sensible scale (§16). <b>ReLU</b> introduces the non-linearity that lets the network learn curved decision boundaries (§7). <b>MaxPool</b> halves the spatial size and provides shift invariance (§15). Stack four of these and you have everything our SkinCNN's feature extractor does.`}</Theorem>
+</div>);
+
+/* === PART V (chapters 19–24) === */
+const PartV_PROBLEM = () => (<div>
+  <p className="dropcap">We now transition from pure mathematics to applied clinical engineering. <b>HAM10000</b> ("Human Against Machine with 10,000 training images") was assembled by Tschandl, Rosendahl &amp; Kittler (2018) — 10,015 dermoscopic photographs, hand-labelled across seven diagnostic classes. Our task: classify a previously unseen lesion image into one of these seven categories. The catch — and the entire scientific point of the project — is that the dataset is severely imbalanced.</p>
+  <Figure caption="The accuracy trap, illustrated. A model that always answers 'nv' attains 67% accuracy and has 0% recall on every minority class — clinically useless yet looks competent on a single-number metric.">
+    <svg viewBox="0 0 760 220" className="w-full">
+      <text x="20" y="30" className="ui" fontSize="12" fontWeight="700" fill="#1c1917">If model predicts "nv" always …</text>
+      <rect x="20" y="50" width="500" height="32" fill="#1e508f"/>
+      <text x="270" y="71" textAnchor="middle" className="ui" fontWeight="700" fontSize="13" fill="#fff">67.0% accuracy</text>
+      <rect x="520" y="50" width="220" height="32" fill="#fdebd6" stroke="#9a3412"/>
+      <text x="630" y="71" textAnchor="middle" className="ui" fontWeight="700" fontSize="12" fill="#9a3412">33% wrong (all minority)</text>
+      <text x="20" y="130" className="ui" fontSize="12" fontWeight="700" fill="#1c1917">Per-class recall under the trivial model:</text>
+      {CLASSES.map((c,i)=>(<g key={c.key} transform={`translate(${30+i*100},150)`}>
+        <rect x="0" y="0" width="80" height="30" fill="#fff" stroke={c.color} strokeWidth="1.4"/>
+        <text x="40" y="20" textAnchor="middle" className="mono" fontSize="12" fill={c.color}>{c.key}</text>
+        <text x="40" y="48" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill={c.key==="nv"?"#0e6b4e":"#9a3412"}>{c.key==="nv"?"100%":"0%"}</text>
+      </g>))}
+    </svg></Figure>
+  <Intuition title="Junior dermatologist analogy">{`Imagine a trainee who has only ever examined ten patients — nine had ordinary moles. Asked to diagnose every patient in a busy clinic on their first night-shift, they will lean heavily on the prior they memorised: <i>"It is probably just a mole."</i> They will be correct most of the time, and they will also catastrophically fail on the patient with melanoma. A naive Cross-Entropy CNN on HAM10000 commits exactly this error.`}</Intuition>
+  <Aside title="What this project is, in one sentence">{`Train an identical SkinCNN under five different loss-or-sampling configurations on the same data with the same seed, and measure how each one reshapes the class-recall profile — especially on the rarest class, dermatofibroma.`}</Aside>
+</div>);
+
+const PartV_DATASET = () => (<div>
+  <p className="dropcap">Before we can fix anything we have to look squarely at the shape of the data. Below is the official HAM10000 class roster, with the absolute count, share of the corpus, training-set count after our 70/15/15 split, and a one-line clinical character. The 58× ratio between the largest and smallest class is the central character of every later experiment.</p>
+  <div className="frame rounded overflow-hidden">
+    <table className="book"><thead><tr><th>Code</th><th>Full name</th><th>Clinical character</th><th className="text-right">Train</th><th className="text-right">Total</th><th className="text-right">Share</th></tr></thead>
+    <tbody>
+      {CLASSES.map(c=>(<tr key={c.key}>
+        <td><span className="chip mono" style={{borderColor:c.color,color:c.color}}>{c.key}</span></td>
+        <td><b>{c.name}</b><div className="ui text-xs text-stone-500 mt-0.5">{c.desc}</div></td>
+        <td className="ui text-sm text-stone-700">{c.clinical}</td>
+        <td className="text-right mono">{c.train}</td>
+        <td className="text-right mono">{c.n}</td>
+        <td className="text-right mono">{c.pct.toFixed(1)}%</td>
+      </tr>))}
+    </tbody></table>
+  </div>
+  <Figure caption="The same numbers, drawn. The blue 'nv' bar dwarfs every other class; 'df' is the canonical 'long tail.'">
+    <svg viewBox="0 0 760 280" className="w-full">
+      {CLASSES.map((c,i)=>{const w=(c.n/6705)*620;return(<g key={c.key} transform={`translate(0,${20+i*36})`}>
+        <text x="10" y="22" className="mono" fontSize="12" fill={c.color} fontWeight="700">{c.key}</text>
+        <rect x="80" y="6" width={w} height="22" fill={c.color}/>
+        <text x={80+w+8} y="22" className="ui" fontSize="12" fill="#1c1917" fontWeight="700">{c.n}</text>
+        <text x={80+w+58} y="22" className="ui" fontSize="11" fill="#5a544a">({c.pct.toFixed(1)}%)</text>
+      </g>);})}
+      <text x="20" y="275" className="ui" fontSize="11" fontStyle="italic" fill="#5a544a">N = 10,015 dermoscopic images · ratio nv/df ≈ 58×</text>
+    </svg></Figure>
+</div>);
+
+const PartV_PIPELINE = () => (<div>
+  <p className="dropcap">Deep learning needs the data on the GPU at thousands of samples per second. Reading 10,015 JPEGs and decoding them every epoch is an I/O bottleneck. We therefore build a deliberate pipeline: decode once, cache to a single tensor file on disk, then load the cache into RAM for every subsequent run.</p>
+  <Figure caption="The full HAM10000 → tensor → batch pipeline. Each box is one transformation; numbers below show what the data looks like at that stage.">
+    <svg viewBox="0 0 980 240" className="w-full">
+      {[
+        {x:30, w:120,label:"ZIPs",sub:"2 archives · 2.7 GB",c:"#1e508f"},
+        {x:170,w:130,label:"PIL decode",sub:"JPEG → 600×450 RGB",c:"#0e6b4e"},
+        {x:320,w:130,label:"Resize 64×64",sub:"bilinear · uint8",c:"#0e6b4e"},
+        {x:470,w:130,label:".npy cache",sub:"shape (10015,3,64,64)",c:"#a67c1f"},
+        {x:620,w:130,label:"Strat. split",sub:"7008 / 1502 / 1505",c:"#a67c1f"},
+        {x:770,w:130,label:"Augment + Norm",sub:"flip · ImageNet (μ,σ)",c:"#bb451a"}
+      ].map((s,i,arr)=>(<g key={i}>
+        <rect x={s.x} y="70" width={s.w} height="70" fill="#fffdf6" stroke={s.c} strokeWidth="1.8"/>
+        <text x={s.x+s.w/2} y="95" textAnchor="middle" className="ui" fontSize="12" fontWeight="700" fill={s.c}>{s.label}</text>
+        <text x={s.x+s.w/2} y="115" textAnchor="middle" className="ui" fontSize="10" fill="#5a544a">{s.sub}</text>
+        {i<arr.length-1 && <line x1={s.x+s.w} y1="105" x2={arr[i+1].x} y2="105" stroke="#1c1917" strokeWidth="1.4" markerEnd="url(#arr)"/>}
+      </g>))}
+      <text x="30" y="55" className="ui" fontSize="11" fontWeight="700" fill="#1c1917">INPUT</text>
+      <text x="900" y="55" textAnchor="end" className="ui" fontSize="11" fontWeight="700" fill="#1c1917">→ MODEL</text>
+      <text x="490" y="195" textAnchor="middle" className="ui" fontSize="11" fontStyle="italic" fill="#5a544a">Cache once · re-use forever (3.3 s vs minutes per epoch)</text>
+    </svg></Figure>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">21.1 · Each step, justified</h3>
+  <div className="space-y-3">
+    {[
+      ["Read JPGs from inside the ZIPs (no extraction)",
+       "Saves ~2.7 GB of intermediate disk and keeps the original dataset pristine."],
+      ["PIL decode, force RGB",
+       "Some images are RGBA or grayscale — we always coerce to 3 channels so the tensor shape is uniform."],
+      ["Bilinear resize to 64×64",
+       "We trade away sub-pixel detail to make CPU training tractable. 64 px is still enough to preserve gross lesion shape, colour and pigmentation pattern."],
+      ["Save as uint8 NCHW (.npy)",
+       "uint8 packs each pixel into a single byte; the whole dataset becomes 117 MB. Loading is essentially instant on subsequent runs."],
+      ["Stratified 70/15/15 split",
+       "For every class independently, shuffle and slice the indices in proportion. This guarantees that even the 115-image 'df' class has roughly 17 examples in val and 17 in test."],
+      ["Train-time augmentation: H/V flip p=0.5 each",
+       "Dermoscopic images have no canonical orientation; flips are label-preserving free data."],
+      ["ImageNet-style normalisation",
+       "(x/255 − μ) / σ with μ=(0.485,0.456,0.406), σ=(0.229,0.224,0.225). Standardises channels to roughly N(0,1) so gradient magnitudes are well-behaved."]
+    ].map((s,i)=>(<div key={i} className="flex gap-3 frame rounded p-3">
+      <div className="badge mt-0.5 shrink-0">{i+1}</div>
+      <div><b className="text-stone-900">{s[0]}.</b> <span className="ui text-sm text-stone-700">{s[1]}</span></div>
+    </div>))}
+  </div>
+  <Theorem title="Stratified split — formal statement">{`Let $\\mathcal{D}$ be the dataset with class partition $\\{\\mathcal{C}_c\\}_{c=1}^{K}$. The stratified split returns disjoint index sets $\\mathcal{T},\\mathcal{V},\\mathcal{H}$ with $\\mathcal{T}\\cup\\mathcal{V}\\cup\\mathcal{H}=\\mathcal{D}$ such that for every $c$: $$\\frac{|\\mathcal{T}\\cap\\mathcal{C}_c|}{|\\mathcal{C}_c|}\\approx 0.70,\\;\\frac{|\\mathcal{V}\\cap\\mathcal{C}_c|}{|\\mathcal{C}_c|}\\approx 0.15,\\;\\frac{|\\mathcal{H}\\cap\\mathcal{C}_c|}{|\\mathcal{C}_c|}\\approx 0.15.$$ Real numbers for our run: train 7,008 · val 1,502 · test 1,505.`}</Theorem>
+</div>);
+
+const PartV_CNN = () => (<div>
+  <p className="dropcap">SkinCNN is the bespoke architecture trained for all five HAM10000 experiments. It has {String.raw`$106,391$`} trainable parameters — small enough to fit in a CPU's working set, large enough to learn pigmentation patterns at 64×64 resolution. Every component appears in the previous chapters; this section is the assembly.</p>
+  <Figure caption="SkinCNN end-to-end. Four Conv blocks halve the spatial size and double the channel count; GAP collapses the spatial axes; two dense layers produce seven logits.">
+    <svg viewBox="0 0 980 220" className="w-full">
+      <g transform="translate(20,55)">
+        <rect width="90" height="110" fill="#e3efe8" stroke="#0e6b4e" strokeWidth="1.6"/>
+        <text x="45" y="50" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#0e6b4e">INPUT</text>
+        <text x="45" y="70" textAnchor="middle" className="mono" fontSize="11" fill="#0e6b4e">3×64×64</text>
+      </g>
+      {[
+        {x:130,name:"Block 1",sub:"16×32×32"},
+        {x:260,name:"Block 2",sub:"32×16×16"},
+        {x:390,name:"Block 3",sub:"64×8×8"},
+        {x:520,name:"Block 4",sub:"128×4×4"}
+      ].map((b,i)=>(<g key={i} transform={`translate(${b.x},55)`}>
+        <line x1="-20" y1="55" x2="0" y2="55" stroke="#1c1917" markerEnd="url(#arr)"/>
+        <rect width="110" height="110" fill="#fbf5e7" stroke="#a67c1f" strokeWidth="1.6"/>
+        <text x="55" y="44" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#a67c1f">{b.name}</text>
+        <text x="55" y="62" textAnchor="middle" className="mono" fontSize="10" fill="#a67c1f">{b.sub}</text>
+        <text x="55" y="85" textAnchor="middle" className="ui" fontSize="9" fill="#5a544a">Conv · BN</text>
+        <text x="55" y="98" textAnchor="middle" className="ui" fontSize="9" fill="#5a544a">ReLU · Pool</text>
+      </g>))}
+      <g transform="translate(650,55)">
+        <line x1="-20" y1="55" x2="0" y2="55" stroke="#1c1917" markerEnd="url(#arr)"/>
+        <rect width="90" height="110" fill="#fdebd6" stroke="#9a3412" strokeWidth="1.6"/>
+        <text x="45" y="50" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#9a3412">GAP</text>
+        <text x="45" y="68" textAnchor="middle" className="mono" fontSize="11" fill="#9a3412">128</text>
+      </g>
+      <g transform="translate(760,55)">
+        <line x1="-20" y1="55" x2="0" y2="55" stroke="#1c1917" markerEnd="url(#arr)"/>
+        <rect width="110" height="110" fill="#eef0f5" stroke="#495569" strokeWidth="1.6"/>
+        <text x="55" y="44" textAnchor="middle" className="ui" fontSize="11" fontWeight="700" fill="#495569">DENSE</text>
+        <text x="55" y="62" textAnchor="middle" className="mono" fontSize="10" fill="#495569">128 → 64 → 7</text>
+        <text x="55" y="82" textAnchor="middle" className="ui" fontSize="9" fill="#5a544a">ReLU · Dropout 0.4</text>
+        <text x="55" y="95" textAnchor="middle" className="ui" fontSize="9" fill="#5a544a">7 logits → softmax</text>
+      </g>
+      <line x1="870" y1="110" x2="950" y2="110" stroke="#1c1917" markerEnd="url(#arr)"/>
+      <text x="950" y="100" textAnchor="end" className="ui" fontSize="11" fontWeight="700" fill="#1c1917">p ∈ Δ⁶</text>
+      <text x="490" y="200" textAnchor="middle" className="ui" fontSize="11" fontStyle="italic" fill="#5a544a">spatial: 64→32→16→8→4→1   |   channels: 3→16→32→64→128→7</text>
+    </svg></Figure>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">22.1 · The exact PyTorch class</h3>
+  <pre className="code">{`class SkinCNN(nn.Module):
+    def __init__(self, num_classes=7):
+        super().__init__()
+        def block(in_c, out_c):
+            return nn.Sequential(
+                nn.Conv2d(in_c, out_c, 3, padding=1, bias=False),
+                nn.BatchNorm2d(out_c),
+                nn.ReLU(inplace=True),
+                nn.MaxPool2d(2),
+            )
+        self.features = nn.Sequential(
+            block(3, 16), block(16, 32), block(32, 64), block(64, 128)
+        )
+        self.gap   = nn.AdaptiveAvgPool2d(1)
+        self.drop  = nn.Dropout(0.4)
+        self.fc1   = nn.Linear(128, 64)
+        self.fc2   = nn.Linear(64, num_classes)
+
+    def forward(self, x):                # x : (N, 3, 64, 64)
+        x = self.features(x)             # (N, 128, 4, 4)
+        x = self.gap(x).flatten(1)       # (N, 128)
+        x = self.drop(F.relu(self.fc1(x)))
+        x = self.drop(x)
+        return self.fc2(x)               # (N, 7) — logits`}</pre>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">22.2 · Parameter accounting</h3>
+  <div className="frame rounded overflow-x-auto"><table className="book"><thead><tr><th>Layer</th><th>Output shape</th><th className="text-right">Params</th></tr></thead><tbody>
+    <tr><td>Conv 3→16</td><td>16×64×64</td><td className="text-right mono">432</td></tr>
+    <tr><td>BN 16</td><td>16×64×64</td><td className="text-right mono">32</td></tr>
+    <tr><td>Pool</td><td>16×32×32</td><td className="text-right mono">0</td></tr>
+    <tr><td>Conv 16→32</td><td>32×32×32</td><td className="text-right mono">4,608</td></tr>
+    <tr><td>BN 32</td><td>32×32×32</td><td className="text-right mono">64</td></tr>
+    <tr><td>Pool</td><td>32×16×16</td><td className="text-right mono">0</td></tr>
+    <tr><td>Conv 32→64</td><td>64×16×16</td><td className="text-right mono">18,432</td></tr>
+    <tr><td>BN 64</td><td>64×16×16</td><td className="text-right mono">128</td></tr>
+    <tr><td>Pool</td><td>64×8×8</td><td className="text-right mono">0</td></tr>
+    <tr><td>Conv 64→128</td><td>128×8×8</td><td className="text-right mono">73,728</td></tr>
+    <tr><td>BN 128</td><td>128×8×8</td><td className="text-right mono">256</td></tr>
+    <tr><td>Pool</td><td>128×4×4</td><td className="text-right mono">0</td></tr>
+    <tr><td>GAP</td><td>128</td><td className="text-right mono">0</td></tr>
+    <tr><td>Dense 128→64</td><td>64</td><td className="text-right mono">8,256</td></tr>
+    <tr><td>Dense 64→7</td><td>7</td><td className="text-right mono">455</td></tr>
+    <tr style={{borderTop:"2px solid #1c1917"}}><td><b>Total trainable</b></td><td></td><td className="text-right mono font-bold">106,391</td></tr>
+  </tbody></table></div>
+</div>);
+
+const PartV_LOSSES = () => (<div>
+  <p className="dropcap">This is the scientific core of the project. We train the exact same SkinCNN on the exact same data with the same seed and the same optimiser — and change only the loss function (or, in the fifth experiment, the data sampler). The differences in the resulting metrics are therefore attributable to the loss alone.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">23.1 · The five formulations</h3>
+  <div className="space-y-4">
+    <div className="frame rounded p-5">
+      <div className="ui sc text-xs text-stone-500 font-bold">EXPERIMENT 1 · BASELINE</div>
+      <h4 className="display text-xl font-semibold mt-1 mb-2">Standard Cross-Entropy</h4>
+      <MathBlock>{`\\mathcal{L}_{\\mathrm{CE}}=-\\log p_y`}</MathBlock>
+      <p className="text-[15px]">{`Every sample contributes equally to the mean. Because $67\\%$ of samples are nv, minimising the mean means getting nv right. The network is rewarded for ignoring everything else.`}</p>
+    </div>
+    <div className="frame rounded p-5">
+      <div className="ui sc text-xs text-stone-500 font-bold">EXPERIMENT 2</div>
+      <h4 className="display text-xl font-semibold mt-1 mb-2">Weighted Cross-Entropy</h4>
+      <MathBlock>{`\\mathcal{L}_{\\mathrm{wCE}}=-w_y\\,\\log p_y,\\qquad w_c=\\frac{1/N_c}{\\sum_{c'}1/N_{c'}}\\cdot K`}</MathBlock>
+      <p className="text-[15px]">{`Per-class scalar weights inversely proportional to class size, normalised so they average to $1$. A misclassified df example produces a gradient roughly $59\\times$ larger than a misclassified nv example.`}</p>
+    </div>
+    <div className="frame rounded p-5 border-l-[5px] border-emerald-700 bg-emerald-50/50">
+      <div className="flex items-center justify-between">
+        <div className="ui sc text-xs text-emerald-800 font-bold">EXPERIMENT 3 · WINNER</div>
+        <span className="chip" style={{borderColor:"#0e6b4e",color:"#0e6b4e"}}>Lin et al., 2017</span>
+      </div>
+      <h4 className="display text-xl font-semibold mt-1 mb-2">Focal Loss (γ=2)</h4>
+      <MathBlock>{`\\mathcal{L}_{\\mathrm{focal}}=-\\alpha_y(1-p_y)^{\\gamma}\\log p_y`}</MathBlock>
+      <p className="text-[15px]">{`The modulating factor $(1-p_y)^{\\gamma}$ collapses the loss on easy examples. If the model is $99\\%$ confident the true class is nv, $(1-0.99)^2=10^{-4}$ — the network barely receives any gradient from already-easy examples and is forced to focus on hard / rare ones.`}</p>
+    </div>
+    <div className="frame rounded p-5">
+      <div className="ui sc text-xs text-stone-500 font-bold">EXPERIMENT 4</div>
+      <h4 className="display text-xl font-semibold mt-1 mb-2">Class-Balanced Cross-Entropy</h4>
+      <MathBlock>{`E_c=\\frac{1-\\beta^{N_c}}{1-\\beta},\\quad w_c\\propto\\frac{1}{E_c},\\quad \\beta=0.999`}</MathBlock>
+      <p className="text-[15px]">{`Cui et al. (CVPR 2019) noticed that as class size grows, the marginal information added by each new image overlaps with existing ones. The "effective number of samples" smooths the inverse-frequency weighting so the majority weight does not collapse to zero.`}</p>
+    </div>
+    <div className="frame rounded p-5">
+      <div className="ui sc text-xs text-stone-500 font-bold">EXPERIMENT 5 · DATA-SIDE FIX</div>
+      <h4 className="display text-xl font-semibold mt-1 mb-2">Standard CE + WeightedRandomSampler</h4>
+      <MathBlock>{`\\Pr(\\text{draw sample }i)\\propto 1/N_{y_i}`}</MathBlock>
+      <p className="text-[15px]">{`The loss is plain CE — we instead change which examples appear in each batch. Each mini-batch contains, on average, equal numbers of every class. Same number of gradient steps, but rare examples are replayed many times.`}</p>
+    </div>
+  </div>
+  <Figure caption="Focal modulation curve (1 − pᵧ)^γ at three values of γ. The horizontal axis is the predicted true-class probability; the vertical axis is the multiplier in front of −log pᵧ.">
+    <svg viewBox="0 0 580 220" className="w-full">
+      <line x1="40" y1="180" x2="540" y2="180" stroke="#cabfa3"/>
+      <line x1="40" y1="20" x2="40" y2="180" stroke="#cabfa3"/>
+      {[{g:0,c:"#9a3412",lab:"γ = 0 (plain CE)"},{g:1,c:"#a67c1f",lab:"γ = 1"},{g:2,c:"#0e6b4e",lab:"γ = 2 (we use this)"}].map((s,si)=>(
+        <g key={si}>
+          <polyline fill="none" stroke={s.c} strokeWidth="2.4"
+            points={Array.from({length:51},(_,i)=>{const p=i/50;const m=Math.pow(1-p,s.g);return (40+p*500)+","+(180-m*160);}).join(" ")}/>
+          <text x="420" y={40+si*18} className="ui" fontSize="11" fontWeight="700" fill={s.c}>● {s.lab}</text>
+        </g>))}
+      <text x="20" y="100" className="ui" fontSize="11" fill="#5a544a" transform="rotate(-90 20 100)">(1 − pᵧ)^γ</text>
+      <text x="290" y="200" textAnchor="middle" className="ui" fontSize="11" fill="#5a544a">pᵧ — predicted prob. of true class</text>
+    </svg></Figure>
+  <Aside title="One sentence summary">Three of the five formulations modify the loss (Weighted, Focal, Class-Balanced); one modifies the data (Sampler); one is the unmodified baseline. The empirical comparison in §26 will tell us which intervention actually moves the needle.</Aside>
+</div>);
+
+const PartV_TRAINING = () => (<div>
+  <p className="dropcap">To make the fair, the training regime is locked across all experiments. The only thing that changes between runs is the loss / sampler. Every hyperparameter below was chosen <i>once</i>, then frozen.</p>
+  <div className="frame rounded overflow-x-auto"><table className="book"><thead><tr><th>Hyperparameter</th><th>Value</th><th>Why</th></tr></thead><tbody>
+    <tr><td>Optimiser</td><td className="mono">Adam, β₁=0.9, β₂=0.999, η=10⁻³</td><td>Per-parameter learning-rate adaptation handles the heterogeneous gradient magnitudes that weighted losses produce.</td></tr>
+    <tr><td>Weight decay</td><td className="mono">10⁻⁴</td><td>Mild L₂ regularisation on the FC head; prevents the dense layer from memorising the 7,008 training images.</td></tr>
+    <tr><td>Batch size</td><td className="mono">128</td><td>Large enough for stable BatchNorm running statistics; small enough to fit in RAM and provide useful gradient noise.</td></tr>
+    <tr><td>Epochs</td><td className="mono">8</td><td>Sufficient to read the under/overfitting transition on the validation loss curve. Longer runs only deepen the majority bias of Standard CE.</td></tr>
+    <tr><td>Augmentation</td><td className="mono">H-flip p=0.5, V-flip p=0.5</td><td>Dermoscopic images have no canonical orientation; flips are label-preserving free data.</td></tr>
+    <tr><td>Seed</td><td className="mono">42</td><td>Used for split, model initialisation and DataLoader shuffling — so every experiment sees the same data in the same order.</td></tr>
+    <tr><td>Hardware</td><td className="mono">CPU (≈ 2 min / experiment)</td><td>Architecture was sized to be CPU-tractable; on GPU the run finishes in seconds.</td></tr>
+  </tbody></table></div>
+  <Figure caption="Schematic of the training loop. Forward pass produces logits, the loss is computed, gradients flow backward, Adam updates the parameters. Validation loss is evaluated at the end of each epoch.">
+    <svg viewBox="0 0 760 200" className="w-full">
+      {[
+        {x:30, label:"mini-batch",c:"#1e508f"},
+        {x:160,label:"forward",c:"#0e6b4e"},
+        {x:280,label:"loss",c:"#a67c1f"},
+        {x:380,label:"backward",c:"#bb451a"},
+        {x:510,label:"Adam step",c:"#8c2f8b"},
+        {x:640,label:"next batch",c:"#1c1917"}
+      ].map((s,i,arr)=>(<g key={i}>
+        <rect x={s.x} y="70" width="100" height="50" fill="#fffdf6" stroke={s.c} strokeWidth="1.6"/>
+        <text x={s.x+50} y="100" textAnchor="middle" className="ui" fontSize="12" fontWeight="700" fill={s.c}>{s.label}</text>
+        {i<arr.length-1 && <line x1={s.x+100} y1="95" x2={arr[i+1].x} y2="95" stroke="#1c1917" markerEnd="url(#arr)"/>}
+      </g>))}
+      <line x1="690" y1="120" x2="690" y2="160" stroke="#1c1917" strokeDasharray="3 3"/>
+      <line x1="690" y1="160" x2="80" y2="160" stroke="#1c1917" strokeDasharray="3 3"/>
+      <line x1="80" y1="160" x2="80" y2="120" stroke="#1c1917" markerEnd="url(#arr)" strokeDasharray="3 3"/>
+      <text x="380" y="180" textAnchor="middle" className="ui" fontSize="11" fontStyle="italic" fill="#5a544a">loop · ~55 batches per epoch × 8 epochs</text>
+    </svg></Figure>
+</div>);
+
+/* === PART V (chapters 25–28) === */
+const PartV_METRICS = () => (<div>
+  <p className="dropcap">As established in §19, overall accuracy is misleading on an imbalanced dataset. We need metrics that <i>expose</i> minority-class performance rather than hide it inside a frequency-weighted average. All of the metrics below are computed from one object: the confusion matrix.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">25.1 · The confusion matrix</h3>
+  <Figure caption="A 7×7 confusion matrix for our problem. Rows = true class, columns = predicted class. The diagonal cells count correct predictions; off-diagonal cells count errors. A perfect classifier is purely diagonal.">
+    <svg viewBox="0 0 420 360" className="w-full">
+      {CLASSES.map((c,i)=>CLASSES.map((d,j)=>{
+        const onDiag=i===j;return(<g key={i+"-"+j}>
+          <rect x={70+j*40} y={50+i*40} width="38" height="38" fill={onDiag?"#e3efe8":"#fff"} stroke="#cabfa3"/>
+          {onDiag && <text x={89+j*40} y={73+i*40} textAnchor="middle" className="mono" fontSize="11" fill="#0e6b4e" fontWeight="700">TP</text>}
+        </g>);}))}
+      {CLASSES.map((c,i)=>(<text key={"r"+i} x="60" y={75+i*40} textAnchor="end" className="mono" fontSize="11" fill={c.color}>{c.key}</text>))}
+      {CLASSES.map((c,j)=>(<text key={"c"+j} x={89+j*40} y="44" textAnchor="middle" className="mono" fontSize="11" fill={c.color}>{c.key}</text>))}
+      <text x="220" y="25" textAnchor="middle" className="ui" fontSize="12" fontWeight="700" fill="#1c1917">predicted →</text>
+      <text x="35" y="180" textAnchor="middle" className="ui" fontSize="12" fontWeight="700" fill="#1c1917" transform="rotate(-90 35 180)">↑ true</text>
+      <text x="220" y="345" textAnchor="middle" className="ui" fontSize="11" fill="#5a544a">diagonal cells = correct · off-diagonal = errors</text>
+    </svg></Figure>
+  <Definition title="Per-class TP, FP, FN, TN">{`For a fixed class $c$: $TP_c$ = predicted $c$ and is $c$. $FP_c$ = predicted $c$ but is not. $FN_c$ = predicted not $c$ but is $c$. $TN_c$ = predicted not $c$ and is not.`}</Definition>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">25.2 · The metrics we report</h3>
+  <div className="grid md:grid-cols-2 gap-4">
+    <Definition title="Accuracy">{`$\\text{Acc}=\\dfrac{\\sum_c TP_c}{N}$. Fraction of correct predictions. <b>Misleading on imbalanced data</b>: a model that always predicts nv scores 67% accuracy.`}</Definition>
+    <Definition title="Precision (per class)">{`$P_c=\\dfrac{TP_c}{TP_c+FP_c}$. Of the times the network said "class $c$", how often was it right?`}</Definition>
+    <Definition title="Recall (per class)">{`$R_c=\\dfrac{TP_c}{TP_c+FN_c}$. Of the actual class-$c$ samples, how many did we catch? Clinically critical — missed melanomas live here.`}</Definition>
+    <Definition title="F1 (per class)">{`$F1_c=\\dfrac{2\\,P_c R_c}{P_c+R_c}$. Harmonic mean of $P_c$ and $R_c$. Punishes a model that wins one and loses the other.`}</Definition>
+    <Definition title="Macro F1">{`$F1_{\\text{macro}}=\\frac{1}{K}\\sum_c F1_c$. Unweighted mean of per-class F1. Every class gets a $1/7$ vote, no matter how rare.`}</Definition>
+    <Definition title="Balanced accuracy">{`$\\text{BalAcc}=\\frac{1}{K}\\sum_c R_c$. The "class-symmetric" cousin of accuracy. Equals chance (≈ 14% for 7 classes) for a random classifier.`}</Definition>
+  </div>
+  <Theorem title="Why macro F1 — not accuracy — is the right yardstick here">{`Accuracy is a frequency-weighted mean of per-class recall: $\\text{Acc}=\\sum_c (N_c/N)\\,R_c$. On HAM10000 that weights nv at 67% and df at 1.1%. Macro F1 uses uniform weights — every class is equally important. That alignment with our actual clinical goal (do not miss the rare disease) is the entire reason we report macro F1.`}</Theorem>
+</div>);
+
+const PartV_RESULTS = () => (<div>
+  <p className="dropcap">All five experiments were run with the locked-in training regime of §24, evaluated on the held-out 1,505-image test set, and produced the numbers below. They confirm — quantitatively — the qualitative story we have built up: Standard CE collapses minority classes, Focal Loss recovers them most cleanly, and a data-side resampler trades accuracy for recall in a way that loss-side fixes do not.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">26.1 · Headline table</h3>
+  <div className="frame rounded overflow-x-auto"><table className="book"><thead><tr><th>Experiment</th><th className="text-right">Accuracy</th><th className="text-right">Balanced Acc.</th><th className="text-right">Macro P</th><th className="text-right">Macro R</th><th className="text-right">Macro F1</th><th className="text-right">df recall</th></tr></thead><tbody>
+    {RESULTS.map(r=>(<tr key={r.name} style={r.winner?{background:"#e3efe8"}:{}}>
+      <td><b className={r.winner?"text-emerald-800":""}>{r.name}</b>{r.winner && <span className="ml-2 chip" style={{borderColor:"#0e6b4e",color:"#0e6b4e"}}>winner</span>}<div className="ui text-xs text-stone-500 mt-0.5">{r.note}</div></td>
+      <td className="text-right mono">{(r.acc*100).toFixed(1)}%</td>
+      <td className="text-right mono">{(r.bal*100).toFixed(1)}%</td>
+      <td className="text-right mono">{(r.mp*100).toFixed(1)}%</td>
+      <td className="text-right mono">{(r.mr*100).toFixed(1)}%</td>
+      <td className={`text-right mono ${r.winner?"font-bold text-emerald-700":""}`}>{r.f1.toFixed(3)}</td>
+      <td className={`text-right mono ${r.recall[3]===0?"text-rose-700 font-bold":""}`}>{(r.recall[3]*100).toFixed(1)}%</td>
+    </tr>))}
+  </tbody></table></div>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">26.2 · Per-class recall heatmap</h3>
+  <Figure caption="Per-class recall (0 = red, 1 = emerald) for every experiment. Read each row top-to-bottom: Standard CE has a 0.00 cell at 'df' — the network literally never predicts that class. Focal is the only loss-side method that recovers it without obliterating majority accuracy.">
+    <svg viewBox="0 0 760 280" className="w-full">
+      {ORDER.map((cls,j)=>(<text key={"h"+j} x={170+j*70} y="40" textAnchor="middle" className="mono" fontSize="11" fontWeight="700" fill="#1c1917">{cls}</text>))}
+      {RESULTS.map((r,i)=>(<g key={i}>
+        <text x="160" y={70+i*40} textAnchor="end" className="ui" fontSize="11" fill="#1c1917" fontWeight={r.winner?700:400}>{r.name}</text>
+        {r.recall.map((v,j)=>{
+          const hex = v < 0.33
+            ? `rgb(${187 - v*40}, ${69 + v*180}, ${26 + v*180})`
+            : v < 0.66
+            ? `rgb(${160 - (v-0.33)*100}, ${175 + (v-0.33)*60}, ${70 + (v-0.33)*120})`
+            : `rgb(${50}, ${130 + (v-0.66)*60}, ${78 + (v-0.66)*40})`;
+          return(<g key={j}>
+            <rect x={170+j*70-26} y={56+i*40} width="52" height="28" fill={hex} stroke="#cabfa3"/>
+            <text x={170+j*70} y={75+i*40} textAnchor="middle" className="mono" fontSize="11" fill={v>0.5?"#fff":"#1c1917"}>{v.toFixed(2)}</text>
+          </g>);})}
+      </g>))}
+      <text x="380" y="270" textAnchor="middle" className="ui" fontSize="11" fontStyle="italic" fill="#5a544a">colour = recall · darker green = better</text>
+    </svg></Figure>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">26.3 · Macro F1 vs minority recall — the trade-off</h3>
+  <Figure caption="Each experiment plotted as one dot. The horizontal axis is overall accuracy (the misleading metric); the vertical is recall on the rarest class (the clinically critical metric). Standard CE sits at the bottom — high accuracy, zero rare-class recall. Focal Loss sits at the upper-middle: balanced both ways.">
+    <svg viewBox="0 0 640 320" className="w-full">
+      <line x1="60" y1="280" x2="600" y2="280" stroke="#cabfa3"/>
+      <line x1="60" y1="20" x2="60" y2="280" stroke="#cabfa3"/>
+      <text x="330" y="305" textAnchor="middle" className="ui" fontSize="12" fill="#1c1917">overall accuracy</text>
+      <text x="30" y="150" textAnchor="middle" className="ui" fontSize="12" fill="#1c1917" transform="rotate(-90 30 150)">df recall (rarest class)</text>
+      {[0,.2,.4,.6,.8,1.0].map(t=>(<g key={t}>
+        <line x1={60+t*540} y1="275" x2={60+t*540} y2="285" stroke="#cabfa3"/>
+        <text x={60+t*540} y="295" textAnchor="middle" className="ui" fontSize="10" fill="#5a544a">{(t*100).toFixed(0)}%</text>
+        <line x1="55" y1={280-t*250} x2="65" y2={280-t*250} stroke="#cabfa3"/>
+        <text x="48" y={283-t*250} textAnchor="end" className="ui" fontSize="10" fill="#5a544a">{(t*100).toFixed(0)}%</text>
+      </g>))}
+      {RESULTS.map((r,i)=>{
+        const x = 60+r.acc*540, y = 280-r.recall[3]*250;
+        const c = r.winner ? "#0e6b4e" : (r.name==="Standard CE" ? "#bb451a" : "#1c1917");
+        const off = i%2 ? -15 : 14;
+        return(<g key={i}>
+          <circle cx={x} cy={y} r={r.winner?9:7} fill={c}/>
+          <text x={x+12} y={y+off} className="ui" fontSize="11" fontWeight={r.winner?700:500} fill={c}>{r.name}</text>
+        </g>);
+      })}
+      <text x="540" y="50" textAnchor="end" className="ui" fontSize="11" fontStyle="italic" fill="#5a544a">↑ better clinically</text>
+    </svg></Figure>
+  <Aside title="The trade-off in one line">Standard CE wins accuracy and loses recall; the Sampler wins recall and loses accuracy. Focal Loss is the Pareto-optimal point — sacrificing only 11 points of accuracy buys 39 points of df recall.</Aside>
+</div>);
+
+const PartV_ERRORS = () => (<div>
+  <p className="dropcap">Macro-level metrics tell us <i>that</i> Standard CE fails on minorities. Looking at its highest-confidence wrong predictions tells us <i>how</i>. Every one of the three most-confident errors made by the baseline is the same kind of mistake: a benign keratosis confidently mis-labelled as a melanocytic nevus — at {String.raw`$&gt; 97\%$`} confidence.</p>
+  <Figure caption="Three highest-confidence errors of the Standard CE model, all on real HAM10000 test images. The label triplet — true · predicted · confidence — exposes the bias: bkl lesions are systematically called nv.">
+    <svg viewBox="0 0 720 220" className="w-full">
+      {[{p:99.8,t:"bkl",c:"nv"},{p:97.5,t:"bkl",c:"nv"},{p:97.4,t:"bkl",c:"nv"}].map((e,i)=>(<g key={i} transform={`translate(${30+i*240},0)`}>
+        <defs>
+          <radialGradient id={`les${i}`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#5a382a"/>
+            <stop offset="60%" stopColor="#a06a45"/>
+            <stop offset="100%" stopColor="#e9c89a"/>
+          </radialGradient>
+        </defs>
+        <rect x="0" y="20" width="200" height="120" fill="#f2dec4" rx="4"/>
+        <ellipse cx="100" cy="80" rx={60+i*4} ry={45+i*3} fill={`url(#les${i})`}/>
+        <text x="100" y="160" textAnchor="middle" className="ui" fontSize="12" fontWeight="700" fill="#1c1917">True: <tspan fill="#0e6b4e">{e.t}</tspan>  ·  Pred: <tspan fill="#bb451a">{e.c}</tspan></text>
+        <text x="100" y="180" textAnchor="middle" className="ui" fontSize="13" fontWeight="700" fill="#bb451a">{e.p}% confidence</text>
+      </g>))}
+    </svg></Figure>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">27.1 · Sankey-style flow — where the predictions go</h3>
+  <Figure caption="Schematic prediction flow under Standard CE. Each row on the left is a true class with its share of the test set; bars on the right are the predicted classes. Notice how almost every flow leaks into the 'nv' column.">
+    <svg viewBox="0 0 780 280" className="w-full">
+      {CLASSES.map((c,i)=>(<g key={c.key} transform={`translate(40,${30+i*30})`}>
+        <rect x="0" y="-12" width={Math.max(40,c.pct*4)} height="24" fill={c.color}/>
+        <text x="-8" y="5" textAnchor="end" className="mono" fontSize="11" fill={c.color} fontWeight="700">{c.key}</text>
+      </g>))}
+      {CLASSES.map((c,i)=>(<g key={"p"+c.key} transform={`translate(640,${30+i*30})`}>
+        <rect x="0" y="-12" width={Math.max(40,c.pct*4)} height="24" fill={c.color} opacity={c.key==="nv"?1:0.35}/>
+        <text x={Math.max(40,c.pct*4)+6} y="5" className="mono" fontSize="11" fill={c.color} fontWeight="700">{c.key}</text>
+      </g>))}
+      {[0,1,2,3,4,6].map(srcIdx=>(<path key={srcIdx} d={`M ${40+Math.max(40,CLASSES[srcIdx].pct*4)} ${30+srcIdx*30} C 320 ${30+srcIdx*30}, 320 ${30+5*30}, 640 ${30+5*30}`} stroke={CLASSES[srcIdx].color} strokeWidth="2" fill="none" opacity="0.55"/>))}
+      {CLASSES.map((c,i)=>(<line key={"sl"+c.key} x1={40+Math.max(40,c.pct*4)} y1={30+i*30} x2="640" y2={30+i*30} stroke={c.color} strokeWidth="1" strokeDasharray="2 4" opacity="0.5"/>))}
+      <text x="40" y="270" className="ui" fontSize="12" fontWeight="700" fill="#1c1917">true class →</text>
+      <text x="760" y="270" textAnchor="end" className="ui" fontSize="12" fontWeight="700" fill="#1c1917">predicted class</text>
+    </svg></Figure>
+  <Intuition title="The pathology">{`Standard CE has learnt a single visual heuristic: <b>"if the lesion is dark and homogeneously pigmented, call it nv."</b> This heuristic is right roughly $67\\%$ of the time on the training set, which is enough to win the average loss. It is also wrong $100\\%$ of the time on dermatofibroma — every df sample has this exact appearance. The loss landscape rewards the heuristic; the focal-loss landscape punishes it. That is the entire mechanism the project demonstrates.`}</Intuition>
+</div>);
+
+const PartV_CLOSE = () => (<div>
+  <p className="dropcap">We set out to build a textbook-grade mathematical engineering project — develop the theory from biological neurons through to convolutional networks, then apply it to a real imbalanced 10,015-image clinical dataset under five rigorously-controlled loss configurations. We have done that. The synthesis below collects what we built, what we measured, and the open avenues for future work.</p>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">28.1 · What we built</h3>
+  <ul className="ui list-disc pl-6 space-y-1.5 text-[16px]">
+    <li>A fully reproducible PyTorch pipeline on the real 10,015-image HAM10000 corpus.</li>
+    <li>A 106,391-parameter SkinCNN — Conv → BN → ReLU → MaxPool ×4, then GAP and two dense layers.</li>
+    <li>Five rigorously-controlled experiments under identical seeds, optimiser and schedule.</li>
+    <li>An 8-page LaTeX report, an 11-slide presentation, a runnable Jupyter notebook, and this educational atlas — every deliverable required by the course brief.</li>
+  </ul>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">28.2 · What we learned</h3>
+  <div className="grid md:grid-cols-3 gap-4 my-4">
+    {[
+      {t:"Accuracy is the wrong yardstick.", b:"Standard CE reaches 73.6% accuracy yet 0% recall on the rarest class. Always report macro F1 and per-class recall on imbalanced data."},
+      {t:"Focal Loss is the strongest fix.", b:"With γ=2 and inverse-frequency α it reaches macro F1 = 0.443 (vs 0.381 baseline) and recovers df recall from 0% to 38.9%."},
+      {t:"Loss vs sampling: not a tie.", b:"The WeightedRandomSampler matches Focal on minority recall but at a much larger accuracy cost. Loss-side reweighting is the cleaner intervention."}
+    ].map((c,i)=>(<div key={i} className="frame-thick rounded p-5">
+      <h4 className="display text-lg font-semibold mb-1.5">{c.t}</h4>
+      <p className="ui text-sm text-stone-700 leading-relaxed">{c.b}</p>
+    </div>))}
+  </div>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">28.3 · Weaknesses of the model</h3>
+  <ul className="ui list-disc pl-6 space-y-1.5 text-[16px]">
+    <li>From-scratch CNN with only ~106k parameters; transfer learning from a pretrained ResNet-50 would almost certainly close most of the remaining minority-class gap.</li>
+    <li>64×64 input throws away fine sub-pixel detail (the originals are 600×450).</li>
+    <li>Imaging artefacts — hairs, ruler markings, vignettes — are not removed. A convolutional autoencoder denoiser is a plausible improvement.</li>
+    <li>The model performs a flat 7-class softmax. Clinical practice prioritises a benign-vs-malignant first decision, with subtype as a downstream classifier.</li>
+  </ul>
+  <h3 className="display text-2xl font-semibold mt-6 mb-3">28.4 · Future work</h3>
+  <div className="grid md:grid-cols-3 gap-3 my-4">
+    {[
+      "Pretrained ResNet-50 / EfficientNet-B0 backbone.",
+      "Convolutional Autoencoder for hair / ruler removal.",
+      "Temperature scaling for probability calibration.",
+      "MixUp / CutMix / SMOTE-in-feature-space augmentation.",
+      "Hierarchical malignant-vs-benign-first decision.",
+      "5-fold cross-validation for tighter confidence intervals."
+    ].map((t,i)=>(<div key={i} className="frame rounded p-3 ui text-sm">
+      <span className="badge-soft mr-2">{i+1}</span>{t}
+    </div>))}
+  </div>
+  <div className="pq">"Plain accuracy is the wrong objective on HAM10000. The right yardstick is per-class recall and macro F1; the right tool to optimise it is Focal Loss."</div>
+  <Aside title="The atlas in one sentence">Every formula, every diagram and every interpretation in this document is here precisely because skipping any one of them is exactly how subtle bugs in imbalanced-classification systems slip into production.</Aside>
+</div>);
+
+/* Memoized Book Content - Prevents LaTeX DOM modifications from being wiped out by React re-renders */
+const BookContent = React.memo(() => {
+  const contentRef = useRef(null);
+
+  useEffect(() => {
+    if (window.renderMathInElement && contentRef.current) {
+      window.renderMathInElement(contentRef.current, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false }
+        ],
+        throwOnError: false
+      });
+    }
+  }, []);
+
+  return (
+    <main ref={contentRef} className="max-w-6xl mx-auto px-6 md:px-10 py-10">
+      <PartCover roman="I" title="Mathematical Preliminaries" blurb="The minimal foundation of linear algebra, calculus, and probability required for everything that follows."/>
+      <Chapter id="how-to"  num="0"  title="How to read this atlas"        eyebrow="Pedagogy"><PartI_HOW_TO/></Chapter>
+      <Chapter id="history" num="1"  title="A brief history of deep learning" eyebrow="Context"><PartI_HISTORY/></Chapter>
+      <Chapter id="linalg"  num="2"  title="Linear algebra essentials"     eyebrow="Tensors & dots"><PartI_LINALG/></Chapter>
+      <Chapter id="calc"    num="3"  title="Calculus essentials"           eyebrow="Gradients & chains"><PartI_CALC/></Chapter>
+      <Chapter id="prob"    num="4"  title="Probability essentials"        eyebrow="Softmax & entropy"><PartI_PROB/></Chapter>
+      <PartCover roman="II" title="The Algorithmic Neuron" blurb="From biological inspiration to the mathematical step function."/>
+      <Chapter id="bio"     num="5"  title="Biological → artificial neurons" eyebrow="Analogy"><PartII_BIO/></Chapter>
+      <Chapter id="percep"  num="6"  title="The perceptron"                eyebrow="Linear boundaries"><PartII_PERCEP/></Chapter>
+      <Chapter id="acts"    num="7"  title="Activation functions"          eyebrow="Non-linearity"><PartII_ACTS/></Chapter>
+      <PartCover roman="III" title="Multilayer Networks" blurb="Stacking neurons, measuring error, and walking downhill."/>
+      <Chapter id="mlp"     num="8"  title="MLPs & the forward pass"       eyebrow="Composition"><PartIII_MLP/></Chapter>
+      <Chapter id="loss"    num="9"  title="Loss functions — MSE vs CE"    eyebrow="What we optimise"><PartIII_LOSS/></Chapter>
+      <Chapter id="gd"      num="10" title="Gradient descent"              eyebrow="Walking downhill"><PartIII_GD/></Chapter>
+      <Chapter id="backprop"num="11" title="Backpropagation — derived"     eyebrow="The chain rule, applied"><PartIII_BACK/></Chapter>
+      <Chapter id="opt"     num="12" title="Optimisers — SGD, momentum, Adam" eyebrow="Refining the step"><PartIII_OPT/></Chapter>
+      <PartCover roman="IV" title="Convolutional Networks" blurb="The specific architectural ideas that let neural networks read images."/>
+      <Chapter id="why-cnn" num="13" title="Why CNNs for images"           eyebrow="Local · shared · invariant"><PartIV_WHY/></Chapter>
+      <Chapter id="conv"    num="14" title="The convolution operation"     eyebrow="A sliding inner product"><PartIV_CONV/></Chapter>
+      <Chapter id="pool"    num="15" title="Pooling, padding, stride, receptive field" eyebrow="Spatial geometry"><PartIV_POOL/></Chapter>
+      <Chapter id="bn"      num="16" title="Batch normalisation"           eyebrow="Re-centring activations"><PartIV_BN/></Chapter>
+      <Chapter id="drop"    num="17" title="Dropout"                       eyebrow="Stochastic regularisation"><PartIV_DROP/></Chapter>
+      <Chapter id="gap"     num="18" title="Global Average Pooling & a complete CNN block" eyebrow="Putting it together"><PartIV_GAP/></Chapter>
+      <PartCover roman="V" title="The HAM10000 Project" blurb="Everything above, applied to a real imbalanced 10,015-image dermoscopic dataset."/>
+      <Chapter id="problem" num="19" title="Clinical problem & the accuracy trap" eyebrow="Motivation"><PartV_PROBLEM/></Chapter>
+      <Chapter id="dataset" num="20" title="HAM10000 anatomy"              eyebrow="What we are classifying"><PartV_DATASET/></Chapter>
+      <Chapter id="pipeline"num="21" title="Data engineering pipeline"     eyebrow="JPEG bytes → tensors"><PartV_PIPELINE/></Chapter>
+      <Chapter id="skincnn" num="22" title="SkinCNN — our architecture"    eyebrow="Layer-by-layer"><PartV_CNN/></Chapter>
+      <Chapter id="losses"  num="23" title="Five losses for imbalanced data" eyebrow="Side-by-side derivations"><PartV_LOSSES/></Chapter>
+      <Chapter id="training"num="24" title="Training mechanics"            eyebrow="Real numbers from real runs"><PartV_TRAINING/></Chapter>
+      <Chapter id="metrics" num="25" title="Metrics that matter"           eyebrow="Confusion matrix · F1 · macro"><PartV_METRICS/></Chapter>
+      <Chapter id="results" num="26" title="Real results & per-class analysis" eyebrow="What the experiments produced"><PartV_RESULTS/></Chapter>
+      <Chapter id="errors"  num="27" title="Error analysis — pathology of failure" eyebrow="When wrong, why?"><PartV_ERRORS/></Chapter>
+      <Chapter id="close"   num="28" title="Synthesis & future work"       eyebrow="What we built, what is next"><PartV_CLOSE/></Chapter>
+      <div className="rule-d my-12"></div>
+      <footer className="ui text-sm text-stone-500 leading-relaxed text-center py-8">
+        <div className="mb-2 sc text-stone-700 font-bold tracking-widest">Colophon</div>
+        Set in Cormorant Garamond, Source Serif 4, Inter, and JetBrains Mono.<br/>
+        Mathematics rendered with KaTeX. Diagrams hand-built with inline SVG.<br/>
+        Single self-contained HTML file — no build step, no external assets beyond CDNs.<br/>
+        <div className="mt-4 text-stone-400">© 2026 Ömer Kahyaoğlu · Written for MYZ 309E · Istanbul Technical University</div>
+      </footer>
+    </main>
+  );
+});
+
+/* --- APP --- */
+function App() {
+  const [activeChapter, setActiveChapter] = useState("how-to");
+
+  const jump = (id) => {
+    setActiveChapter(id);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  useEffect(() => {
+    const ids = TOC.flatMap(p => p.chapters.map(c => c.id));
+    
+    const observer = new IntersectionObserver((entries) => {
+      // Find all chapters currently intersecting the viewport
+      const intersecting = entries.filter(e => e.isIntersecting);
+      if (intersecting.length > 0) {
+        // Sort to find the topmost element to accurately track reading progress
+        intersecting.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        const activeId = intersecting[0].target.id;
+        if (ids.includes(activeId)) setActiveChapter(activeId);
+      }
+    }, { rootMargin: "-15% 0px -75% 0px" });
+
+    // Slight delay ensures the DOM is fully painted by React before observing
+    setTimeout(() => {
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    }, 150);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div>
+      <GlobalDefs />
+      <Hero />
+      <StickyNav active={activeChapter} onJump={jump} />
+      <BookContent />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
